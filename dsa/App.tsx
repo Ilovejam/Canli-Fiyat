@@ -10,8 +10,8 @@ import React from 'react';
 // import SignUpScreen from './src/screens/SignUpScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SigUpScreen from './src/screens/SignUpScreen';
-import DasboardScreen from './src/screens/DasboardScreen';
-
+//import DasboardScreen from './src/screens/DasboardScreen';
+import EntryScreen from './src/screens/EntryScreen';
 
 import {
   SafeAreaView,
@@ -31,7 +31,6 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import NewsPage from './src/screens/NewsScreen';
 
 
 function App(): JSX.Element {
@@ -43,24 +42,20 @@ function App(): JSX.Element {
 
   return (
     //<LoginScreen />
-    <SigUpScreen />
-    //<NewsPage/>
-   // <DasboardScreen/>
-    //<Newsfeed/>
-    //<MyProfile/>
-    //<ForgotPassword/>
-    //<Settings/>
-    //<Notifications/>
-    //<Favorites/>
-    //<VerifyNumber/>
+    //<SigUpScreen />
+    //<DasboardScreen/>
+    <EntryScreen />
 
   );
+  
 }
 
 const styles = StyleSheet.create({
   root : {
     flex : 1,
-    
+    justifyContent : "center",
+    alignItems : "center",
+    fontFamily: 'Poppins-Regular',
   }
 });
 

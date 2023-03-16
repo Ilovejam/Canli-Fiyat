@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontWeight : "bold",
         textAlign : "left",
         width : "80%",
-        fontFamily : "Poppins",
+        fontFamily : "Poppins-Regular",
         color : "black",
     },
     footer : {
