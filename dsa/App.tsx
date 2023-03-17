@@ -12,6 +12,8 @@ import LoginScreen from './src/screens/LoginScreen';
 import SigUpScreen from './src/screens/SignUpScreen';
 //import DasboardScreen from './src/screens/DasboardScreen';
 import EntryScreen from './src/screens/EntryScreen';
+import NewsGeneral from './src/screens/NewsGeneral';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import {
   SafeAreaView,
@@ -44,7 +46,8 @@ function App(): JSX.Element {
     //<LoginScreen />
     //<SigUpScreen />
     //<DasboardScreen/>
-    <EntryScreen />
+    //<EntryScreen />
+    <NewsGeneral />
 
   );
   
