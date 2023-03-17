@@ -1,36 +1,21 @@
 import React from 'react';
-import { Image, StyleSheet, View, Text} from 'react-native';
-import logo from '../../images/logo.svg';
+import { StyleSheet, Image, Text } from 'react-native';
 
+interface LogoHeaderProps {
+  source: any; // pass the source of the logo image as a prop
+}
 
-const LogoHeader: React.FC = () => {
+const LogoHeader = ({ source }: LogoHeaderProps) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Sad</Text>
-    </View>
+    <Image style={styles.logo} source={source} resizeMode="contain" />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   logo: {
-    width: '80%',
-    height: '80%',
-    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: 30, // Adjust the margin as per your requirement
   },
-  text: {
-    fontSize: 24.95,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#282828',
-  },
-
-  
 });
 
 export default LogoHeader;
