@@ -31,12 +31,18 @@ export default function LoginScreen() {
                 </TouchableOpacity>
                 <View style={{height : 41}} />
                 <TouchableOpacity style={styles.social_button}>
+                <View style={styles.logocontainer}>
+                  <Image style={{width:10,height:10,resizeMode:'contain'}}source={require('../../assets/images/logos/google_logo.png')} resizeMode = 'contain' />
+                </View>
                 <View style={styles.social_boxButton}>
                     <Icon name="google" size={20} color="red" style={styles.icon} />
                     <Text style={styles.social_buttonText}>Google ile giriş yap</Text>
                 </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.social_button}>
+                <View style={styles.logocontainer}>
+                   <Image tyle={{width:10,height:10,resizeMode:'contain'}}source={require('../../assets/images/logos/facebook_logo.png')} resizeMode = 'contain' />
+                </View>
                 <View style={styles.social_boxButton}>
                     <Icon name="facebook" size={20} color="red" style={styles.icon} />
                     <Text style={styles.social_buttonText}>Facebook ile giriş yap</Text>
