@@ -1,143 +1,108 @@
-import React from "react";
-import { View, Text, TextInput, StyleSheet,TouchableOpacity } from "react-native";
+import React from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image, Dimensions
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import LogoHeader from '../components/LogoHeader';
+import FormTextInput from '../components/FormTextInput';
 
 export default function LoginScreen() {
-    return (
-        <View style={styles.root}>
-            <View style={styles.body}>
-                <Text style={styles.header}>Giriş Yap</Text>
-                <Text style={styles.text}>Hesabınızı açmak için detayları doldurun.</Text>
-                <View style={{height : 41}} />
-                <Text style={styles.input_title}>İsminiz</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="İsminizi Girin"
+  return (
+    <View style={styles.root}>
+        <View style={styles.container}>
+            <LogoHeader source={require('../../src/images/logo/login-signup_logo.png')} />
+            <View style={styles.imageContainer}>
+                <Image
+                source={require('../../src/images/backgrounds/3d_background.png')}
+                style={styles.secondImage}
                 />
-                <Text style={styles.input_title}>Telefon Numaranız</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Telefon numaranızı girin"
-                />
-                <Text style={styles.input_title}>Şifreniz</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Şifrenizi Girin"
-                    
-                />
-                
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Giriş Yap</Text>
-                </TouchableOpacity>
-                <View style={{height : 41}} />
-                <TouchableOpacity style={styles.social_button}>
-                <View style={styles.social_boxButton}>
-                    <Icon name="google" size={20} color="red" style={styles.icon} />
-                    <Text style={styles.social_buttonText}>Google ile giriş yap</Text>
-                </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.social_button}>
-                <View style={styles.social_boxButton}>
-                    <Icon name="facebook" size={20} color="red" style={styles.icon} />
-                    <Text style={styles.social_buttonText}>Facebook ile giriş yap</Text>
-                </View>
-                </TouchableOpacity>
-                <Text style={styles.info}>Hesabınız var mı? Giriş yap.</Text>
-
-                
             </View>
-            <View style={styles.footer}>
-                <Text>Footer</Text>
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>Sizi tanıyalım</Text>
             </View>
+            <FormTextInput title="İsminiz" placeholder="" inputType="text" />
+            <FormTextInput title="Telefon Numaranız" placeholder="" inputType="phone" />
+            <FormTextInput title="Şifre" placeholder="" inputType="password" />
+            <TouchableOpacity style={styles.loginButton}>
+                <Text style={styles.loginButtonText}>Giriş Yap</Text>
+            </TouchableOpacity>
+            
         </View>
-    );
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    root : {
-        flex : 1,
-        justifyContent : "center",
-        alignItems : "center",
-        backgroundColor : "white",
-    },
-    header : {
-        fontSize : 24.95,
-        fontWeight : "bold",
-        marginBottom : 16,
-    },
-    text : {
-        fontSize : 12.47,
-        fontWeight : "bold",
-        textAlign : "left",
-    },
-    body : {
-        width : "100%",
-        flex : 9,
-        justifyContent : "center",
-        alignItems : "center",
-    },
-    input_title : {
-        fontSize : 20,
-        fontWeight : "bold",
-        textAlign : "left",
-        width : "80%",
-        fontFamily : "Poppins-Regular",
-        color : "black",
-    },
-    footer : {
-        flex : 1,
-        justifyContent : "center",
-        alignItems : "center",
-    },
-    input: {
-        width: '80%',
-        padding: 16,
-        marginBottom: 16,
-        backgroundColor: '#eee',
-        borderRadius: 6.24,
-      },
-    info: {
-        fontSize: 14.55,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#7A828A',
-    },
-    button: {
-        backgroundColor: '#00825A',
-        width: '80%',
-        padding: 16,
-        borderRadius: 3.12,
-    },
-    social_button: {
-        marginBottom: 20, // adjust the value as per your requirement
-        width: '80%',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16.63,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    social_boxButton: {
-        flexDirection: 'row',
+    root: {
+        flex: 1,
+        backgroundColor: '#1D1F3F',
         alignItems: 'center',
-        borderWidth: 1.24,
-        borderColor: 'gray',
-        borderRadius: 6.24,
-        paddingHorizontal: 20,
-        paddingVertical: 10, 
-  
+        justifyContent: 'center',
     },
-    icon: {
-        marginRight: 10,
-        color: 'red',
+    container: {
+        flex: 1,
+        backgroundColor: '#1D1F3F',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    social_buttonText: {
-        fontSize: 14.55,
+    logoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        },
+    logo: {
+        width: 100, // Adjust this value for your logo size
+        height: 50, // Adjust this value for your logo size
+        resizeMode: 'contain',
+    },
+    imageContainer: {
+        marginBottom: 10,
+    },
+    secondImage: {
+        width: 322,
+        height: 281,
+        resizeMode: 'contain',
+    },
+    titleContainer: {
+        marginTop: 10,
+    },
+    title: {
+        fontSize: 24,
         fontWeight: 'bold',
-        textAlign: 'right',
-        color: '#282828',
-    },
+        color: '#FFFFFF',
+        fontFamily: 'Poppins-Regular',
 
+    },
+    loginButton: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 111.217,
+        paddingVertical: 10.3941,
+        marginTop: 20, // Add some margin to separate the button from the input fields
+        width: 346.12,
+        height: 41.79,
+        backgroundColor: '#67BBF9',
+        borderRadius: 3.11823,
+      },
+    loginButtonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+    },
+    formContainer: {
+        width: '100%',
+        alignItems: 'center',
+      },
+      
+      
 });
+
+
 

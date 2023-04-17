@@ -1,37 +1,34 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
 import LogoHeader from '../components/LogoHeader';
 import NewsSlider from '../components/NewsSlider';
+import { Box, VStack } from 'native-base';
+import UpcomingEvents from '../components/UpcomingEvents';
 import NewsCard from '../components/NewsCard';
-import UpcomingEvent from '../components/UpcomingEvents';
 
 export default function NewsGeneral() {
-  const events = [
-    { date: '22 Jun', title: 'Event 1' },
-    { date: '30 Jun', title: 'Event 2' },
-    // Add more events here
-  ];
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <LogoHeader source={require('../../assets/images/logos/canlifiyat_header.png')} />
-        <Text style={styles.title}>Başlıklar</Text>
-        <NewsSlider
-          style={styles.newsSlider}
-          title="Sample News Title"
-          imageUrl="https://iasbh.tmgrup.com.tr/cd880e/650/344/136/0/1670/807?u=https://isbh.tmgrup.com.tr/sbh/2022/11/02/son-dakika-atv-a-haber-a-para-a-news-gundem-ozel-ortak-yayini-baskan-erdogandan-onemli-aciklamalar-1667415365136.jpg"
-        />
-        <Text style={styles.title}>Yaklaşan Etkinlikler</Text>
-        {events.map((event, index) => (
-          <UpcomingEvent key={index} date={event.date} title={event.title} />
-        ))}
-        <Text style={styles.title}>Haberler</Text>
-        <NewsCard
-          style={styles.newsCard}
-          title="Sample news"
-          imageUrl="https://iasbh.tmgrup.com.tr/cd880e/650/344/136/0/1670/807?u=https://isbh.tmgrup.com.tr/sbh/2022/11/02/son-dakika-atv-a-haber-a-para-a-news-gundem-ozel-ortak-yayini-baskan-erdogandan-onemli-aciklamalar-1667415365136.jpg"
-        />
+      <ScrollView>
+        <Box>
+          <NewsSlider />
+        </Box>
+        <VStack>
+          <Text style={styles.sectionTitle}>Yaklaşan Etkinlikler</Text>
+          <UpcomingEvents />
+        </VStack>
+        <View style={styles.newsContainer}>
+          <Text style={styles.sectionTitle}>Haberler</Text>
+          <NewsCard
+            imageSource={{ uri: 'https://i.imgur.com/gcKBIbG.jpg' }}
+            sourceLogo={{ uri: 'https://i.imgur.com/3q3T8IN.png' }}
+            title='İstanbul Borsası İlk Çeyrekte %15 Yükseldi'
+            time='1 saat önce'
+            source='CNBC'
+          />
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -40,25 +37,42 @@ export default function NewsGeneral() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
   },
-  scrollView: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 32,
-    alignItems: 'stretch',
-  },
-  newsCard: {
-    width: '100%',
-  },
-  newsSlider: {
-    width: '100%',
-  },
-  title: {
-    fontSize: 20,
+  sectionTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'left',
+    marginHorizontal: 20,
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 10,
+  },
+  listItem: {
+    fontSize: 18,
+    padding: 10,
+    marginHorizontal: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    borderColor: '#cccccc',
+    borderWidth: 1,
+  },
+  newsContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginHorizontal: 16,
+    marginVertical: 16,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
 });

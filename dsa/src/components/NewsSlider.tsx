@@ -1,52 +1,53 @@
-import React from 'react';
-import { Dimensions, StyleSheet, View, Image, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions } from 'react-native';
+import { View, Text, Image, FlatList, Box } from 'native-base';
 
-const { height: screenHeight } = Dimensions.get('window');
-const { width: screenWidth } = Dimensions.get('window');
-interface NewsSliderProps {
-  style?: any;
-  title: string;
-  imageUrl: string;
-}
+const screenWidth = Dimensions.get('window').width;
 
-const NewsSlider: React.FC<NewsSliderProps> = ({ title, imageUrl }) => {
+const NewsSlider = () => {
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const fetchNews = async () => {
+    try {
+      const response = await fetch(
+        'https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
+      );
+      const json = await response.json();
+      setNews(json.articles);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const renderItem = ({ item }) => (
+    <Box p={4} bg="white" borderRadius={8} mx={2} width={screenWidth - 50}>
+      <Image
+        source={{ uri: item.urlToImage }}
+        alt={item.title}
+        resizeMode="cover"
+        borderRadius={8}
+        width="100%"
+        height={200}
+      />
+      <Text fontSize="lg" fontWeight="bold" pt={2} textAlign="center">
+        {item.title}
+      </Text>
+    </Box>
+  );
+
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={{ uri: imageUrl }} />
-      <Text style={styles.title}>{title}</Text>
-    </View>
+    <FlatList
+      data={news}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-    container: {
-      width: screenWidth *0.828205128,
-      height: screenHeight *0.283175355, // Adjust height here
-      justifyContent: 'flex-start', // Change from 'center' to 'flex-start'
-      alignItems: 'center',
-      backgroundColor: 'white',
-      borderRadius: 5,
-      padding: 0,
-      margin: 10,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0.3,
-      shadowRadius: 3,
-      elevation: 3,
-    },
-    image: {
-      width: '100%',
-      height: '75%', // Change from '80%' to '100%'
-      resizeMode: 'cover',
-      borderRadius: 5,
-    },
-    title: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginTop: 10,
-    },
-});
-
 
 export default NewsSlider;

@@ -1,0 +1,20 @@
+{
+    "tailwind": {
+      "config": {},
+      "styles": {
+        "container": {
+          "backgroundColor": "white",
+          "flex": 1
+        },
+        "header": {
+          "textAlign": "center",
+          "paddingVertical": 5
+        },
+        "title": {
+          "fontSize": 24,
+          "fontWeight": "bold"
+        }
+      }
+    }
+  }
+  

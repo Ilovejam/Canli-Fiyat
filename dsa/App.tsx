@@ -1,65 +1,21 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-// import LoginScreen from './src/screens/LoginScreen';
-// import SignUpScreen from './src/screens/SignUpScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { useAuth0, Auth0Provider } from 'react-native-auth0';
 import LoginScreen from './src/screens/LoginScreen';
-import SigUpScreen from './src/screens/SignUpScreen';
-//import DasboardScreen from './src/screens/DasboardScreen';
-import EntryScreen from './src/screens/EntryScreen';
-import NewsGeneral from './src/screens/NewsGeneral';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import SignUpScreen from './src/screens/SignUpScreen';
+import { NativeBaseProvider, extendTheme } from 'native-base';
+import AppNavigator from './src/navigation/AppNavigator';
 
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  Image,
-  View,
-} from 'react-native';
+const theme = extendTheme({});
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const App = () => {
   return (
-    //<LoginScreen />
-    //<SigUpScreen />
-    //<DasboardScreen/>
-    //<EntryScreen />
-    <NewsGeneral />
-
+    <NativeBaseProvider theme={theme}>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
-  
-}
-
-const styles = StyleSheet.create({
-  root : {
-    flex : 1,
-    justifyContent : "center",
-    alignItems : "center",
-    fontFamily: 'Poppins-Regular',
-  }
-});
+};
 
 export default App;

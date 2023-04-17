@@ -1,51 +1,78 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface UpcomingEventProps {
-  date: string;
-  title: string;
-}
+const UpcomingEvents = () => {
+  const [events, setEvents] = useState([
+    {
+      id: 1,
+      date: '22 Feb',
+      title: 'Lorem ipsum dolor sit amet',
+    },
+    {
+      id: 2,
+      date: '26 Feb',
+      title: 'Consectetur adipiscing elit',
+    },
+    {
+      id: 3,
+      date: '2 Mar',
+      title: 'Sed do eiusmod tempor',
+    },
+  ]);
 
-const UpcomingEvent: React.FC<UpcomingEventProps> = ({ date, title }) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.dateBox}>
-        <Text style={styles.dateText}>{date}</Text>
-      </View>
-      <View style={styles.titleBox}>
-        <Text style={styles.titleText}>{title}</Text>
-      </View>
-    </View>
-  );
+  const renderEvents = () => {
+    return events.map((event) => {
+      return (
+        <TouchableOpacity style={styles.eventContainer} key={event.id}>
+          <View style={styles.dateContainer}>
+            <Text style={styles.dateText}>{event.date}</Text>
+          </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>{event.title}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    });
+  };
+
+  return <View style={styles.container}>{renderEvents()}</View>;
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#ffffff',
+    padding: 10,
+    marginBottom: 10,
+  },
+  eventContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    marginBottom: 10,
   },
-  dateBox: {
-    backgroundColor: '#F0F0F0',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
+  dateContainer: {
+    backgroundColor: '#06bcee',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginRight: 10,
   },
   dateText: {
+    color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  titleBox: {
+  titleContainer: {
     flex: 1,
-    marginLeft: 10,
-    padding: 4,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 4,
   },
   titleText: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#222222',
+    paddingVertical: 10,
+    paddingRight: 10,
   },
 });
 
-export default UpcomingEvent;
+export default UpcomingEvents;
