@@ -1,51 +1,86 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface UpcomingEventProps {
-  date: string;
-  title: string;
-}
+const UpcomingEvents = () => {
+  const [events, setEvents] = useState([
+    {
+      id: 1,
+      date: '22 Şub',
+      title: 'Ticaret Hadleri - İthalat Açıklaması',
+    },
+    {
+      id: 2,
+      date: '30 Şub',
+      title: 'Ticaret Hadleri - İthalat Açıklaması',
+    }
+  ]);
 
-const UpcomingEvent: React.FC<UpcomingEventProps> = ({ date, title }) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.dateBox}>
-        <Text style={styles.dateText}>{date}</Text>
-      </View>
-      <View style={styles.titleBox}>
-        <Text style={styles.titleText}>{title}</Text>
-      </View>
-    </View>
-  );
+  const renderEvents = () => {
+    return events.map((event) => {
+      return (
+        <TouchableOpacity style={styles.eventContainer} key={event.id}>
+          <View style={styles.dateContainer}>
+            <Text style={styles.dateMonth}>{event.date.substring(3)}</Text>
+            <Text style={styles.dateDay}>{event.date.substring(0, 2)}</Text>
+          </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>{event.title}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    });
+  };
+
+  return <View style={styles.container}>{renderEvents()}</View>;
 };
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
+    marginBottom: 10,
+  },
+  eventContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    marginBottom: 5,
   },
-  dateBox: {
-    backgroundColor: '#F0F0F0',
+  dateContainer: {
+    flexDirection: 'column',
+    backgroundColor: 'rgba(145, 255, 128, 0.76)',
+    borderRadius: 5,
     paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  dateText: {
-    fontSize: 16,
+    paddingVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 60,
+    marginRight: 12, // add margin to the right
+  },  
+  dateMonth: {
+    color: 'black',
+    fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: -4,
   },
-  titleBox: {
+  dateDay: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  titleContainer: {
     flex: 1,
-    marginLeft: 10,
-    padding: 4,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 4,
+    backgroundColor:'linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(69.43% 69.43% at 50% 50%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%)',
   },
   titleText: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#222222',
+    paddingVertical: 10,
+    paddingRight: 5,
   },
 });
 
-export default UpcomingEvent;
+export default UpcomingEvents;

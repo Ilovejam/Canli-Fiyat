@@ -1,65 +1,52 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-// import LoginScreen from './src/screens/LoginScreen';
-// import SignUpScreen from './src/screens/SignUpScreen';
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 import LoginScreen from './src/screens/LoginScreen';
-import SigUpScreen from './src/screens/SignUpScreen';
-//import DasboardScreen from './src/screens/DasboardScreen';
+import AppNavigator from './src/navigation/AppNavigator';
 import EntryScreen from './src/screens/EntryScreen';
-import NewsGeneral from './src/screens/NewsGeneral';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  Image,
-  View,
-} from 'react-native';
+const theme = extendTheme({});
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Stack = createStackNavigator();
 
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
   };
 
-  return (
-    //<LoginScreen />
-    //<SigUpScreen />
-    //<DasboardScreen/>
-    //<EntryScreen />
-    <NewsGeneral />
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
 
-  );
-  
-}
+    return () => clearTimeout(timer);
+  }, []);
 
-const styles = StyleSheet.create({
-  root : {
-    flex : 1,
-    justifyContent : "center",
-    alignItems : "center",
-    fontFamily: 'Poppins-Regular',
+  if (showSplash) {
+    return <EntryScreen />;
   }
-});
+
+  return (
+    <NativeBaseProvider theme={theme}>
+      <NavigationContainer>
+        {isLoggedIn ? (
+          <AppNavigator />
+        ) : (
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              initialParams={{ onLoginSuccess: handleLoginSuccess }}
+            />
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
+    </NativeBaseProvider>
+  );
+};
 
 export default App;

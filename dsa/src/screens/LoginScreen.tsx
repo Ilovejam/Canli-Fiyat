@@ -1,143 +1,102 @@
-import React from "react";
-import { View, Text, TextInput, StyleSheet,TouchableOpacity } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image
+} from 'react-native';
+import LogoHeader from '../components/LogoHeader';
+import LoginInputs from '../components/LoginInputs';
 
-export default function LoginScreen() {
-    return (
-        <View style={styles.root}>
-            <View style={styles.body}>
-                <Text style={styles.header}>Giriş Yap</Text>
-                <Text style={styles.text}>Hesabınızı açmak için detayları doldurun.</Text>
-                <View style={{height : 41}} />
-                <Text style={styles.input_title}>İsminiz</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="İsminizi Girin"
-                />
-                <Text style={styles.input_title}>Telefon Numaranız</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Telefon numaranızı girin"
-                />
-                <Text style={styles.input_title}>Şifreniz</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Şifrenizi Girin"
-                    
-                />
-                
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Giriş Yap</Text>
-                </TouchableOpacity>
-                <View style={{height : 41}} />
-                <TouchableOpacity style={styles.social_button}>
-                <View style={styles.social_boxButton}>
-                    <Icon name="google" size={20} color="red" style={styles.icon} />
-                    <Text style={styles.social_buttonText}>Google ile giriş yap</Text>
-                </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.social_button}>
-                <View style={styles.social_boxButton}>
-                    <Icon name="facebook" size={20} color="red" style={styles.icon} />
-                    <Text style={styles.social_buttonText}>Facebook ile giriş yap</Text>
-                </View>
-                </TouchableOpacity>
-                <Text style={styles.info}>Hesabınız var mı? Giriş yap.</Text>
+export default function LoginScreen(props) {
+  const handleLogin = (username: string, password: string, phoneNumber: string) => {
+    console.log('Attempting to log in with:', { username, password, phoneNumber });
 
-                
-            </View>
-            <View style={styles.footer}>
-                <Text>Footer</Text>
-            </View>
+    fetch('http://192.168.1.56:3000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        phoneNumber: phoneNumber
+      })
+    })
+      .then((response) => {
+        console.log('Response:', response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Data:', data);
+        if (data.message === 'Login successful') {
+          props.route.params.onLoginSuccess();
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+
+  return (
+    <View style={styles.root}>
+      <View style={styles.container}>
+        <LogoHeader source={require('../../src/images/logo/login-signup_logo.png')} />
+        <View style={styles.imageContainer}>
+          <Image
+            source={require('../../src/images/backgrounds/3d_background.png')}
+            style={styles.secondImage}
+          />
         </View>
-    );
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Sizi tanıyalım</Text>
+        </View>
+        <LoginInputs onLogin={handleLogin} />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    root : {
-        flex : 1,
-        justifyContent : "center",
-        alignItems : "center",
-        backgroundColor : "white",
-    },
-    header : {
-        fontSize : 24.95,
-        fontWeight : "bold",
-        marginBottom : 16,
-    },
-    text : {
-        fontSize : 12.47,
-        fontWeight : "bold",
-        textAlign : "left",
-    },
-    body : {
-        width : "100%",
-        flex : 9,
-        justifyContent : "center",
-        alignItems : "center",
-    },
-    input_title : {
-        fontSize : 20,
-        fontWeight : "bold",
-        textAlign : "left",
-        width : "80%",
-        fontFamily : "Poppins-Regular",
-        color : "black",
-    },
-    footer : {
-        flex : 1,
-        justifyContent : "center",
-        alignItems : "center",
-    },
-    input: {
-        width: '80%',
-        padding: 16,
-        marginBottom: 16,
-        backgroundColor: '#eee',
-        borderRadius: 6.24,
-      },
-    info: {
-        fontSize: 14.55,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#7A828A',
-    },
-    button: {
-        backgroundColor: '#00825A',
-        width: '80%',
-        padding: 16,
-        borderRadius: 3.12,
-    },
-    social_button: {
-        marginBottom: 20, // adjust the value as per your requirement
-        width: '80%',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16.63,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    social_boxButton: {
-        flexDirection: 'row',
+    root: {
+        flex: 1,
+        backgroundColor: '#1D1F3F',
         alignItems: 'center',
-        borderWidth: 1.24,
-        borderColor: 'gray',
-        borderRadius: 6.24,
-        paddingHorizontal: 20,
-        paddingVertical: 10, 
-  
+        justifyContent: 'center',
     },
-    icon: {
-        marginRight: 10,
-        color: 'red',
+    container: {
+        flex: 1,
+        backgroundColor: '#1D1F3F',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    social_buttonText: {
-        fontSize: 14.55,
+    logoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        },
+    logo: {
+        width: 100, // Adjust this value for your logo size
+        height: 50, // Adjust this value for your logo size
+        resizeMode: 'contain',
+    },
+    imageContainer: {
+        marginBottom: 10,
+    },
+    secondImage: {
+        width: 322,
+        height: 281,
+        resizeMode: 'contain',
+    },
+    titleContainer: {
+        marginTop: 10,
+    },
+    title: {
+        fontSize: 24,
         fontWeight: 'bold',
-        textAlign: 'right',
-        color: '#282828',
+        color: '#FFFFFF',
+        fontFamily: 'Poppins-Regular',
+
     },
+
 
 });
-
