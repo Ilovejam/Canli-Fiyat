@@ -1,34 +1,48 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
-import LogoHeader from '../components/LogoHeader';
+import Header from '../components/Header';
 import NewsSlider from '../components/NewsSlider';
 import { Box, VStack } from 'native-base';
 import UpcomingEvents from '../components/UpcomingEvents';
 import NewsCard from '../components/NewsCard';
+import BackgroundCircles from '../components/BackgroundCircles';
 
 export default function NewsGeneral() {
 
+  const [articles, setArticles] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
+      .then(response => response.json())
+      .then(data => setArticles(data.articles))
+      .catch(error => console.error(error));
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
+      <BackgroundCircles />
+      <Header title="Haberler" />
       <ScrollView>
         <Box>
           <NewsSlider />
         </Box>
-        <VStack>
+        <View style={styles.newsContainer}>
           <Text style={styles.sectionTitle}>Yaklaşan Etkinlikler</Text>
-          <UpcomingEvents />
-        </VStack>
+          <UpcomingEvents style={styles.eventsContainer} />
+        </View>
         <View style={styles.newsContainer}>
           <Text style={styles.sectionTitle}>Haberler</Text>
-          <NewsCard
-            imageSource={{ uri: 'https://i.imgur.com/gcKBIbG.jpg' }}
-            sourceLogo={{ uri: 'https://i.imgur.com/3q3T8IN.png' }}
-            title='İstanbul Borsası İlk Çeyrekte %15 Yükseldi'
-            time='1 saat önce'
-            source='CNBC'
-          />
+          {articles.map(article => (
+            <NewsCard
+              key={article.title}
+              image={article.urlToImage}
+              source={article.source.name}
+              title={article.title}
+              description={article.description}
+              onPress={() => console.log('NewsCard pressed')}
+            />
+          ))}
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -46,6 +60,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
+  eventsContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
   listItem: {
     fontSize: 18,
     padding: 10,
@@ -56,11 +76,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   newsContainer: {
-    backgroundColor: '#fff',
     borderRadius: 5,
-    marginHorizontal: 16,
+    marginHorizontal: 1,
     marginVertical: 16,
-    padding: 16,
+    padding: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -69,10 +88,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
+    width: '100%',
   },
 });

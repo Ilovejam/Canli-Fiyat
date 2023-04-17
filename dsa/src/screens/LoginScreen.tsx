@@ -2,37 +2,56 @@ import React from 'react';
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
-  Image, Dimensions
+  Image
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import LogoHeader from '../components/LogoHeader';
-import FormTextInput from '../components/FormTextInput';
+import LoginInputs from '../components/LoginInputs';
 
-export default function LoginScreen() {
+export default function LoginScreen(props) {
+  const handleLogin = (username: string, password: string, phoneNumber: string) => {
+    console.log('Attempting to log in with:', { username, password, phoneNumber });
+
+    fetch('http://192.168.1.56:3000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        phoneNumber: phoneNumber
+      })
+    })
+      .then((response) => {
+        console.log('Response:', response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Data:', data);
+        if (data.message === 'Login successful') {
+          props.route.params.onLoginSuccess();
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+
   return (
     <View style={styles.root}>
-        <View style={styles.container}>
-            <LogoHeader source={require('../../src/images/logo/login-signup_logo.png')} />
-            <View style={styles.imageContainer}>
-                <Image
-                source={require('../../src/images/backgrounds/3d_background.png')}
-                style={styles.secondImage}
-                />
-            </View>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>Sizi tanıyalım</Text>
-            </View>
-            <FormTextInput title="İsminiz" placeholder="" inputType="text" />
-            <FormTextInput title="Telefon Numaranız" placeholder="" inputType="phone" />
-            <FormTextInput title="Şifre" placeholder="" inputType="password" />
-            <TouchableOpacity style={styles.loginButton}>
-                <Text style={styles.loginButtonText}>Giriş Yap</Text>
-            </TouchableOpacity>
-            
+      <View style={styles.container}>
+        <LogoHeader source={require('../../src/images/logo/login-signup_logo.png')} />
+        <View style={styles.imageContainer}>
+          <Image
+            source={require('../../src/images/backgrounds/3d_background.png')}
+            style={styles.secondImage}
+          />
         </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Sizi tanıyalım</Text>
+        </View>
+        <LoginInputs onLogin={handleLogin} />
+      </View>
     </View>
   );
 }
@@ -78,31 +97,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
 
     },
-    loginButton: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 111.217,
-        paddingVertical: 10.3941,
-        marginTop: 20, // Add some margin to separate the button from the input fields
-        width: 346.12,
-        height: 41.79,
-        backgroundColor: '#67BBF9',
-        borderRadius: 3.11823,
-      },
-    loginButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
-    },
-    formContainer: {
-        width: '100%',
-        alignItems: 'center',
-      },
-      
-      
+
+
 });
-
-
-

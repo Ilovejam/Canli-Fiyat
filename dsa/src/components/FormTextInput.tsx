@@ -1,13 +1,15 @@
-import { StyleSheet, Text, TextInput, View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, Text, TextInput, View, TouchableWithoutFeedback, Keyboard, TextInputProps } from "react-native";
 import React from "react";
 
-interface TextInputProps {
-  placeholder: string;
+interface IFormTextInputProps {
   title: string;
-  inputType?: "text" | "phone" | "password";
+  placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  inputType?: 'text' | 'password' | 'phone' | 'phone-pad'; // Add 'phone-pad' here
 }
 
-export const FormTextInput = (props: TextInputProps) => {
+export const FormTextInput = (props: IFormTextInputProps) => {
   const keyboardType =
     props.inputType === "phone" ? "phone-pad" : "default";
 
@@ -23,6 +25,8 @@ export const FormTextInput = (props: TextInputProps) => {
             keyboardType={keyboardType}
             placeholder={props.placeholder}
             secureTextEntry={secureTextEntry}
+            value={props.value}
+            onChangeText={props.onChangeText}
           />
         </View>
       </View>

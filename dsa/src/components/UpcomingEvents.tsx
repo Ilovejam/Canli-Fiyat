@@ -5,19 +5,14 @@ const UpcomingEvents = () => {
   const [events, setEvents] = useState([
     {
       id: 1,
-      date: '22 Feb',
-      title: 'Lorem ipsum dolor sit amet',
+      date: '22 Şub',
+      title: 'Ticaret Hadleri - İthalat Açıklaması',
     },
     {
       id: 2,
-      date: '26 Feb',
-      title: 'Consectetur adipiscing elit',
-    },
-    {
-      id: 3,
-      date: '2 Mar',
-      title: 'Sed do eiusmod tempor',
-    },
+      date: '30 Şub',
+      title: 'Ticaret Hadleri - İthalat Açıklaması',
+    }
   ]);
 
   const renderEvents = () => {
@@ -25,7 +20,8 @@ const UpcomingEvents = () => {
       return (
         <TouchableOpacity style={styles.eventContainer} key={event.id}>
           <View style={styles.dateContainer}>
-            <Text style={styles.dateText}>{event.date}</Text>
+            <Text style={styles.dateMonth}>{event.date.substring(3)}</Text>
+            <Text style={styles.dateDay}>{event.date.substring(0, 2)}</Text>
           </View>
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>{event.title}</Text>
@@ -40,7 +36,6 @@ const UpcomingEvents = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
     padding: 10,
     marginBottom: 10,
   },
@@ -49,29 +44,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   dateContainer: {
-    backgroundColor: '#06bcee',
+    flexDirection: 'column',
+    backgroundColor: 'rgba(145, 255, 128, 0.76)',
     borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginRight: 10,
-  },
-  dateText: {
-    color: '#ffffff',
-    fontSize: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 60,
+    marginRight: 12, // add margin to the right
+  },  
+  dateMonth: {
+    color: 'black',
+    fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: -4,
+  },
+  dateDay: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   titleContainer: {
     flex: 1,
+    backgroundColor:'linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(69.43% 69.43% at 50% 50%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%)',
   },
   titleText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#222222',
     paddingVertical: 10,
-    paddingRight: 10,
+    paddingRight: 5,
   },
 });
 
