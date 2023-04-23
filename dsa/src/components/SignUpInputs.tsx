@@ -10,6 +10,7 @@ export const SignUpInputs = (props: ISignUpInputsProps) => {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleNameChange = (text: string) => {
     setName(text);
@@ -25,6 +26,9 @@ export const SignUpInputs = (props: ISignUpInputsProps) => {
 
   const handleSignUp = () => {
     props.onSignUp(name, phoneNumber, password);
+  };
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
   };
 
   return (
@@ -54,6 +58,15 @@ export const SignUpInputs = (props: ISignUpInputsProps) => {
         onChangeText={handlePasswordChange}
         secureTextEntry={true}
       />
+      <View style={styles.checkboxContainer}>
+        <TouchableOpacity
+          style={styles.checkboxCircle}
+          onPress={handleCheckboxChange}
+        >
+          {isChecked && <View style={styles.radioCircle} />}
+        </TouchableOpacity>
+        <Text style={styles.radioText}>Aydınlatma metnini onaylıyorum</Text>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Devam Et</Text>

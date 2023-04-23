@@ -19,7 +19,7 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
       const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}/market_chart`, {
         params: {
           vs_currency: 'usd',
-          days: 1,
+          days: 0.1,
         },
       });
       const fetchedData = response.data.prices.map((data: any) => data[1]);
@@ -42,13 +42,14 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
       <View style={styles.chartContainer}>
       <LineChart
         data={{ datasets: [{ data: chartData }] }}
-        width={150}
-        height={100}
+        width={120}
+        height={60}
         chartConfig={{
           backgroundGradientFromOpacity: 0,
           backgroundGradientToOpacity: 0,
           decimalPlaces: 0,
-          color: () => 'green',
+          //make color transparent greenn and blury
+          color : () => '#6DF0C1',
           style: {
             borderRadius: 16,
           },
@@ -76,14 +77,16 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    //make background color transparent and blury
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 10,
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     width: '90%',
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: 5,
+    height: 77,
   },
   iconContainer: {
     marginRight: 16,

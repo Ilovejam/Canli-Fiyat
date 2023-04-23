@@ -13,7 +13,7 @@ export default function LoginScreen(props) {
   const handleLogin = (username: string, password: string, phoneNumber: string) => {
     console.log('Attempting to log in with:', { username, password, phoneNumber });
 
-    fetch('http://192.168.1.56:3000/login', {
+    fetch('http://0.0.0.0:3000/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -81,22 +81,25 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         marginBottom: 10,
-    },
-    secondImage: {
-        width: 322,
-        height: 281,
+        width: 250,
+        height: 200,
+        alignSelf: 'center', // Center the image container horizontally
+      },
+      secondImage: {
+        width: '100%', // Set the image width to 100% of the container
+        height: '100%', // Set the image height to 100% of the container
         resizeMode: 'contain',
-    },
-    titleContainer: {
-        marginTop: 10,
-    },
-    title: {
+      },
+      titleContainer: {
+        marginTop: 20, // Increase the top margin to create some space between the image and title
+      },
+      title: {
         fontSize: 24,
         fontWeight: 'bold',
         color: '#FFFFFF',
         fontFamily: 'Poppins-Regular',
-
-    },
+        textAlign: 'center', // Center the title horizontally
+      },
 
 
 });

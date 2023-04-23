@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Pressable } from 'react-native';
 import { View, Text, Image, FlatList, Box } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 
 const NewsSlider = () => {
   const [news, setNews] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchNews();
@@ -23,34 +25,44 @@ const NewsSlider = () => {
     }
   };
 
+  const handleNewsPress = () => {
+    navigation.navigate('NewsPrivate');
+  };
+
   const renderItem = ({ item }) => (
-    <Box p={0} borderRadius={8} mx={1} width={screenWidth - 50}>
-      <View style={{ width: '100%', height: screenWidth * 0.6 }}>
-        <Image
-          source={{ uri: item.urlToImage }}
-          alt={item.title}
-          resizeMode="cover"
-          borderRadius={8}
-          style={{ width: '100%', height: '100%' }}
-        />
-        <Box
-          position="absolute"
-          bottom={0}
-          left={0}
-          right={0}
-          px={3}
-          py={2}
-          bg="rgba(0,0,0.9,0.5)"
-          borderBottomLeftRadius={8}
-          borderBottomRightRadius={8}
-        >
-          <Text color="white" fontWeight="bold" fontSize="lg">
-            {item.title.length > 68 ? item.title.slice(0, 65) + '...' : item.title}
-          </Text>
-        </Box>
-      </View>
-    </Box>
+    <Pressable onPress={handleNewsPress}>
+      <Box p={0} borderRadius={8} mx={1} width={screenWidth - 50}>
+        <View style={{ width: '100%', height: screenWidth * 0.6 }}>
+          <Image
+            source={{ uri: item.urlToImage }}
+            alt={item.title}
+            resizeMode="cover"
+            borderRadius={8}
+            style={{ width: '100%', height: '100%' }}
+          />
+          <Box
+            position="absolute"
+            bottom={0}
+            left={0}
+            right={0}
+            px={3}
+            py={2}
+            bg="rgba(0,0,0,0.8)"
+            borderBottomLeftRadius={8}
+            borderBottomRightRadius={8}
+          >
+            <Text color="white" fontWeight="bold" fontSize="lg">
+              {item.title.length > 68 ? item.title.slice(0, 65) + '...' : item.title}
+            </Text>
+            <Text color="blue.400" fontWeight="bold" fontSize="sm" mt={1}>
+              {' ' + item.source.name + ' ' + Math.floor(Math.random() * 6) + 0 + ' dk'} 
+            </Text>
+          </Box>
+        </View>
+      </Box>
+    </Pressable>
   );
+
 
   return (
     <FlatList

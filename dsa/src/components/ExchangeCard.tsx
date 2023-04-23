@@ -28,18 +28,18 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) =
         <View style={styles.chartContainer}>
           <LineChart
             data={{ datasets: [{ data: chartData }] }}
-            width={120}
+            width={130}
             height={60}
             chartConfig={{
               backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 0,
+              backgroundGradientToOpacity: 0,              
               decimalPlaces: 0,
-              color: () => 'green',
+              color: () => '#6DF0C1',
               style: {
                 borderRadius: 100,
               },
               propsForDots: {
-                r: '10',
+                r: '1',
               },
               propsForBackgroundLines: {
                 stroke: 'transparent',
@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
   card: {
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#ffffff',
+    //make background color transparent and blury
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     borderColor: '#cccccc',
     borderWidth: 1,
     marginRight: 10,

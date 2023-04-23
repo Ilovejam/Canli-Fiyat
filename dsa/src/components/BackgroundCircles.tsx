@@ -1,14 +1,20 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ImageBackground } from 'react-native';
 
 interface BackgroundCirclesProps {}
 
 const BackgroundCircles = ({}: BackgroundCirclesProps) => {
   return (
     <View style={styles.container}>
-      <View style={[styles.circle, styles.circle1]} />
-      <View style={[styles.circle, styles.circle2]} />
-      <View style={[styles.circle, styles.circle3]} />
+      <ImageBackground source={require('../images/circle1.png')} style={[styles.circle, styles.circle1]}>
+        {/* Add any child components here, if needed */}
+      </ImageBackground>
+      <ImageBackground source={require('../images/circle2.png')} style={[styles.circle, styles.circle2]}>
+        {/* Add any child components here, if needed */}
+      </ImageBackground>
+      <ImageBackground source={require('../images/circle3.png')} style={[styles.circle, styles.circle3]}>
+        {/* Add any child components here, if needed */}
+      </ImageBackground>    
     </View>
   );
 };
@@ -28,26 +34,30 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   circle1: {
-    width: 43,
-    height: 43,
-    left: 251,
-    top: 436,
-    backgroundColor: 'rgba(114, 4, 123, 1)',
+    position: 'absolute',
+    width: 47,
+    height: 47,
+    left: 180,
+    top: 320,
+    borderRadius: 68,
+    overflow: 'hidden',
   },
   circle2: {
     width: 136,
     height: 136,
     left: -71,
     top: 446,
-    backgroundColor: 'rgba(23, 179, 169, 1)',
+    backgroundColor: 'red',
+    overflow: 'hidden',
   },
   circle3: {
     width: 144,
     height: 144,
     left: 300,
     top: 540,
-    backgroundColor: 'rgba(231, 206, 74, 1)',
+    backgroundColor: 'red',
     transform: [{ scaleX: -1 }],
+    overflow: 'hidden',
   },
 });
 

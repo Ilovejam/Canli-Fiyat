@@ -1,30 +1,43 @@
-import React from 'react';
-import { StyleSheet, View, Image, Dimensions, Text } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Image, Dimensions, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import logo from '../images/logo/logo-dark.png';
+import HamburgerMenu from '../components/HamburgerMenu';
 
 const Header = ({ title }) => {
+  const navigation = useNavigation();
+  const [showMenu, setShowMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
-    <View style={styles.header}>
-      <Image
-        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/2048px-Hamburger_icon.svg.png' }}
-        style={styles.leftIcon}
-      />
-      <View style={styles.titleContainer}>
-        <Image
-          source={logo}
-          style={styles.centerIcon}
-        />
-        <Text style={styles.title}>{title}</Text>
+    <>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={toggleMenu}>
+          <Image
+            source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/2048px-Hamburger_icon.svg.png' }}
+            style={styles.leftIcon}
+          />
+        </TouchableOpacity>
+        <View style={styles.titleContainer}>
+          <Image
+            source={logo}
+            style={styles.centerIcon}
+          />
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={styles.rightIconContainer}>
+          <Image
+            source={{ uri: 'https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png' }}
+            style={styles.rightIcon}
+          />
+        </View>
       </View>
-      <View style={styles.rightIconContainer}>
-        <Image
-          source={{ uri: 'https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png' }}
-          style={styles.rightIcon}
-        />
-        
-      </View>
-    </View>
+      {showMenu && <HamburgerMenu onClose={() => setShowMenu(false)} />}
+    </>
   );
 };
 
