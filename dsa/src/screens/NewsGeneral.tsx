@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import NewsSlider from '../components/NewsSlider';
-import { Box, VStack } from 'native-base';
+import { Box, VStack, HStack, Button } from 'native-base';
 import UpcomingEvents from '../components/UpcomingEvents';
 import NewsCard from '../components/NewsCard';
 import BackgroundCircles from '../components/BackgroundCircles';
+import { useNavigation } from '@react-navigation/native';
 
 export default function NewsGeneral() {
 
-  const [articles, setArticles] = React.useState([]);
+  const [articles, setArticles] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
@@ -18,11 +21,30 @@ export default function NewsGeneral() {
       .catch(error => console.error(error));
   }, []);
 
+  const handleCategoryPress = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredArticles = selectedCategory ? articles.filter(article => article.category === selectedCategory) : articles;
+
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundCircles />
       <Header title="Haberler" />
       <ScrollView>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <HStack space={2} mt={2} mb={4} mx={4}>
+            <Button onPress={() => handleCategoryPress('Ekonomi')}>Ekonomi</Button>
+            <Button onPress={() => handleCategoryPress('Piyasa')}>Piyasa</Button>
+            <Button onPress={() => handleCategoryPress('Şirket')}>Şirket</Button>
+            <Button onPress={() => handleCategoryPress('Döviz')}>Döviz</Button>
+            <Button onPress={() => handleCategoryPress('KAP')}>KAP</Button>
+            <Button onPress={() => handleCategoryPress('Kripto')}>Kripto</Button>
+            <Button onPress={() => handleCategoryPress('Kıymetli Metal')}>Kıymetli Metal</Button>
+            <Button onPress={() => handleCategoryPress('Ürün')}>Ürün</Button>
+          </HStack>
+        </ScrollView>
+
         <Box>
           <NewsSlider />
         </Box>
@@ -34,19 +56,21 @@ export default function NewsGeneral() {
           <Text style={styles.sectionTitle}>Haberler</Text>
           {articles.map(article => (
             <NewsCard
-              key={article.title}
-              image={article.urlToImage}
-              source={article.source.name}
-              title={article.title}
-              description={article.description}
+            key={article.title}
+            image={article.urlToImage}
+            source={article.source.name}
+            title={article.title}
+            description={article.description}
               onPress={() => console.log('NewsCard pressed')}
-            />
+          />
+          
           ))}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

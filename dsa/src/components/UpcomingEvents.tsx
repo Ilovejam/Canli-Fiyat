@@ -42,21 +42,21 @@ const styles = StyleSheet.create({
   eventContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'transparent', // set to transparent
     borderRadius: 5,
     marginBottom: 5,
   },
   dateContainer: {
     flexDirection: 'column',
-    backgroundColor: 'rgba(145, 255, 128, 0.76)',
+    backgroundColor: 'rgba(145, 255, 100, 0.1)',
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 6,
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: 60,
-    marginRight: 12, // add margin to the right
-  },  
+    marginRight: 12,
+  },
   dateMonth: {
     color: 'black',
     fontSize: 20,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
-    backgroundColor:'linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(69.43% 69.43% at 50% 50%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%)',
+    // remove background color
   },
   titleText: {
     fontSize: 16,
@@ -82,5 +82,6 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
 });
+
 
 export default UpcomingEvents;

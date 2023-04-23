@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 20,
+    paddingVertical: 5,
+    backgroundColor: 'transparent',
   },
 });
 

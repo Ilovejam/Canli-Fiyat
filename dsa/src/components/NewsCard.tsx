@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 type NewsCardProps = {
   onPress: () => void;
@@ -10,6 +11,8 @@ const NewsCard: React.FC<NewsCardProps> = ({ onPress }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     // Fetch a list of articles from the News API
@@ -30,14 +33,14 @@ const NewsCard: React.FC<NewsCardProps> = ({ onPress }) => {
   }, []);
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: image }} style={styles.image} />
-      </View>
+    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('NewsPrivate')}>
+      
       <View style={styles.textContainer}>
         <Text style={styles.source}>{source}</Text>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: image }} style={styles.image} />
       </View>
     </TouchableOpacity>
   );

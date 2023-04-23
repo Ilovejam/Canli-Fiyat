@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     position: 'relative',
+    //make background color blury and transparent
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
   },
   cardLeft: {
     backgroundImage: 'linear-gradient(180deg, rgba(89,205,144,1) 0%, rgba(255,255,255,0) 100%)',
