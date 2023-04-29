@@ -1,47 +1,54 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView, StyleSheet, View, Text, ScrollView} from 'react-native';
 import Header from '../components/Header';
 import NewsSlider from '../components/NewsSlider';
-import { Box, VStack, HStack, Button } from 'native-base';
+import {Box, VStack, HStack, Button} from 'native-base';
 import UpcomingEvents from '../components/UpcomingEvents';
 import NewsCard from '../components/NewsCard';
 import BackgroundCircles from '../components/BackgroundCircles';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import NewsSliderCategories from '../components/NewsSliderCategory';
 
 export default function NewsGeneral() {
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigation = useNavigation();
-  const [activeCategory, setActiveCategory] = useState("Overview");
+  const [activeCategory, setActiveCategory] = useState('Overview');
 
   React.useEffect(() => {
-    fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
+    fetch(
+      'https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
+    )
       .then(response => response.json())
       .then(data => setArticles(data.articles))
       .catch(error => console.error(error));
   }, []);
 
-  const handleCategoryPress = (category) => {
+  const handleCategoryPress = category => {
     setSelectedCategory(category);
   };
 
-  const filteredArticles = selectedCategory ? articles.filter(article => {
-    if (selectedCategory === "KAP") {
-      return article.category === "Sport";
-    } else if (selectedCategory === "Kripto") {
-      return article.category === "Crypto";
-    } else if (selectedCategory === "Ekonomi") {
-      setArticles(articles.sort(() => Math.random() - 0.5));
-    }
-    return true;
-  }) : articles;
+  const filteredArticles = selectedCategory
+    ? articles.filter(article => {
+        if (selectedCategory === 'KAP') {
+          return article.category === 'Sport';
+        } else if (selectedCategory === 'Kripto') {
+          return article.category === 'Crypto';
+        } else if (selectedCategory === 'Ekonomi') {
+          setArticles(articles.sort(() => Math.random() - 0.5));
+        }
+        return true;
+      })
+    : articles;
 
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundCircles />
       <Header title="Haberler" />
-      <NewsSliderCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      <NewsSliderCategories
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+      />
 
       <ScrollView>
         <Box>
@@ -69,7 +76,6 @@ export default function NewsGeneral() {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -81,6 +87,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20,
     marginBottom: 10,
+    fontFamily: 'Worksans-Black',
   },
   eventsContainer: {
     width: '100%',
