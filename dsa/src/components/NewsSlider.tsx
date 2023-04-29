@@ -25,12 +25,8 @@ const NewsSlider = () => {
     }
   };
 
-  const handleNewsPress = () => {
-    navigation.navigate('NewsPrivate');
-  };
 
   const renderItem = ({ item }) => (
-    <Pressable onPress={handleNewsPress}>
       <Box p={0} borderRadius={8} mx={1} width={screenWidth - 50}>
         <View style={{ width: '100%', height: screenWidth * 0.6 }}>
           <Image
@@ -55,14 +51,12 @@ const NewsSlider = () => {
               {item.title.length > 68 ? item.title.slice(0, 65) + '...' : item.title}
             </Text>
             <Text color="blue.400" fontWeight="bold" fontSize="sm" mt={1}>
-              {' ' + item.source.name + ' ' + Math.floor(Math.random() * 6) + 0 + ' dk'} 
+              {' ' + item.source.name + ' ' + Math.floor(Math.random() * 6) + 0 + ' dk'}
             </Text>
           </Box>
         </View>
       </Box>
-    </Pressable>
   );
-
 
   return (
     <FlatList

@@ -7,12 +7,13 @@ import UpcomingEvents from '../components/UpcomingEvents';
 import NewsCard from '../components/NewsCard';
 import BackgroundCircles from '../components/BackgroundCircles';
 import { useNavigation } from '@react-navigation/native';
+import NewsSliderCategories from '../components/NewsSliderCategory';
 
 export default function NewsGeneral() {
-
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigation = useNavigation();
+  const [activeCategory, setActiveCategory] = useState("Overview");
 
   React.useEffect(() => {
     fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
@@ -25,45 +26,42 @@ export default function NewsGeneral() {
     setSelectedCategory(category);
   };
 
-  const filteredArticles = selectedCategory ? articles.filter(article => article.category === selectedCategory) : articles;
+  const filteredArticles = selectedCategory ? articles.filter(article => {
+    if (selectedCategory === "KAP") {
+      return article.category === "Sport";
+    } else if (selectedCategory === "Kripto") {
+      return article.category === "Crypto";
+    } else if (selectedCategory === "Ekonomi") {
+      setArticles(articles.sort(() => Math.random() - 0.5));
+    }
+    return true;
+  }) : articles;
 
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundCircles />
       <Header title="Haberler" />
-      <ScrollView>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <HStack space={2} mt={2} mb={4} mx={4}>
-            <Button onPress={() => handleCategoryPress('Ekonomi')}>Ekonomi</Button>
-            <Button onPress={() => handleCategoryPress('Piyasa')}>Piyasa</Button>
-            <Button onPress={() => handleCategoryPress('Şirket')}>Şirket</Button>
-            <Button onPress={() => handleCategoryPress('Döviz')}>Döviz</Button>
-            <Button onPress={() => handleCategoryPress('KAP')}>KAP</Button>
-            <Button onPress={() => handleCategoryPress('Kripto')}>Kripto</Button>
-            <Button onPress={() => handleCategoryPress('Kıymetli Metal')}>Kıymetli Metal</Button>
-            <Button onPress={() => handleCategoryPress('Ürün')}>Ürün</Button>
-          </HStack>
-        </ScrollView>
+      <NewsSliderCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
 
+      <ScrollView>
         <Box>
           <NewsSlider />
         </Box>
-        <View style={styles.newsContainer}>
+        <View style={styles.upcomingEventsContiner}>
           <Text style={styles.sectionTitle}>Yaklaşan Etkinlikler</Text>
           <UpcomingEvents style={styles.eventsContainer} />
         </View>
         <View style={styles.newsContainer}>
           <Text style={styles.sectionTitle}>Haberler</Text>
-          {articles.map(article => (
+          {filteredArticles.map(article => (
             <NewsCard
-            key={article.title}
-            image={article.urlToImage}
-            source={article.source.name}
-            title={article.title}
-            description={article.description}
-              onPress={() => console.log('NewsCard pressed')}
-          />
-          
+              key={article.title}
+              image={article.urlToImage}
+              source={article.source.name}
+              title={article.title}
+              description={article.description}
+              selectedCategory={selectedCategory}
+            />
           ))}
         </View>
       </ScrollView>
@@ -102,15 +100,30 @@ const styles = StyleSheet.create({
   newsContainer: {
     borderRadius: 5,
     marginHorizontal: 1,
-    marginVertical: 16,
+    marginVertical: -50,
     padding: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 0,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 5,
+    width: '100%',
+  },
+  upcomingEventsContiner: {
+    borderRadius: 5,
+    marginHorizontal: 1,
+    marginVertical: 5,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0,
+    shadowRadius: 0,
     elevation: 5,
     width: '100%',
   },

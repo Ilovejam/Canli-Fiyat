@@ -8,7 +8,7 @@ const ExchangeCardSlider = () => {
   useEffect(() => {
     const fetchExchangeData = async () => {
       const API_KEY = 'dfbc7b4db95b7aa6dde777a7';
-      const response = await fetch(`https://api.exchangerate-api.com/v4/latest/USD`);
+      const response = await fetch(`https://api.exchangerate-api.com/v4/latest/TRY`);
       const json = await response.json();
       const exchangeData = Object.entries(json.rates).map(([name, value]) => ({ name, percentageChange: value }));
       setData(exchangeData);

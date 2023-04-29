@@ -9,7 +9,7 @@ const PortfolioCard = () => {
       marginBottom={5}
       padding={4}
       width="90%"
-      minHeight={132}
+      minHeight={82}
     >
       <Text color="#fff" fontSize={11} fontWeight="bold" marginBottom={2}>
         Ana Portfolio

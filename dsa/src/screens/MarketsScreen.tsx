@@ -1,27 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
+import { Box, VStack, HStack, Button } from 'native-base';
 
 import PortfolioCard from "../components/PortfolioCard";
 import ExchangeCardsSlider from "../components/ExchangeCardSlider";
-import CurrencyCard from "../components/CurrencyCard";
 import CurrencyCardRenderer from "../components/CardRenderer";
 import Header from "../components/Header";
 import BackgroundCircles from "../components/BackgroundCircles";
+import MarketCategories from "../components/MarketCategories";
+import WinLoseCategory from "../components/WinLoseCategory";
 
 export default function MarketsScreen() {
+  const [activeCategory, setActiveCategory] = useState("Overview");
+
   return (
     <SafeAreaView style={styles.container}>
-      <BackgroundCircles circleColor1="#F3C2C2" circleColor2="#F3D0C2" circleColor3="#F3E7C2" />
-      <Header title="Piyasalar" />
-        <View style={styles.portfolioContainer}>
-          <PortfolioCard />
-        </View>
-        <View style={styles.exchangeContainer}>
-          <ExchangeCardsSlider />
-        </View>
-        <View style={styles.currencyCardRenderer}>
-          <CurrencyCardRenderer />
-        </View>
+      <BackgroundCircles />
+      <Header title="Piyasalar" style={styles.header} />
+      <MarketCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+
+      <View style={styles.portfolioContainer}>
+        <PortfolioCard />
+      </View>
+      <View style={styles.exchangeContainer}>
+        <ExchangeCardsSlider />
+      </View>
+      <WinLoseCategory activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      <View style={styles.currencyCardRenderer}>
+        <CurrencyCardRenderer activeCategory={activeCategory} />
+      </View>
     </SafeAreaView>
   );
 }
@@ -32,11 +39,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9F9F9",
     width: "100%",
   },
+
   portfolioContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 0,
+    marginTop: -230,
   },
   exchangeContainer: {
     flex: 1,
@@ -52,5 +60,4 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 10,
   },
-  
 });

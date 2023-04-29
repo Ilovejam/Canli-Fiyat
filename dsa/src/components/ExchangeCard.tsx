@@ -12,7 +12,6 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) =
   const [chartData, setChartData] = useState<number[]>([]);
 
   useEffect(() => {
-    // Generate random chart data
     const fetchedData = [];
     for (let i = 0; i < 30; i++) {
       fetchedData.push(Math.floor(Math.random() * 1000));
@@ -28,8 +27,8 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) =
         <View style={styles.chartContainer}>
           <LineChart
             data={{ datasets: [{ data: chartData }] }}
-            width={130}
-            height={60}
+            width={140}
+            height={40}
             chartConfig={{
               backgroundGradientFromOpacity: 0,
               backgroundGradientToOpacity: 0,              
@@ -80,12 +79,12 @@ const styles = StyleSheet.create({
     
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 40,
+    marginRight: 60,
+    marginLeft: 10
   },
   name: {
     width: 80,
     fontSize: 10,
-    fontWeight: 'bold',
     textAlign: 'left',
 
   },
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     width: 80,
     textAlign: 'left',
-    color: '#00b300',
+    color: 'black',
     fontWeight: 'bold',
   },
 });

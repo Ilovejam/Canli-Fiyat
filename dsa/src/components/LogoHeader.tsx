@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     // container at the top of the screen
     position: 'absolute',
     top: '5%',
-
+    backgroundColor: 'transparent',
 
   },
   logo: {
