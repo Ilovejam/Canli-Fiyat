@@ -155,12 +155,12 @@ exports.login = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({ telephone }).select("+password");
 
-  if (!user.isVerified) {
-    return next(new AppError("Your telephone is not verified", 401));
-  }
-
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect telephone or password", 401));
+  }
+
+  if (!user.isVerified) {
+    return next(new AppError("Your telephone is not verified", 401));
   }
 
   createSendToken(user, 200, req, res);
