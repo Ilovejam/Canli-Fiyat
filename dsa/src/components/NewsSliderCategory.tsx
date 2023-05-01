@@ -11,21 +11,25 @@ const NewsSliderCategories = ({ activeCategory, setActiveCategory }: NewsSliderC
     if (category === activeCategory) {
       return {
         fontWeight: "bold",
+        borderBottomColor: "#1A202C",
         color: "#000000",
+        transitionDuration: "100ms",
+        borderBottomWidth: 2,
+        borderColor: "green",
       };
     } else {
       return {
+        borderBottomColor: "#D1D5DB",
         color: "#6A6A6A",
+        transitionDuration: "100ms",
+        borderBottomWidth: 0,
       };
     }
   };
 
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<number>(0);
-
-  const handleCategoryPress = (category: string, index: number) => {
+  const handleCategoryPress = (category: string) => {
     console.log(`Selected category: ${category}`);
     setActiveCategory(category);
-    setSelectedCategoryIndex(index);
   };
 
   return (
@@ -33,14 +37,14 @@ const NewsSliderCategories = ({ activeCategory, setActiveCategory }: NewsSliderC
       <View style={styles.catalogContainer}>
         <View style={styles.categoryContainer}>
           {["Ekonomi", "Şirket", "Döviz", "KAP", "Kripto", "Ürün"].map((category, index) => (
-            <TouchableWithoutFeedback key={category} onPress={() => { handleCategoryPress(category, index); }}>
-              <View style={[styles.catalogItemContainer, index === 0 && styles.firstItemContainer, index === selectedCategoryIndex && styles.selectedItemContainer]}>
+            <TouchableWithoutFeedback key={category} onPress={() => { handleCategoryPress(category); }}>
+              <View style={[styles.catalogItemContainer, index === 0 && styles.firstItemContainer]}>
                 <Text style={[styles.catalogItem, getCategoryStyle(category)]}>{category}</Text>
               </View>
             </TouchableWithoutFeedback>
           ))}
         </View>
-        <View style={styles.redLine} />
+        <View style={styles.catalogLine} />
       </View>
     </ScrollView>
   );
@@ -67,16 +71,12 @@ const styles = StyleSheet.create({
   firstItemContainer: {
     marginLeft: 20,
   },
-  selectedItemContainer: {
-    borderBottomColor: "#67BBF9",
-    borderBottomWidth: 2,
-  },
   catalogItem: {
     fontSize: 16,
     fontWeight: "600",
     color: "#6A6A6A",
   },
-  redLine: {
+  catalogLine: {
     height: 2,
     backgroundColor: "#DEE4F1",
     position: "absolute",

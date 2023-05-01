@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     marginTop: 20,
+    marginBottom: -100,
     alignItems: 'center',
   },
   name: {

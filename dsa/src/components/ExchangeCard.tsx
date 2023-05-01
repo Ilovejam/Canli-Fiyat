@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Box } from 'native-base';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 type ExchangeCardProps = {
@@ -20,7 +19,10 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) =
   }, []);
 
   return (
-    <Box style={styles.card}>
+    <ImageBackground
+      source={require('../images/exchangebg.png')}
+      style={styles.card}
+    >
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.percentageChange}>+{percentageChange}%</Text>
       {chartData && (
@@ -51,7 +53,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) =
           />
         </View>
       )}
-    </Box>
+    </ImageBackground>
   );
 };
 
@@ -59,24 +61,13 @@ const styles = StyleSheet.create({
   card: {
     padding: 10,
     borderRadius: 10,
-    //make background color transparent and blury
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    borderColor: '#cccccc',
-    borderWidth: 1,
-    marginRight: 10,
     width: 100,
     height: 100,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 10, // add space between cards
   },
-  textContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    left: 10,
-  },
-  chartContainer: {
-    
+  chartContainer: {    
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 60,
@@ -86,7 +77,6 @@ const styles = StyleSheet.create({
     width: 80,
     fontSize: 10,
     textAlign: 'left',
-
   },
   percentageChange: {
     fontSize: 13,

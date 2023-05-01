@@ -1,73 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-interface NewsCardProps {
-  category: string;
+interface Article {
+  title: string;
+  description: string;
+  source: { name: string };
+  urlToImage: string;
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ category }) => {
-  const [source, setSource] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState('');
-  const [readingTime, setReadingTime] = useState('');
+interface NewsCardProps {
+  category: string;
+  articles: Article[];
+}
 
+const NewsCard: React.FC<NewsCardProps> = ({ category, articles }) => {
   const navigation = useNavigation();
 
-  useEffect(() => {
-    // Fetch a list of articles from the News API
-    const apiUrl = getCategoryApiUrl(category);
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        // Shuffle the list of articles
-        const shuffledArticles = shuffle(data.articles);
-
-        // Choose a random article from the shuffled list
-        const randomIndex = Math.floor(Math.random() * shuffledArticles.length);
-        const article = shuffledArticles[randomIndex];
-
-        // Set the source, title, description, and image states to the relevant data from the article
-        setSource(article.source.name);
-        setTitle(article.title);
-        setDescription(article.description);
-        setImage(article.urlToImage);
-        setReadingTime(Math.floor(Math.random() * 6) + 1); // Generates a random number between 1 and 6
-      })
-      .catch(error => console.error(error));
-  }, [category]);
-
-  const getCategoryApiUrl = (category: string) => {
-    switch (category) {
-      default:
-        return 'https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6';
-    }
+  const handlePress = () => {
+    navigation.navigate("NewsPrivate");
   };
-
-  const shuffle = (array: any[]) => {
-    let currentIndex = array.length, randomIndex;
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-    return array;
-  };
-
+  
   return (
-    <TouchableOpacity style={styles.card}>
-      <View style={styles.textContainer}>
-        <Text style={styles.source}>{source} {readingTime} dk önce</Text>
-        <Text style={styles.title}>{title.length > 50 ? title.substring(0, 50) + "..." : title}</Text>
-      </View>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: image }} style={styles.image} />
-      </View>
-    </TouchableOpacity>
+    <>
+      {articles.map(article => (
+        <TouchableOpacity key={article.title} onPress={handlePress} style={styles.card}>
+          <View style={styles.textContainer}>
+            <Text style={styles.source}>{article.source.name}</Text>
+            <Text style={styles.title}>{article.title.length > 50 ? article.title.substring(0, 50) + "..." : article.title}</Text>
+            <Text style={styles.description}>{article.description}</Text>
+          </View>
+          <View style={styles.imageContainer}>
+            <Image source={{ uri: article.urlToImage }} style={styles.image} />
+          </View>
+        </TouchableOpacity>
+      ))}
+    </>
   );
 };
+
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',

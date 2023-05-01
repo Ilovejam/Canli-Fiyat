@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import NewsSlider from '../components/NewsSlider';
-import { Box, VStack, HStack, Button } from 'native-base';
+import { Box } from 'native-base';
 import UpcomingEvents from '../components/UpcomingEvents';
 import NewsCard from '../components/NewsCard';
 import BackgroundCircles from '../components/BackgroundCircles';
@@ -16,12 +16,12 @@ export default function NewsGeneral() {
   const [activeCategory, setActiveCategory] = useState("Overview");
 
   React.useEffect(() => {
-    fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
+    fetch('https://newsapi.org/v2/top-headlines?country=tr&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
       .then(response => response.json())
       .then(data => setArticles(data.articles))
-      .catch(error => console.error(error));
+      .catch(error => console.error('Error fetching articles: ', error));
   }, []);
-
+  
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
   };
@@ -41,27 +41,30 @@ export default function NewsGeneral() {
     <SafeAreaView style={styles.container}>
       <BackgroundCircles />
       <Header title="Haberler" />
-      <NewsSliderCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      <NewsSliderCategories
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+      />
 
       <ScrollView>
         <Box>
-          <NewsSlider />
+          <NewsSlider category={selectedCategory || 'general'} />
         </Box>
         <View style={styles.upcomingEventsContiner}>
           <Text style={styles.sectionTitle}>Yaklaşan Etkinlikler</Text>
           <UpcomingEvents style={styles.eventsContainer} />
-        </View>
+        </View>  
         <View style={styles.newsContainer}>
           <Text style={styles.sectionTitle}>Haberler</Text>
           {filteredArticles.map(article => (
-            <NewsCard
-              key={article.title}
-              image={article.urlToImage}
-              source={article.source.name}
-              title={article.title}
-              description={article.description}
+              <NewsCard
+                key={article.title}
+                image={article.urlToImage}
+                source={article.source.name}
+                title={article.title}
+                description={article.description}
               selectedCategory={selectedCategory}
-            />
+              />
           ))}
         </View>
       </ScrollView>

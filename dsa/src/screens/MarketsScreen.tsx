@@ -9,6 +9,7 @@ import Header from "../components/Header";
 import BackgroundCircles from "../components/BackgroundCircles";
 import MarketCategories from "../components/MarketCategories";
 import WinLoseCategory from "../components/WinLoseCategory";
+import MarketPrivate from "./MarketPrivate";
 
 export default function MarketsScreen() {
   const [activeCategory, setActiveCategory] = useState("Overview");
@@ -17,7 +18,7 @@ export default function MarketsScreen() {
     <SafeAreaView style={styles.container}>
       <BackgroundCircles />
       <Header title="Piyasalar" style={styles.header} />
-      <MarketCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      <MarketCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} contentContainerStyle={{ minWidth: "100%" }}/>
 
       <View style={styles.portfolioContainer}>
         <PortfolioCard />

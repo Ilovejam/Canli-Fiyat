@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Dimensions } from 'react-native';
 import { View, Text, Image, FlatList, Box } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
+import NewsPrivate from '../screens/NewsPrivate';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const screenWidth = Dimensions.get('window').width;
 
 const NewsSlider = () => {
   const [news, setNews] = useState([]);
-  const navigation = useNavigation();
 
   useEffect(() => {
     fetchNews();
@@ -25,8 +26,15 @@ const NewsSlider = () => {
     }
   };
 
+  const navigation = useNavigation();
+
+  const handlePress = (article) => {
+    navigation.navigate("NewsPrivate", { article });
+  };
 
   const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={handlePress}>
+
       <Box p={0} borderRadius={8} mx={1} width={screenWidth - 50}>
         <View style={{ width: '100%', height: screenWidth * 0.6 }}>
           <Image
@@ -56,17 +64,22 @@ const NewsSlider = () => {
           </Box>
         </View>
       </Box>
+    </TouchableOpacity>
   );
+  
 
   return (
-    <FlatList
-      data={news}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
-    />
+    <TouchableOpacity onPress={() => console.log("Card")}>
+      <FlatList
+        data={news}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
+        key={key}
+      />
+    </TouchableOpacity>
   );
 };
 
