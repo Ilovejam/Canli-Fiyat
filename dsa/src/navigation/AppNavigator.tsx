@@ -1,12 +1,11 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import NewsGeneral from '../screens/NewsGeneral';
 import { createStackNavigator } from '@react-navigation/stack';
 import MarketsScreen from '../screens/MarketsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import { Image } from 'react-native';
-import MarketPrivate from '../screens/MarketPrivate';
-import NewsPrivate from '../screens/NewsPrivate';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faChartLine, faGlobe, faUser} from '@fortawesome/free-solid-svg-icons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -41,38 +40,26 @@ const MarketsStackNavigator = () => {
 const AppNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={({route}) => ({
         headerShown: false,
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({color, size}) => {
           let iconName;
-          
-          if (route.name === 'Haberler') {
-            iconName = 'https://www.vhv.rs/dpng/d/244-2448537_spartan-png-world-wide-web-icon-png-transparent.png';
-          } else if (route.name === 'Piyasalar') {
-            iconName = 'https://www.vhv.rs/dpng/d/539-5395361_transparent-graph-icon-png-business-graph-icon-png.png';
-          } else if (route.name === 'Profile') {
-            iconName = 'https://www.vhv.rs/dpng/d/532-5323185_person-icon-clipart-hd-png-download.png';
-          }
 
-          return <Image source={{ uri: iconName }} style={{ width: size, height: size }} />;
+          if (route.name === 'Haberler') {
+            return <FontAwesomeIcon icon={faGlobe} />;
+          } else if (route.name === 'Piyasalar') {
+            return <FontAwesomeIcon icon={faChartLine} />;
+          } else if (route.name === 'Profile') {
+            return <FontAwesomeIcon icon={faUser} />;
+          }
         },
       })}
       tabBarOptions={{
         backgroundColor: 'transparent',
-      }}
-    >
-      <Tab.Screen
-        name="Haberler"
-        component={NewsStackNavigator}
-      />
-      <Tab.Screen
-        name="Piyasalar"
-        component={MarketsStackNavigator}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-      />
+      }}>
+      <Tab.Screen name="Haberler" component={NewsGeneral} />
+      <Tab.Screen name="Piyasalar" component={MarketsScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };
