@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import axios from 'axios';
 import { LineChart } from 'react-native-chart-kit';
+import { useNavigation } from '@react-navigation/native';
 
 interface CurrencyCardProps {
   icon: string;
@@ -27,65 +28,72 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
     };
     fetchData();
   }, [name]);
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('MarketPrivate', { name });
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.iconContainer}>
-        <Image source={{ uri: icon }} style={styles.icon} />
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.container}>
+        <View style={styles.iconContainer}>
+          <Image source={{ uri: icon }} style={styles.icon} />
 
-      </View>
-      <View>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.symbol}>({symbol.toUpperCase()})</Text>
-      </View>
+        </View>
+        <View>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.symbol}>({symbol.toUpperCase()})</Text>
+        </View>
 
-      <View style={styles.chartContainer}>
-      <LineChart
-        data={{ datasets: [{ data: chartData }] }}
-        width={120}
-        height={60}
-        chartConfig={{
-          backgroundGradientFromOpacity: 0,
-          backgroundGradientToOpacity: 0,
-          decimalPlaces: 0,
-          //make color transparent greenn and blury
-          color : () => '#6DF0C1',
-          style: {
-            borderRadius: 16,
-          },
-          propsForDots: {
-            r: '0',
-          },
-          propsForBackgroundLines: {
-            stroke: 'transparent',
-          },
-        }}
-        bezier
-        withHorizontalLabels={false}
-        withVerticalLabels={false}
-        withDots={false}
-      />
+        <View style={styles.chartContainer}>
+        <LineChart
+          data={{ datasets: [{ data: chartData }] }}
+          width={120}
+          height={60}
+          chartConfig={{
+            backgroundGradientFromOpacity: 0,
+            backgroundGradientToOpacity: 0,
+            decimalPlaces: 0,
+            //make color transparent greenn and blury
+            color : () => '#6DF0C1',
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: '0',
+            },
+            propsForBackgroundLines: {
+              stroke: 'transparent',
+            },
+          }}
+          bezier
+          withHorizontalLabels={false}
+          withVerticalLabels={false}
+          withDots={false}
+        />
 
+        </View>
+        <View style={styles.contentContainer}>
+          <Text style={styles.price}>${price.toFixed(2)}</Text>
+          <Text style={styles.change}>{change.toFixed(2)}%</Text>
+        </View>
       </View>
-      <View style={styles.contentContainer}>
-        <Text style={styles.price}>${price.toFixed(2)}</Text>
-        <Text style={styles.change}>{change.toFixed(2)}%</Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     //make background color transparent and blury
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: '#ffff',
     borderRadius: 10,
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     width: '90%',
     alignSelf: 'center',
-    marginBottom: 5,
+    marginBottom: 3,
     height: 77,
   },
   iconContainer: {

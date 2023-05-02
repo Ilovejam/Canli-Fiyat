@@ -95,11 +95,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    lineHeight: 24,
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
-    marginTop: -10,
-  },
+    color: '#000'  },
 });
 
 export default Header;

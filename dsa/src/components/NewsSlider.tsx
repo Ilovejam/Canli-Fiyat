@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Dimensions } from 'react-native';
 import { View, Text, Image, FlatList, Box } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import NewsPrivate from '../screens/NewsPrivate';
 
 const screenWidth = Dimensions.get('window').width;
 
 const NewsSlider = () => {
   const [news, setNews] = useState([]);
-  const navigation = useNavigation();
 
   useEffect(() => {
     fetchNews();
@@ -25,8 +26,18 @@ const NewsSlider = () => {
     }
   };
 
+  const navigation = useNavigation();
 
+  const handlePress = (article) => {
+    navigation.navigate("NewsPrivate", { 
+      title: article.title,
+      description: article.description,
+      content: article.content,
+    });
+  };
+      
   const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handlePress(item)}>
       <Box p={0} borderRadius={8} mx={1} width={screenWidth - 50}>
         <View style={{ width: '100%', height: screenWidth * 0.6 }}>
           <Image
@@ -56,6 +67,7 @@ const NewsSlider = () => {
           </Box>
         </View>
       </Box>
+    </TouchableOpacity>
   );
 
   return (

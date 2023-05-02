@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, ScrollView, TouchableWithoutFeedback } from "react-native";
 
 interface MarketCategoriesProps {
   activeCategory: string;
@@ -27,63 +27,27 @@ export default function MarketCategories({ activeCategory, setActiveCategory }: 
     }
   };
 
-  const handleCategoryPress = (category: string) => {
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<number>(0);
+
+  const handleCategoryPress = (category: string, index: number) => {
     console.log(`Selected category: ${category}`);
+    setSelectedCategoryIndex(index);
     setActiveCategory(category);
   };
-
+  
   return (
-    <ScrollView
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      decelerationRate="fast"
-      scrollEventThrottle={16}
-    >
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <View style={styles.catalogContainer}>
-        <Text
-          style={[styles.catalogItem, getCategoryStyle("Overview")]}
-          onPress={() => handleCategoryPress("Overview")}
-        >
-          Genel Bakış
-        </Text>
-        <Text
-          style={[styles.catalogItem, getCategoryStyle("Currency Pairs")]}
-          onPress={() => handleCategoryPress("Currency Pairs")}
-        >
-          Döviz Pariteleri
-        </Text>
-        <Text
-          style={[styles.catalogItem, getCategoryStyle("Commodities")]}
-          onPress={() => handleCategoryPress("Commodities")}
-        >
-          Emtialar
-        </Text>
-        <Text
-          style={[styles.catalogItem, getCategoryStyle("Stock Indices")]}
-          onPress={() => handleCategoryPress("Stock Indices")}
-        >
-          Borsa Endeksleri
-        </Text>
-        <Text
-          style={[styles.catalogItem, getCategoryStyle("Crypto")]}
-          onPress={() => handleCategoryPress("Crypto")}
-        >
-          Kripto
-        </Text>
-        <Text
-          style={[styles.catalogItem, getCategoryStyle("Precious Metals")]}
-          onPress={() => handleCategoryPress("Precious Metals")}
-        >
-          Precious Metals
-        </Text>
-      </View>
-      <View style={styles.catalogLineContainer}>
-        <View
-          style={[
-            styles.catalogLine,
-            { backgroundColor: getCategoryStyle(activeCategory).borderBottomColor },
-          ]}
-        />
+        <View style={styles.categoryContainer}>
+          {["Ekonomi", "Şirket", "Döviz", "KAP", "Kripto", "Ürün"].map((category, index) => (
+            <TouchableWithoutFeedback key={category} onPress={() => { handleCategoryPress(category, index); }}>
+              <View style={[styles.catalogItemContainer, index === 0 && styles.firstItemContainer, index === selectedCategoryIndex && styles.selectedItemContainer]}>
+                <Text style={[styles.catalogItem, getCategoryStyle(category)]}>{category}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          ))}
+        </View>
+        <View style={styles.catalogLine} />
       </View>
     </ScrollView>
   );
@@ -94,21 +58,36 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
-    height: 22,
+    height: 22
+  },
+  categoryContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 22
+  },
+  catalogItemContainer: {
+    marginRight: 20,
+    paddingBottom: 5,
+  },
+  firstItemContainer: {
+    marginLeft: 20,
+  },
+  selectedItemContainer: {
+    borderBottomColor: "#67BBF9",
+    borderBottomWidth: 2,
   },
   catalogItem: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#6A6A6A",
-    marginRight: 20,
-    paddingBottom: 5,
-  },
-  catalogLineContainer: {
-    height: 3,
-    width: "100%",
+    color: "#6A6A6A"
   },
   catalogLine: {
-    flex: 1,
-    backgroundColor: "red",
+    height: 2,
+    backgroundColor: "#DEE4F1",
+    position: "absolute",
+    top: 18,
+    bottom: 0,
+    left: 20,
+    right: 20,
   },
 });

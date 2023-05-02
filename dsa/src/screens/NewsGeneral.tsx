@@ -21,7 +21,7 @@ export default function NewsGeneral() {
     )
       .then(response => response.json())
       .then(data => setArticles(data.articles))
-      .catch(error => console.error(error));
+      .catch(error => console.error('Error fetching articles: ', error));
   }, []);
 
   const handleCategoryPress = category => {
@@ -52,24 +52,15 @@ export default function NewsGeneral() {
 
       <ScrollView>
         <Box>
-          <NewsSlider />
+          <NewsSlider category={selectedCategory || 'general'} />
         </Box>
         <View style={styles.upcomingEventsContiner}>
           <Text style={styles.sectionTitle}>Yaklaşan Etkinlikler</Text>
           <UpcomingEvents style={styles.eventsContainer} />
-        </View>
+        </View>  
         <View style={styles.newsContainer}>
           <Text style={styles.sectionTitle}>Haberler</Text>
-          {filteredArticles.map(article => (
-            <NewsCard
-              key={article.title}
-              image={article.urlToImage}
-              source={article.source.name}
-              title={article.title}
-              description={article.description}
-              selectedCategory={selectedCategory}
-            />
-          ))}
+          <NewsCard articles={filteredArticles} />
         </View>
       </ScrollView>
     </SafeAreaView>
