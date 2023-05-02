@@ -1,13 +1,33 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 
 const NewsPrivate = ({ route }) => {
+  const { title, url, description, content, apiKey } = route.params;
+  const [article, setArticle] = useState(null);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const response = await fetch(`${url}&apiKey=${apiKey}`);
+        const json = await response.json();
+        setArticle(json.articles[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchArticle();
+  }, [url, apiKey]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.source}>{source?.name}</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      {article && (
+        <>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.description}>{article.description}</Text>
+          <Text style={styles.content}>{article.content}</Text>
+        </>
+      )}
+    </ScrollView>
   );
 };
 
@@ -26,15 +46,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
-  source: {
-    fontSize: 18,
-    color: 'gray',
-    marginBottom: 8,
-  },
   description: {
-    fontSize: 18,
-    lineHeight: 28,
-    marginBottom: 8,
+    fontSize: 16,
+    marginBottom: 16,
   },
   content: {
     fontSize: 16,

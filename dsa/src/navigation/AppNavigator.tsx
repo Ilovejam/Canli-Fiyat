@@ -13,22 +13,30 @@ const Stack = createStackNavigator();
 
 const NewsStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name="NewsGeneral" component={NewsGeneral} />
       <Stack.Screen name="NewsPrivate" component={NewsPrivate} />
     </Stack.Navigator>
   );
 };
 
-
 const MarketsStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name="MarketsScreen" component={MarketsScreen} />
       <Stack.Screen name="MarketPrivate" component={MarketPrivate} />
     </Stack.Navigator>
   );
 };
+
 
 const AppNavigator = () => {
   return (

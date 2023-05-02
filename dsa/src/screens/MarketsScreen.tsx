@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, Scroll} from "react-native";
 import { Box, VStack, HStack, Button } from 'native-base';
 
 import PortfolioCard from "../components/PortfolioCard";

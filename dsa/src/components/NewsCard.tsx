@@ -17,18 +17,21 @@ interface NewsCardProps {
 const NewsCard: React.FC<NewsCardProps> = ({ category, articles }) => {
   const navigation = useNavigation();
 
-  const handlePress = () => {
-    navigation.navigate("NewsPrivate");
+  const handlePress = (article: Article) => {
+    navigation.navigate("NewsPrivate", {
+      title: article.title,
+      description: article.description,
+      content: article.content
+    });
   };
   
   return (
     <>
-      {articles.map(article => (
-        <TouchableOpacity key={article.title} onPress={handlePress} style={styles.card}>
+      {articles?.map((article, index) => (
+        <TouchableOpacity key={index} onPress={() => handlePress(article)} style={styles.card}>
           <View style={styles.textContainer}>
             <Text style={styles.source}>{article.source.name}</Text>
             <Text style={styles.title}>{article.title.length > 50 ? article.title.substring(0, 50) + "..." : article.title}</Text>
-            <Text style={styles.description}>{article.description}</Text>
           </View>
           <View style={styles.imageContainer}>
             <Image source={{ uri: article.urlToImage }} style={styles.image} />

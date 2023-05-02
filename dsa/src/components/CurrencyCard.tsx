@@ -31,7 +31,7 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('MarketPrivate');
+    navigation.navigate('MarketPrivate', { name });
   }
 
   return (

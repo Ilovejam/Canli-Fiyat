@@ -16,7 +16,7 @@ export default function NewsGeneral() {
   const [activeCategory, setActiveCategory] = useState("Overview");
 
   React.useEffect(() => {
-    fetch('https://newsapi.org/v2/top-headlines?country=tr&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
+    fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6')
       .then(response => response.json())
       .then(data => setArticles(data.articles))
       .catch(error => console.error('Error fetching articles: ', error));
@@ -56,16 +56,7 @@ export default function NewsGeneral() {
         </View>  
         <View style={styles.newsContainer}>
           <Text style={styles.sectionTitle}>Haberler</Text>
-          {filteredArticles.map(article => (
-              <NewsCard
-                key={article.title}
-                image={article.urlToImage}
-                source={article.source.name}
-                title={article.title}
-                description={article.description}
-              selectedCategory={selectedCategory}
-              />
-          ))}
+          <NewsCard articles={filteredArticles} />
         </View>
       </ScrollView>
     </SafeAreaView>
