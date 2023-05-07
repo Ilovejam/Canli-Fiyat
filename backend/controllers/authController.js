@@ -2,8 +2,12 @@ const crypto = require("crypto");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("./../models/userModel");
+const SmsVerificationTokenSchema = require("./../models/smsVerificationTokenSchema");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
+const { generateOTP } = require("./../utils/genres");
+const { Vonage } = require("@vonage/server-sdk");
+const { isValidObjectId } = require("mongoose");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -34,31 +38,129 @@ const createSendToken = (user, statusCode, req, res) => {
   });
 };
 
+// api herkese göndermiyor
+// apinin gönderdiği numara değişebilir canli fiyat or 054395421
+// vonagein kurumsal heasbı olmalı ve configler değişecek
+
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    telephone: req.body.telephone,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-    passwordChangedAt: req.body.passwordChangedAt,
+  const { name, telephone, password, passwordConfirm } = req.body;
+
+  const oldUser = await User.findOne({ telephone });
+
+  if (oldUser) {
+    return next(new AppError("This telephone is already in use", 400));
+  }
+
+  const newUser = new User({
+    name,
+    telephone,
+    password,
+    passwordConfirm,
   });
+
+  await newUser.save();
+
+  let OTP = generateOTP();
+
+  const newSmsVerificationTokenSchema = new SmsVerificationTokenSchema({
+    owner: newUser._id,
+    token: OTP,
+  });
+
+  await newSmsVerificationTokenSchema.save();
+
+  const vonage = new Vonage({
+    apiKey: process.env.SMS_NEXMO_API_KEY,
+    apiSecret: process.env.SMS_NEXMO_API_SECRET_KEY,
+  });
+
+  const from = "Vonage APIs";
+  const to = `+90${newUser.telephone}`;
+  console.log(to);
+  const text = `Your Verification Code is ${OTP}`;
+
+  console.log("OTP CODE = ", OTP);
+
+  await vonage.sms
+    .send({ to, from, text })
+    .then((resp) => {
+      console.log("Message sent successfully");
+      console.log(resp);
+    })
+    .catch((err) => {
+      console.log("There was an error sending the messages.");
+      console.error(err);
+    });
 
   createSendToken(newUser, 201, req, res);
 });
 
+exports.verifySMS = catchAsync(async (req, res, next) => {
+  const { userId, OTP } = req.body;
+  if (!isValidObjectId(userId)) {
+    return next(new AppError("user not found", 401));
+  }
+
+  const user = await User.findById(userId);
+
+  if (user.isVerified) {
+    return next(new AppError("user is already verified", 401));
+  }
+
+  const token = await SmsVerificationTokenSchema.findOne({ owner: userId });
+  if (!token) {
+    return next(new AppError("token not found", 401));
+  }
+
+  const isMatched = await token.compareToken(OTP);
+  if (!isMatched) {
+    return next(new AppError("Please submit a valid OTP", 401));
+  }
+
+  user.isVerified = true;
+
+  await user.save({ validateBeforeSave: false });
+
+  await SmsVerificationTokenSchema.findByIdAndDelete(token._id);
+
+  const jwtToken = signToken(user._id);
+
+  res.cookie("jwt", token, {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: req.secure || req.get("x-forwarded-proto") === "https",
+  });
+
+  user.password = undefined;
+
+  res.status(200).json({
+    status: "success",
+    jwtToken,
+    data: {
+      user,
+    },
+    message: "Your telephone is verified",
+  });
+});
+
 // telefon, password validate
 exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { telephone, password } = req.body;
 
-  if (!email || !password) {
+  if (!telephone || !password) {
     return next(new AppError("Please provide email and password!", 400));
   }
 
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ telephone }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+    return next(new AppError("Incorrect telephone or password", 401));
+  }
+
+  if (!user.isVerified) {
+    return next(new AppError("Your telephone is not verified", 401));
   }
 
   createSendToken(user, 200, req, res);

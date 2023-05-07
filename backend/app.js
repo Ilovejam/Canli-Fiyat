@@ -12,9 +12,17 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRoutes");
 
-var bodyParser = require("body-parser");
-
 const app = express();
+
+const socketServer = require("http").createServer(app);
+const io = require("socket.io")(socketServer, {
+  cors: {
+    origin: "*",
+  },
+});
+const socketRouter = require("./routes/SocketRouter")(io);
+
+var bodyParser = require("body-parser");
 
 app.enable("trust proxy");
 
@@ -25,7 +33,6 @@ app.use(
 );
 
 app.use(cors());
-
 
 app.options("*", cors());
 
@@ -75,7 +82,11 @@ app.use(compression());
 app.use(express.static(`${__dirname}/public`));
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/sockets", socketRouter);
 
+io.on("connection", (socket) => {
+  console.log(socket.id);
+});
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
