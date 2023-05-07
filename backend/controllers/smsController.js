@@ -8,7 +8,7 @@ const vonage = new Vonage({
 });
 
 const from = "Vonage APIs";
-const to = "905439609248";
+const to = "+905439609248";
 const text = "kod";
 
 exports.createSms = catchAsync(async (req, res, next) => {
@@ -29,4 +29,19 @@ exports.createSms = catchAsync(async (req, res, next) => {
       data,
     },
   });
+});
+
+exports.socket = catchAsync(async (req, res, next) => {
+  const count = req.query.count;
+  console.log(count);
+  if (!count) {
+    res.status(401).json({
+      message: "count not exits",
+    });
+  } else {
+    io.emit("mod_forecast", count);
+    res.json({
+      message: "data delivered",
+    });
+  }
 });
