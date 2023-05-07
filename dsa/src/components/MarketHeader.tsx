@@ -3,10 +3,11 @@ import { StyleSheet, View, Image, Dimensions, TouchableOpacity } from 'react-nat
 import { useNavigation } from '@react-navigation/native';
 import { Text } from 'native-base';
 import logo from '../images/logo/logo-dark.png';
-import {faBars, faBell,faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faBell,faStar} from '@fortawesome/free-solid-svg-icons';
 import HamburgerMenu from '../components/HamburgerMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-const Header = ({ title }) => {
+
+const MarketHeader = ({ name, symbol, icon }) => {
   const navigation = useNavigation();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -28,16 +29,20 @@ const Header = ({ title }) => {
         <TouchableOpacity onPress={toggleMenu}>
           <FontAwesomeIcon icon={faBars} size={22} style={styles.rightIcon} />
         </TouchableOpacity>
-        <View style={styles.titleContainer}>
           <Image
             source={logo}
             style={styles.centerIcon}
           />
-          <Text style={styles.title}>{title}</Text>
+ 
+        <View style={styles.coinInfo}>
+            <Image source={{ uri: icon }} style={styles.coinIcon} />
+            <Text style={styles.coinName}>{name}</Text>
         </View>
+
+
         <View style={styles.rightIconContainer}>
-          <TouchableOpacity onpress={handleSearchPress}>
-            <FontAwesomeIcon icon={faSearch} size={22} style={styles.rightIconSearch} />
+          <TouchableOpacity onPress={handleSearchPress}>
+            <FontAwesomeIcon icon={faStar} size={22} style={styles.rightIconSearch} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBellPress}>
             <FontAwesomeIcon icon={faBell} size={22} style={styles.rightIcon} />
@@ -56,20 +61,33 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 10,
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     paddingTop: 0,
-    paddingBottom: 17,
-    marginLeft: 10,
+    paddingBottom: 27,
+    marginLeft: 0,
+    marginBottom: 0,
   },
-  leftIcon: {
-    width: 25,
+  icon: {
+    width: 30,
     height: 30,
     resizeMode: 'contain',
+  },
+  titleContainer: {
+    alignItems: 'center',
   },
   centerIcon: {
     width: Dimensions.get('window').width / 5,
     height: Dimensions.get('window').height / 20,
     resizeMode: 'contain',
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  symbol: {
+    fontSize: 14,
+    color: '#757575',
   },
   rightIconContainer: {
     flexDirection: 'row',
@@ -89,16 +107,30 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: -40,
   },
-  titleContainer: {
+  coinInfo: {
+    position: 'absolute',
+    bottom: 0,
+    left: Dimensions.get('window').width / 2 - 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
+    flexDirection: 'row',
+    width: "100%",
     alignItems: 'center',
   },
-  title: {
-    lineHeight: 30,
-    fontFamily: 'Poppins',
-
-    fontSize: 24,
+  coinIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: -40,
+    resizeMode: 'contain',
+    marginRight: 10,
+  },
+  coinName: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#000'  },
+    color: '#000',
+  },
+      
 });
 
-export default Header;
+export default MarketHeader;

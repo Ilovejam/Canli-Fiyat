@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { BlurView } from '@react-native-community/blur';
 
 type ExchangeCardProps = {
   name: string;
   percentageChange: number;
+  valueForOneTRY: string;
 };
 
-const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) => {
+const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, valueForOneTRY }) => {
   const [chartData, setChartData] = useState<number[]>([]);
 
   useEffect(() => {
@@ -19,28 +21,32 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) =
   }, []);
 
   return (
-    <ImageBackground
-      source={require('../images/exchangebg.png')}
+    <BlurView
       style={styles.card}
+      blurType="light"
+      blurAmount={10}
     >
       <Text style={styles.name}>{name}</Text>
+      <Text style={styles.price}>${valueForOneTRY}</Text>
       <Text style={styles.percentageChange}>+{percentageChange}%</Text>
       {chartData && (
         <View style={styles.chartContainer}>
           <LineChart
             data={{ datasets: [{ data: chartData }] }}
-            width={140}
+            width={180}
             height={40}
             chartConfig={{
               backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 0,              
+              backgroundGradientToOpacity: 0,
               decimalPlaces: 0,
-              color: () => '#6DF0C1',
+              color: () => 'rgba(109, 240, 193, 1)',
               style: {
                 borderRadius: 100,
+                backgroundColor: 'transparent',
+                
               },
               propsForDots: {
-                r: '1',
+                r: '4',
               },
               propsForBackgroundLines: {
                 stroke: 'transparent',
@@ -53,7 +59,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange }) =
           />
         </View>
       )}
-    </ImageBackground>
+    </BlurView>
   );
 };
 
@@ -61,28 +67,40 @@ const styles = StyleSheet.create({
   card: {
     padding: 10,
     borderRadius: 10,
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 85,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10, // add space between cards
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderImageSource: 'radial-gradient(69.43% 69.43% at 50% 50%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%)', // note that this syntax is not supported by all platforms, and it may not work as expected
+    borderImageSlice: 1,
   },
-  chartContainer: {    
+  chartContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 60,
-    marginLeft: 10
+    marginRight: 70,
+    marginLeft: 10,
+    marginBottom: 2,
   },
   name: {
     width: 80,
     fontSize: 10,
     textAlign: 'left',
   },
-  percentageChange: {
-    fontSize: 13,
+  price: {
+    fontSize: 14,
     width: 80,
     textAlign: 'left',
     color: 'black',
+    fontWeight: 'bold',
+  },
+  percentageChange: {
+    fontSize: 10,
+    width: 80,
+    textAlign: 'left',
+    color: 'rgba(64, 168, 130, 1)',
     fontWeight: 'bold',
   },
 });

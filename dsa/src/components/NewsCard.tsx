@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 interface Article {
@@ -17,13 +17,15 @@ interface NewsCardProps {
 const NewsCard: React.FC<NewsCardProps> = ({ category, articles }) => {
   const navigation = useNavigation();
 
-  const handlePress = (article: Article) => {
-    navigation.navigate("NewsPrivate", {
-      title: article.title,
-      description: article.description,
-      content: article.content
-    });
+  const handlePress = async (article: Article) => {
+    const supported = await Linking.canOpenURL(article.url);
+    if (supported) {
+      await Linking.openURL(article.url);
+    } else {
+      console.error("Don't know how to open URI: " + article.url);
+    }
   };
+  
   
   return (
     <>
@@ -32,6 +34,9 @@ const NewsCard: React.FC<NewsCardProps> = ({ category, articles }) => {
           <View style={styles.textContainer}>
             <Text style={styles.source}>{article.source.name}</Text>
             <Text style={styles.title}>{article.title.length > 50 ? article.title.substring(0, 50) + "..." : article.title}</Text>
+            <Text style={styles.readTime}>
+              {'Okuma Süresi ' + ' ' + Math.floor(Math.random() * 6) + 0 + ' dk'}
+            </Text>
           </View>
           <View style={styles.imageContainer}>
             <Image source={{ uri: article.urlToImage }} style={styles.image} />
@@ -50,6 +55,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 20,
     backgroundColor: '#ffffff',
+  },
+  readTime: {
+    color : "#67BBF9",
+    fontWeight: "bold", 
+    fontSize:"sm", 
+    mt:1
   },
   imageContainer: {
     width: 110,

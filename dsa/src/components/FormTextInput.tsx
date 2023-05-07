@@ -36,7 +36,7 @@ export const FormTextInput = (props: IFormTextInputProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: -30,
     width: "100%",
     marginBottom: 16,
   },
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 0,
     fontSize: 16,
-    color: "#fff",
+    color: "#797A7C",
   },
 });
 

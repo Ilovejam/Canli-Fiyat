@@ -8,11 +8,14 @@ import {
 } from 'react-native';
 import LogoHeader from '../components/LogoHeader';
 import LoginInputs from '../components/LoginInputs';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function LoginScreen(props) {
+  const navigation = useNavigation();
+
   const handleLogin = (username: string, password: string, phoneNumber: string) => {
     console.log('Attempting to log in with:', { username, password, phoneNumber });
-
     fetch('http://0.0.0.0:3000/login', {
       method: 'POST',
       headers: {
@@ -59,21 +62,16 @@ export default function LoginScreen(props) {
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        backgroundColor: '#1D1F3F',
+        backgroundColor: '#0000',
         alignItems: 'center',
         justifyContent: 'center',
     },
     container: {
         flex: 1,
-        backgroundColor: '#1D1F3F',
+        backgroundColor: '#0000',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    logoContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        },
     logo: {
         width: 100, // Adjust this value for your logo size
         height: 50, // Adjust this value for your logo size
@@ -96,8 +94,8 @@ const styles = StyleSheet.create({
       title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#FFFFFF',
-        fontFamily: 'Poppins-Regular',
+        color: '#603AF5',
+        fontFamily: 'Poppins',
         textAlign: 'center', // Center the title horizontally
       },
 

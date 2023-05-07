@@ -17,7 +17,7 @@ const NewsSlider = () => {
   const fetchNews = async () => {
     try {
       const response = await fetch(
-        'https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
+        'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
       );
       const json = await response.json();
       setNews(json.articles);
@@ -29,12 +29,10 @@ const NewsSlider = () => {
   const navigation = useNavigation();
 
   const handlePress = (article) => {
-    navigation.navigate("NewsPrivate", { 
-      title: article.title,
-      description: article.description,
-      content: article.content,
-    });
+    navigation.navigate('NewsPrivate', { article });
   };
+  
+  
       
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handlePress(item)}>

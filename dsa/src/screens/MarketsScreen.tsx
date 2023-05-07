@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -230,
+    marginTop: -250,
   },
   exchangeContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -60,
-    marginBottom: -10,
+    marginTop: -80,
+    marginBottom: -40,
   },
   currencyCardRenderer: {
     flex: 1,
