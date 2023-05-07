@@ -15,23 +15,16 @@ import NotificationsSettingsScreen from '../screens/NotificationsSettingsScreen'
 import SecuritySettingsScreen from '../screens/SecuritySettingsScreen';
 import SupportSettingsScreen from '../screens/SupportSettingsScreen';
 import ContactInformationSettings from '../screens/ContactInformationSettings';
-import LoginScreen from '../screens/LoginScreen';
-import SignUpScreen from '../screens/SignUpScreen';
+
+import VerifyUserScreen from '../screens/VerifyUserScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const LoginStackNavigator = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-    </Stack.Navigator>
-  );
-};
+
+
+
+
 
 
 const NewsStackNavigator = () => {
@@ -125,7 +118,6 @@ const MarketsStackNavigator = () => {
 const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="LoginStackNavigator" component={LoginStackNavigator} />
       <Stack.Screen name="MainTabNavigator" component={MainTabNavigator} />
       <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       <Stack.Screen name="GeneralSettingsScreen" component={GeneralSettingsScreen} />

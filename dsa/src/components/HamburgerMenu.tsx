@@ -13,7 +13,6 @@ const HamburgerMenu = ({ onClose }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    console.log("Hey")
     navigation.navigate('SettingsScreen');
   }
 
