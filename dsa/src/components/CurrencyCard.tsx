@@ -31,7 +31,7 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('MarketPrivate', { name });
+    navigation.navigate('MarketPrivate', { name, icon });
   }
 
   return (
@@ -49,14 +49,13 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
         <View style={styles.chartContainer}>
         <LineChart
           data={{ datasets: [{ data: chartData }] }}
-          width={120}
-          height={60}
+          width={150}
+          height={70}
           chartConfig={{
             backgroundGradientFromOpacity: 0,
             backgroundGradientToOpacity: 0,
             decimalPlaces: 0,
-            //make color transparent greenn and blury
-            color : () => '#6DF0C1',
+            color : () => change < 0 ? '#AE3F5A' : '#6DF0C1',
             style: {
               borderRadius: 16,
             },
@@ -73,10 +72,11 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
           withDots={false}
         />
 
+
         </View>
         <View style={styles.contentContainer}>
           <Text style={styles.price}>${price.toFixed(2)}</Text>
-          <Text style={styles.change}>{change.toFixed(2)}%</Text>
+          <Text style={[styles.change, change < 0 ? styles.changeNegative : styles.changePositive]}>{change.toFixed(2)}%</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -85,7 +85,6 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
 
 const styles = StyleSheet.create({
   container: {
-    //make background color transparent and blury
     backgroundColor: '#ffff',
     borderRadius: 10,
     padding: 16,
@@ -115,18 +114,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 2,
+    color: 'rgba(21, 25, 53, 1)',
   },
   symbol: {
     fontSize: 14,
     marginBottom: 2,
+    color: 'rgba(137, 139, 153, 1)',
   },
   price: {
-    fontSize: 17,
+    fontSize: 18,
+    fontWeight: 'bold',
     marginBottom: 2,
+    color: '#282828',
     
   },
   change: {
-    fontSize: 17,
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  changePositive: {
+    color: '#40A882',
+  },
+  changeNegative: {
+    color: '#AE3F5A',
   },
 });
 

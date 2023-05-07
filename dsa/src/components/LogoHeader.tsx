@@ -1,41 +1,41 @@
-import React from 'react';
-import { StyleSheet, Image, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Text } from 'native-base';
+import logo from '../images/logo/logo-dark.png';
 
-interface LogoHeaderProps {
-  source: any; // pass the source of the logo image as a prop
-}
+const LogoHeader = ( ) => {
 
-const LogoHeader = ({ source }: LogoHeaderProps) => {
   return (
-    <View style={styles.logoContainer}>
-      <Image source={source} style={styles.logo} />
-    </View>
+    <>
+      <View style={styles.header}>
+          <Image
+            source={logo}
+            style={styles.centerIcon}
+          />        
+      </View>
+    </>
   );
 };
 
-const { width } = Dimensions.get('window');
-const logoWidthPercentage = 0.2; // 50% of the screen width
-
 const styles = StyleSheet.create({
-  logoContainer: {
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 0,
+    justifyContent: 'space-between',
     width: '100%',
-    // container at the top of the screen
-    position: 'absolute',
-    top: '5%',
+    paddingHorizontal: 10,
     backgroundColor: 'transparent',
-
+    paddingTop: 0,
+    paddingBottom: 17,
+    marginLeft: 10,
   },
-  logo: {
-    width: width * logoWidthPercentage,
-    height: undefined,
-    aspectRatio: 2, // Adjust this value based on the aspect ratio of your logo
+  centerIcon: {
+    width: Dimensions.get('window').width / 5,
+    height: Dimensions.get('window').height / 20,
     resizeMode: 'contain',
-    
   },
+  
 });
-
 
 export default LogoHeader;

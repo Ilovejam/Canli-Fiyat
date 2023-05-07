@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { FormTextInput } from "./FormTextInput";
 import { useNavigation } from "@react-navigation/native";
-
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import SignUpScreen from "../screens/SignUpInputs";
 
 interface ILoginInputsProps {
   onLogin: (username: string, password: string, phoneNumber: string) => void;
@@ -14,6 +16,15 @@ export const LoginInputs = (props: ILoginInputsProps) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isChecked, setIsChecked] = useState(false); // Add a new state to track the checkbox state
   const navigation = useNavigation(); 
+
+  const navigateTo = (screen) => {
+    if (screen === 'SignUpScreen') {
+      navigation.navigate('SignUpScreen');
+    } else {
+      console.warn('LoginInputs: unknown screen name');
+    }
+  };
+
 
   const handleUsernameChange = (text: string) => {
     setUsername(text);
@@ -40,6 +51,7 @@ export const LoginInputs = (props: ILoginInputsProps) => {
 
   return (
     <View style={styles.container}>
+
       <Text style={styles.title}>Kullanıcı Adı</Text>
       <FormTextInput
         placeholder="Kullanıcı adınızı girin"
@@ -47,14 +59,7 @@ export const LoginInputs = (props: ILoginInputsProps) => {
         value={username}
         inputType="text"
         onChangeText={handleUsernameChange}
-      />
-      <Text style={styles.title}>Şifre</Text>
-      <FormTextInput
-        placeholder="Şifrenizi girin"
-        title=""
-        value={password}
-        inputType="password"
-        onChangeText={handlePasswordChange}
+        
       />
       <Text style={styles.title}>Telefon Numarası</Text>
       <FormTextInput
@@ -63,6 +68,15 @@ export const LoginInputs = (props: ILoginInputsProps) => {
         value={phoneNumber}
         inputType="phone-pad"
         onChangeText={handlePhoneNumberChange}
+      />
+      <Text style={styles.title}>Şifre</Text>
+      <FormTextInput
+        placeholder="Şifrenizi girin"
+        title=""
+        value={password}
+        inputType="password"
+        onChangeText={handlePasswordChange}
+        
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
@@ -79,7 +93,7 @@ export const LoginInputs = (props: ILoginInputsProps) => {
           Aydınlatma metnini onaylıyorum
         </Text>
       </View>
-      <TouchableOpacity style={styles.signupButton} onPress={handleSignUpPress}>
+      <TouchableOpacity style={styles.signupButton} onPress={() => navigateTo('SignUpScreen')}>
         <Text style={styles.signupButtonText}>
           Hesabın yok mu? Hemen kayıt ol!
         </Text>
@@ -94,18 +108,18 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
     },
     title: {
-      fontSize: 16,
-      fontWeight: "bold",
+      fontSize: 14,
       marginVertical: 10,
-      textAlign: "center",
-      color: "#67BBF9",
+      textAlign: "left",
+      color: "#603AF5",
+      fontFamily: "Poppins",
     },
     buttonContainer: {
       marginTop: 15,
       width: "100%",
     },
     button: {
-      backgroundColor: "#00825A",
+      backgroundColor: "#603AF5",
       paddingVertical: 12,
       paddingHorizontal: 16,
       borderRadius: 3.12,
@@ -146,8 +160,9 @@ const styles = StyleSheet.create({
     },
     checkboxText: {
       fontSize: 14,
-      color: "#999",
+      color: "red",
     },
+    
   });  
   
 

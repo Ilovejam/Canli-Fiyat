@@ -3,30 +3,22 @@ import { StyleSheet, View, Image, Dimensions, TouchableOpacity } from 'react-nat
 import { useNavigation } from '@react-navigation/native';
 import { Text } from 'native-base';
 import logo from '../images/logo/logo-dark.png';
-import {faBars, faBell,faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faBell,faSearch} from '@fortawesome/free-solid-svg-icons';
 import HamburgerMenu from '../components/HamburgerMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-const Header = ({ title }) => {
+
+const SettingsHeader = ({ title }) => {
   const navigation = useNavigation();
-  const [showMenu, setShowMenu] = useState(false);
-
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
-
-  const handleBellPress = () => {
-    // Add your code for the bell icon press event here
-  };
-
-  const handleSearchPress = () => {
-    // Add your code for the search icon press event here
+ 
+  const goBack = () => {
+    navigation.goBack();
   };
 
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity onPress={toggleMenu}>
-          <FontAwesomeIcon icon={faBars} size={22} style={styles.rightIcon} />
+        <TouchableOpacity onPress={goBack}>
+          <FontAwesomeIcon icon={faArrowLeft} size={22} style={styles.rightIcon} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
           <Image
@@ -35,16 +27,7 @@ const Header = ({ title }) => {
           />
           <Text style={styles.title}>{title}</Text>
         </View>
-        <View style={styles.rightIconContainer}>
-          <TouchableOpacity onpress={handleSearchPress}>
-            <FontAwesomeIcon icon={faSearch} size={22} style={styles.rightIconSearch} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleBellPress}>
-            <FontAwesomeIcon icon={faBell} size={22} style={styles.rightIcon} />
-          </TouchableOpacity>
-        </View>
       </View>
-      {showMenu && <HamburgerMenu onClose={() => setShowMenu(false)} />}
     </>
   );
 };
@@ -58,7 +41,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: 'transparent',
     paddingTop: 0,
-    paddingBottom: 17,
+    paddingBottom: 0,
+    marginTop: 0,
     marginLeft: 10,
   },
   leftIcon: {
@@ -70,27 +54,16 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 5,
     height: Dimensions.get('window').height / 20,
     resizeMode: 'contain',
+    alignItems: 'center',
   },
   rightIconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-  rightIcon: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
-    marginRight: 10,
-  },
-  rightIconSearch: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
-    marginRight: 10,
-    marginLeft: -40,
-  },
   titleContainer: {
     alignItems: 'center',
+    marginRight: 130,
   },
   title: {
     lineHeight: 30,
@@ -101,4 +74,4 @@ const styles = StyleSheet.create({
     color: '#000'  },
 });
 
-export default Header;
+export default SettingsHeader;

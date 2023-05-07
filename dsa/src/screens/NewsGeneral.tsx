@@ -17,7 +17,7 @@ export default function NewsGeneral() {
 
   React.useEffect(() => {
     fetch(
-      'https://newsapi.org/v2/top-headlines?country=us&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
+      'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
     )
       .then(response => response.json())
       .then(data => setArticles(data.articles))
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginHorizontal: 20,
     marginTop: 20,
-    marginBottom: 10,
+    marginBottom: -10,
     fontFamily: 'Worksans-Black',
   },
   eventsContainer: {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   upcomingEventsContiner: {
     borderRadius: 5,
     marginHorizontal: 1,
-    marginVertical: 5,
+    marginVertical: 2,
     padding: 10,
     shadowColor: '#000',
     shadowOffset: {
