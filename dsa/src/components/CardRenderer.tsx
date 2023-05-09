@@ -20,26 +20,32 @@ interface CurrencyCardRendererProps {
 
 const CurrencyCardRenderer = ({ activeCategory }: CurrencyCardRendererProps) => {
   const [coinData, setCoinData] = useState<CurrencyCardData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
-        params: {
-          vs_currency: 'usd',
-          ids: 'bitcoin,ethereum,cardano,binancecoin,dogecoin,polkadot,solana,chainlink,uniswap,filecoin,litecoin,bitcoin-cash,aave,staked-ether,cosmos,theta-token,sushi,wrapped-bitcoin,tron,vechain,tezos,helium,matic-network,the-graph,huobi-token,near,algorand,fantom,terra-luna,compound-ether',
-        },
-      });
-      const fetchedData = response.data.map((coin: any) => ({
-        id: coin.id,
-        icon: coin.image,
-        name: coin.name,
-        symbol: coin.symbol,
-        price: coin.current_price,
-        change: coin.price_change_percentage_24h,
-        marketCap: coin.market_cap,
-        volume: coin.total_volume,
-      }));
-      setCoinData(fetchedData);
+      try {
+        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
+          params: {
+            vs_currency: 'usd',
+            ids: 'bitcoin,ethereum,cardano,dogecoini,polkadot,solana,chainlink,uniswap,litecoin,aave,theta-token,sushi,tron,vechain,tezos,helium,the-graph,huobi-token,algorand,fantom,terra-luna,compound-ether',
+          },
+        });
+        const fetchedData = response.data.map((coin: any) => ({
+          id: coin.id,
+          icon: coin.image,
+          name: coin.name,
+          symbol: coin.symbol,
+          price: coin.current_price,
+          change: coin.price_change_percentage_24h,
+          marketCap: coin.market_cap,
+          volume: coin.total_volume,
+        }));
+        setCoinData(fetchedData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchData();
   }, []);
@@ -59,6 +65,10 @@ const CurrencyCardRenderer = ({ activeCategory }: CurrencyCardRendererProps) => 
       volume={item.volume}
     />
   );
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>

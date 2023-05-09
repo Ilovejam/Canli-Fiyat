@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 const MarketHeader = ({ name, symbol, icon }) => {
   const navigation = useNavigation();
   const [showMenu, setShowMenu] = useState(false);
+  const [isStarred, setIsStarred] = useState(false);
+
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -20,8 +22,9 @@ const MarketHeader = ({ name, symbol, icon }) => {
   };
 
   const handleSearchPress = () => {
-    // Add your code for the search icon press event here
+    setIsStarred(!isStarred);
   };
+
 
   return (
     <>

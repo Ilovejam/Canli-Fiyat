@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontWeight: 'bold',
     color: '#603AF5',
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Regular',
     textAlign: 'center',
   },
   codeContainer: {

@@ -13,7 +13,6 @@ const NewsSliderCategories = ({ activeCategory, setActiveCategory }: NewsSliderC
         fontWeight: "bold",
         borderBottomColor: "#1A202C",
         color: "#000000",
-        transitionDuration: "100ms",
         borderBottomWidth: 2,
         borderColor: "green",
       };
@@ -21,7 +20,6 @@ const NewsSliderCategories = ({ activeCategory, setActiveCategory }: NewsSliderC
       return {
         borderBottomColor: "#D1D5DB",
         color: "#6A6A6A",
-        transitionDuration: "100ms",
         borderBottomWidth: 0,
       };
     }

@@ -15,12 +15,27 @@ import NotificationsSettingsScreen from '../screens/NotificationsSettingsScreen'
 import SecuritySettingsScreen from '../screens/SecuritySettingsScreen';
 import SupportSettingsScreen from '../screens/SupportSettingsScreen';
 import ContactInformationSettings from '../screens/ContactInformationSettings';
-
+import SignInScreen from '../screens/SignInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 import VerifyUserScreen from '../screens/VerifyUserScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+
+
+
+const LoginStackNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="SignInScreen" component={SignInScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+    </Stack.Navigator>
+  );
+};
 
 
 
@@ -115,6 +130,7 @@ const MarketsStackNavigator = () => {
 
 
 
+
 const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -128,6 +144,8 @@ const AppNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+
 
 const MainTabNavigator = () => {
   return (
@@ -148,9 +166,7 @@ const MainTabNavigator = () => {
           }
         },
       })}
-      tabBarOptions={{
-        backgroundColor: 'transparent',
-      }}>
+      >
       <Tab.Screen name="Haberler" component={NewsStackNavigator} />
       <Tab.Screen name="Piyasalar" component={MarketsStackNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

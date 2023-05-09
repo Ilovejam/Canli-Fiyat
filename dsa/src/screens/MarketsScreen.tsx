@@ -11,8 +11,14 @@ import BackgroundCircles from '../components/BackgroundCircles';
 import MarketCategories from '../components/MarketCategories';
 import WinLoseCategory from '../components/WinLoseCategory';
 
+
 export default function MarketsScreen() {
   const [activeCategory, setActiveCategory] = useState('Overview');
+
+  const handleCategoryPress = (category: string) => {
+    setActiveCategory(category);
+    // Perform any other necessary actions here
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -32,6 +38,7 @@ export default function MarketsScreen() {
       <WinLoseCategory
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
+        onCategoryPress={handleCategoryPress}
       />
       <View style={styles.currencyCardRenderer}>
         <CurrencyCardRenderer activeCategory={activeCategory} />

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import ExchangeCard from './ExchangeCard';
 
 const ExchangeCardSlider = () => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchExchangeData = async () => {
@@ -16,6 +17,7 @@ const ExchangeCardSlider = () => {
         valueForOneTRY: (1 / value).toFixed(2),
       }));
       setData(exchangeData);
+      setIsLoading(false);
     };
     fetchExchangeData();
   }, []);
@@ -29,13 +31,17 @@ const ExchangeCardSlider = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal={true}>
-        {data.map((item, index) => (
-          <TouchableOpacity key={index} onPress={() => handleExchangeCardPress(item.name)}>
-            <ExchangeCard name={item.name} percentageChange={item.percentageChange} valueForOneTRY={item.valueForOneTRY} />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <ScrollView horizontal={true}>
+          {data.map((item, index) => (
+            <TouchableOpacity key={index} onPress={() => handleExchangeCardPress(item.name)}>
+              <ExchangeCard name={item.name} percentageChange={item.percentageChange} valueForOneTRY={item.valueForOneTRY} />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };

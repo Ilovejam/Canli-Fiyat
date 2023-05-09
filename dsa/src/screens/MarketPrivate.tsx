@@ -51,13 +51,16 @@ const MarketPrivate = ({ route }) => {
 
   useEffect(() => {
     const fetchBuySellValues = async () => {
-      const response = await axios.get(`https://api.coinbase.com/v2/prices/BTC-USD/buy`);
+      const coingeckoResponse = await axios.get(`https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}`);
+      const symbol = coingeckoResponse.data.symbol.toUpperCase();
+      const response = await axios.get(`https://api.coinbase.com/v2/prices/${symbol}-USD/buy`);
       setBuyValue(response.data.data.amount);
-      const response2 = await axios.get(`https://api.coinbase.com/v2/prices/BTC-USD/sell`);
+      const response2 = await axios.get(`https://api.coinbase.com/v2/prices/${symbol}-USD/sell`);
       setSellValue(response2.data.data.amount);
     };
     fetchBuySellValues();
   }, []);
+
 
   useEffect(() => {
     const fetchNews = async () => {

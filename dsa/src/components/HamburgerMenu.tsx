@@ -16,6 +16,7 @@ const HamburgerMenu = ({ onClose }) => {
     navigation.navigate('SettingsScreen');
   }
 
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.overlay} onPress={onClose} />
