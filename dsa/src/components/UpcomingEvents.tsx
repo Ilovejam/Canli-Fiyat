@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import backgroundImage from '../images/upcomingbackground.png';
 import titlebackground from '../images/titlebackground.png';
+import axios from 'axios';
 
 const UpcomingEvents = () => {
   const [events, setEvents] = useState([
@@ -17,10 +18,38 @@ const UpcomingEvents = () => {
     }
   ]);
 
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get('https://www.tradingview.com/economic-calendar/');
+      const html = response.data;
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const eventElements = doc.querySelectorAll('.tv-data-table__tbody .tv-data-table__row');
+
+      const eventsList = [];
+      for (let i = 0; i < eventElements.length && i < 2; i++) {
+        const date = eventElements[i].querySelector('.tv-data-table__cell:first-child').textContent.trim();
+        const title = eventElements[i].querySelector('.tv-data-table__cell:nth-child(2)').textContent.trim();
+
+        eventsList.push({
+          id: i + 1,
+          name: `${date} - ${title}`
+        });
+      }
+
+      setEvents(eventsList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleEventPress = (eventName) => {
+    console.log(eventName);
+  };
   const renderEvents = () => {
     return events.map((event) => {
       return (
-        <TouchableOpacity style={styles.eventContainer} key={event.id}>
+        <TouchableOpacity style={styles.eventContainer} key={event.id} onPress={() => handleEventPress(event.name)}>
           <View style={styles.dateContainer}>
             <ImageBackground
               source={backgroundImage}

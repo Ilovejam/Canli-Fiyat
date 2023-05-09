@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHeadphones } from '@fortawesome/free-solid-svg-icons';
+import { moderateScale } from 'react-native-size-matters';
+
 
 const NewsPrivate = ({ route }) => {
   const { article } = route.params;
@@ -27,6 +31,7 @@ const NewsPrivate = ({ route }) => {
               <View style={styles.sourceInfo}>
                 <Text style={styles.sourceName}>{source?.name}</Text>
                 <Text style={styles.publishedAt}>{formattedDate}</Text>
+                
               </View>
             </View>
             <Text style={styles.title}>{title}</Text>
@@ -58,89 +63,96 @@ const NewsPrivate = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    marginTop: -20,
+    padding: moderateScale(10),
+    marginTop: moderateScale(-20),
+  },
+  socialMediaIcons: {
+    flexDirection: 'row',
+    marginTop: moderateScale(5),
+  },
+  socialMediaIcon: {
+    marginRight: moderateScale(10),
   },
   infoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: moderateScale(16),
   },
   logo: {
-    width: 40,
-    height: 40,
-    marginRight: 8,
+    width: moderateScale(40),
+    height: moderateScale(40),
+    marginRight: moderateScale(8),
   },
   sourceInfo: {
     flex: 1,
     justifyContent: 'center',
   },
   sourceName: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 'bold',
   },
   publishedAt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#666666',
   },
   image: {
-    width: '100%',
-    height: 313,
-    marginBottom: 16,
-    borderRadius: 10,
+    width: '95%',
+    alignSelf: 'center',
+    height: moderateScale(200),
+    marginBottom: moderateScale(16),
+    borderRadius: moderateScale(10),
   },
   title: {
-    fontSize: 30,
+    fontSize: moderateScale(25),
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: moderateScale(8),
   },
   description: {
-    fontSize: 16,
-    marginBottom: 16,
+    fontSize: moderateScale(16),
+    marginBottom: moderateScale(16),
   },
   content: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
   },
   albplus: {
     width: '100%',
-    height: 33,
-    marginBottom: 16,
+    height: moderateScale(33),
+    marginBottom: moderateScale(16),
   },
   popupContainer: {
     position: 'absolute',
-    bottom: 10,
+    bottom: moderateScale(10),
     left: 0,
     right: 0,
     backgroundColor: '#FFFFFF',
-    padding: 10,
+    padding: moderateScale(10),
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
   },
   popupText: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 'bold',
   },
   boxContainer: {
     backgroundColor: '#603AF5',
-    marginBottom: 16,
-    width: 23,
-    borderRadius: 4,
+    marginBottom: moderateScale(16),
+    width: moderateScale(23),
+    borderRadius: moderateScale(4),
   },
   box: {
-    width: 100,
-    height: 25,
-    borderRadius: 4,
+    width: moderateScale(100),
+    height: moderateScale(25),
+    borderRadius: moderateScale(4),
     backgroundColor: '#603AF5',
   },
   boxText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 'bold',
     textAlign: 'center',
   }
-  
-  
 });
+
 
 export default NewsPrivate

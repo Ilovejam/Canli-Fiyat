@@ -14,7 +14,6 @@ export default function MarketPrivateCategory({ activeCategory, setActiveCategor
         fontWeight: "bold",
         borderBottomColor: "#1A202C",
         color: "#000000",
-        transitionDuration: "100ms",
         borderBottomWidth: 2,
         borderColor: "green",
       };
@@ -22,7 +21,6 @@ export default function MarketPrivateCategory({ activeCategory, setActiveCategor
       return {
         borderBottomColor: "#D1D5DB",
         color: "#6A6A6A",
-        transitionDuration: "100ms",
         borderBottomWidth: 0,
       };
     }

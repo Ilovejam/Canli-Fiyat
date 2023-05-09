@@ -10,9 +10,9 @@ interface WinLoseCategoryProps {
 export default function WinLoseCategory({ activeCategory, setActiveCategory, onCategoryPress }: WinLoseCategoryProps) {
   const getCategoryStyle = (category: string) => {
     if (category === activeCategory) {
-      return { fontWeight: "bold", borderBottomColor: "#1A202C", color: "#000000", transitionDuration: "150ms", borderBottomWidth: 2, borderColor: "green" };
+      return { fontWeight: "bold", borderBottomColor: "#1A202C", color: "#000000", borderBottomWidth: 2, borderColor: "green" };
     } else {
-      return { borderBottomColor: "#D1D5DB", color: "#6A6A6A", transitionDuration: "150ms", borderBottomWidth: 0 };
+      return { borderBottomColor: "#D1D5DB", color: "#6A6A6A",  borderBottomWidth: 0 };
     }
   };
 

@@ -59,8 +59,7 @@ const styles = StyleSheet.create({
   readTime: {
     color : "#67BBF9",
     fontWeight: "bold", 
-    fontSize:"sm", 
-    mt:1
+    fontSize:12, 
   },
   imageContainer: {
     width: 110,

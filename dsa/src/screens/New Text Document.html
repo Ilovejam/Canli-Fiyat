@@ -1,0 +1,22 @@
+ <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <!--<script src="https://code.highcharts.com/themes/dark-unica.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+ <script>
+ const socket = io('wss://pusher.alb.com/market', {
+                reconnection: true,
+                reconnectionAttempts: 10,
+                reconnectionDelay: 3500,
+                auth: { token: 'Test' },
+            });
+            socket.emit('subscribe', '424B0B1C');
+            socket.on('sendorder', function (CC) {
+               console.log(CC);
+            });
+			</script>

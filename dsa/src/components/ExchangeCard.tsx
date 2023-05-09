@@ -11,58 +11,65 @@ type ExchangeCardProps = {
 
 const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, valueForOneTRY }) => {
   const [chartData, setChartData] = useState<number[]>([]);
+  const [dataFetched, setDataFetched] = useState(false);
 
   useEffect(() => {
-    const fetchedData = [];
-    for (let i = 0; i < 30; i++) {
-      fetchedData.push(Math.floor(Math.random() * 1000));
-    }
-    setChartData(fetchedData);
+    const fetchData = async () => {
+      try {
+        const fetchedData = [];
+        for (let i = 0; i < 30; i++) {
+          fetchedData.push(Math.floor(Math.random() * 1000));
+        }
+        setChartData(fetchedData);
+        setDataFetched(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
-    <BlurView
-      style={styles.card}
-      blurType="light"
-      blurAmount={10}
-    >
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.price}>${valueForOneTRY}</Text>
-      <Text style={styles.percentageChange}>+{percentageChange}%</Text>
-      {chartData && (
-        <View style={styles.chartContainer}>
-          <LineChart
-            data={{ datasets: [{ data: chartData }] }}
-            width={180}
-            height={40}
-            chartConfig={{
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 0,
-              decimalPlaces: 0,
-              color: () => 'rgba(109, 240, 193, 1)',
-              style: {
-                borderRadius: 100,
-                backgroundColor: 'transparent',
-                
-              },
-              propsForDots: {
-                r: '4',
-              },
-              propsForBackgroundLines: {
-                stroke: 'transparent',
-              },
-            }}
-            bezier
-            withHorizontalLabels={false}
-            withVerticalLabels={false}
-            withDots={false}
-          />
-        </View>
+    <>
+      {dataFetched && (
+        <BlurView style={styles.card} blurType="light" blurAmount={10}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.price}>${valueForOneTRY}</Text>
+          <Text style={styles.percentageChange}>+{percentageChange}%</Text>
+          <View style={styles.chartContainer}>
+            <LineChart
+              data={{ datasets: [{ data: chartData }] }}
+              width={140}
+              height={40}
+              chartConfig={{
+                backgroundGradientFrom: 'white',
+                backgroundGradientTo: 'white',
+                backgroundGradientFromOpacity: 0,
+                backgroundGradientToOpacity: 0,
+                decimalPlaces: 0,
+                color: () => 'rgba(109, 240, 193, 1)',
+                style: {
+                  borderRadius: 100,
+                  backgroundColor: 'transparent',
+                },
+                propsForDots: {
+                  r: '4',
+                },
+                propsForBackgroundLines: {
+                  stroke: 'transparent',
+                },
+              }}
+              bezier
+              withHorizontalLabels={false}
+              withVerticalLabels={false}
+              withDots={false}
+            />
+          </View>
+        </BlurView>
       )}
-    </BlurView>
+    </>
   );
 };
-
 const styles = StyleSheet.create({
   card: {
     padding: 10,

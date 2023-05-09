@@ -13,7 +13,6 @@ export default function MarketCategories({ activeCategory, setActiveCategory }: 
         fontWeight: "bold",
         borderBottomColor: "#1A202C",
         color: "#000000",
-        transitionDuration: "100ms",
         borderBottomWidth: 2,
         borderColor: "green",
       };
@@ -21,7 +20,6 @@ export default function MarketCategories({ activeCategory, setActiveCategory }: 
       return {
         borderBottomColor: "#D1D5DB",
         color: "#6A6A6A",
-        transitionDuration: "100ms",
         borderBottomWidth: 0,
       };
     }
@@ -39,7 +37,7 @@ export default function MarketCategories({ activeCategory, setActiveCategory }: 
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <View style={styles.catalogContainer}>
         <View style={styles.categoryContainer}>
-          {["Ekonomi", "Şirket", "Döviz", "KAP", "Kripto", "Ürün"].map((category, index) => (
+          {["Döviz", "Emtialar", "Borsa Endeksleri", "Kripto", "Kıymetli Madenler"].map((category, index) => (
             <TouchableWithoutFeedback key={category} onPress={() => { handleCategoryPress(category, index); }}>
               <View style={[styles.catalogItemContainer, index === 0 && styles.firstItemContainer, index === selectedCategoryIndex && styles.selectedItemContainer]}>
                 <Text style={[styles.catalogItem, getCategoryStyle(category)]}>{category}</Text>
