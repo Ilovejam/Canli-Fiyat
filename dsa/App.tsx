@@ -15,23 +15,25 @@ const theme = extendTheme({});
 const Stack = createStackNavigator();
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleAuthentication = (status: boolean) => {
-    setIsLoggedIn(status);
-  };
+  // const handleAuthentication = (status: boolean) => {
+  //   setIsLoggedIn(status);
+  // };
 
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {isLoggedIn ? (
+          <Stack.Screen name="AppNavigator" component={AppNavigator} />
+
+          {/* {isLoggedIn ? (
             <Stack.Screen name="AppNavigator" component={AppNavigator} />
           ) : (
             <Stack.Screen name="LoginStackNavigator">
               {(props) => <SignInScreen {...props} handleAuthentication={handleAuthentication} />}
             </Stack.Screen>
-          )}
+          )} */}
         </Stack.Navigator>
       </NavigationContainer>
   </NativeBaseProvider>
