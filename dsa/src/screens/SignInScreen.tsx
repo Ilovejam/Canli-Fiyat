@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogoHeader from '../components/LogoHeader';
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22.9,
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Regular',
     color: '#603AF5',
     fontWeight: 'bold',
     marginVertical: 10,

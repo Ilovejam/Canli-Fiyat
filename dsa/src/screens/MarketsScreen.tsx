@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -250,
+    marginTop: -210,
+    marginBottom: 20,
   },
   exchangeContainer: {
     flex: 1,
