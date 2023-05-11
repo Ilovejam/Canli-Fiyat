@@ -167,8 +167,8 @@ const MainTabNavigator = () => {
         },
       })}
       >
-      <Tab.Screen name="Haberler" component={NewsStackNavigator} />
       <Tab.Screen name="Piyasalar" component={MarketsStackNavigator} />
+      <Tab.Screen name="Haberler" component={NewsStackNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

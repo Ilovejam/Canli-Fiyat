@@ -37,7 +37,7 @@ const Header = ({ title }) => {
         </View>
         <View style={styles.rightIconContainer}>
           <TouchableOpacity onpress={handleSearchPress}>
-            <FontAwesomeIcon icon={faSearch} size={22} style={styles.rightIconSearch} />
+            <FontAwesomeIcon icon={faSearch} size={25} style={styles.rightIconSearch} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBellPress}>
             <FontAwesomeIcon icon={faBell} size={22} style={styles.rightIcon} />
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     fontFamily: 'Poppins-Regular',
 
-    fontSize: 24,
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#000'  },
 });

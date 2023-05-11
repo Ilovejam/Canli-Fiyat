@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableWithoutFeedback } from "react-native";
 
 interface NewsSliderCategoriesProps {
@@ -7,8 +7,10 @@ interface NewsSliderCategoriesProps {
 }
 
 const NewsSliderCategories = ({ activeCategory, setActiveCategory }: NewsSliderCategoriesProps) => {
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const getCategoryStyle = (category: string) => {
-    if (category === activeCategory) {
+    if (category === selectedCategory) {
       return {
         fontWeight: "bold",
         borderBottomColor: "#1A202C",
@@ -25,9 +27,14 @@ const NewsSliderCategories = ({ activeCategory, setActiveCategory }: NewsSliderC
     }
   };
 
+  useEffect(() => {
+    setSelectedCategory(activeCategory);
+  }, [activeCategory]);
+
   const handleCategoryPress = (category: string) => {
     console.log(`Selected category: ${category}`);
     setActiveCategory(category);
+    setSelectedCategory(category);
   };
 
   return (
@@ -55,6 +62,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     position: "relative",
   },
+  selectedItemContainer: {
+    borderBottomColor: "#1A202C",
+    borderBottomWidth: 2,
+  },
+  
   categoryContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -80,7 +92,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 18,
     bottom: 0,
-    left: 20,
+    left: 10,
     right: 20,
   },
 });

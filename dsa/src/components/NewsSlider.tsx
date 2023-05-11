@@ -52,15 +52,16 @@ const NewsSlider = () => {
             right={0}
             px={3}
             py={2}
-            bg="rgba(0,0,0,0.8)"
+            bg="rgba(0,0,0,0.9)"
+            backdrop-filter= "blur(63px)"
             borderBottomLeftRadius={8}
             borderBottomRightRadius={8}
           >
-            <Text color="white" fontWeight="bold" fontSize="lg">
+            <Text color="white" fontSize="lg">
               {item.title.length > 68 ? item.title.slice(0, 65) + '...' : item.title}
             </Text>
-            <Text color="blue.400" fontWeight="bold" fontSize="sm" mt={1}>
-              {' ' + item.source.name + ' ' + Math.floor(Math.random() * 6) + 0 + ' dk'}
+            <Text color="blue.400" fontSize="sm" mt={1}>
+              {' ' + item.source.name + ' · ' + Math.floor(Math.random() * 6) + 0 + ' dk'}
             </Text>
           </Box>
         </View>

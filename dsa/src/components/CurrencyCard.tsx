@@ -50,7 +50,7 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
         <LineChart
           data={{ datasets: [{ data: chartData }] }}
           width={150}
-          height={70}
+          height={50}
           chartConfig={{
             backgroundGradientFromOpacity: 0,
             backgroundGradientToOpacity: 0,
@@ -93,14 +93,14 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginBottom: 3,
-    height: 77,
+    height: 60,
   },
   iconContainer: {
     marginRight: 16,
   },
   icon: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
   },
   chartContainer: {
     flex: 1,

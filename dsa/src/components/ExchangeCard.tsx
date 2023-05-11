@@ -17,8 +17,8 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, val
     const fetchData = async () => {
       try {
         const fetchedData = [];
-        for (let i = 0; i < 30; i++) {
-          fetchedData.push(Math.floor(Math.random() * 1000));
+        for (let i = 2; i < 10; i++) {
+          fetchedData.push(Math.floor(Math.random() * 10));
         }
         setChartData(fetchedData);
         setDataFetched(true);
@@ -40,10 +40,10 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, val
             <LineChart
               data={{ datasets: [{ data: chartData }] }}
               width={140}
-              height={40}
+              height={30}
               chartConfig={{
-                backgroundGradientFrom: 'white',
-                backgroundGradientTo: 'white',
+                backgroundGradientFrom: 'transparent',
+                backgroundGradientTo: 'transparent',
                 backgroundGradientFromOpacity: 0,
                 backgroundGradientToOpacity: 0,
                 decimalPlaces: 0,
@@ -53,7 +53,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, val
                   backgroundColor: 'transparent',
                 },
                 propsForDots: {
-                  r: '4',
+                  r: '14',
                 },
                 propsForBackgroundLines: {
                   stroke: 'transparent',
@@ -72,7 +72,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, val
 };
 const styles = StyleSheet.create({
   card: {
-    padding: 10,
+    padding: 0,
     borderRadius: 10,
     width: 110,
     height: 85,
@@ -88,8 +88,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 70,
-    marginLeft: 10,
-    marginBottom: 2,
+    marginLeft: 7,
+    marginTop: -7,
+    marginBottom: 5,
   },
   name: {
     width: 80,

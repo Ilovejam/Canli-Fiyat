@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView, TouchableWithoutFeedback } from "react-native";
 
 interface MarketCategoriesProps {
@@ -7,6 +7,23 @@ interface MarketCategoriesProps {
 }
 
 export default function MarketCategories({ activeCategory, setActiveCategory }: MarketCategoriesProps) {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (isClicked) {
+      timeout = setTimeout(() => {
+        setIsClicked(false);
+      }, 100);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isClicked]);
+
   const getCategoryStyle = (category: string) => {
     if (category === activeCategory) {
       return {
@@ -25,21 +42,20 @@ export default function MarketCategories({ activeCategory, setActiveCategory }: 
     }
   };
 
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<number>(0);
-
-  const handleCategoryPress = (category: string, index: number) => {
-    console.log(`Selected category: ${category}`);
-    setSelectedCategoryIndex(index);
+  const handleCategoryPress = (category: string) => {
+    setIsClicked(true);
+    setSelectedCategory(category);
     setActiveCategory(category);
   };
+
   
   return (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <View style={styles.catalogContainer}>
         <View style={styles.categoryContainer}>
           {["Döviz", "Emtialar", "Borsa Endeksleri", "Kripto", "Kıymetli Madenler"].map((category, index) => (
-            <TouchableWithoutFeedback key={category} onPress={() => { handleCategoryPress(category, index); }}>
-              <View style={[styles.catalogItemContainer, index === 0 && styles.firstItemContainer, index === selectedCategoryIndex && styles.selectedItemContainer]}>
+            <TouchableWithoutFeedback key={category} onPress={() => handleCategoryPress(category)}>
+              <View style={[styles.catalogItemContainer, index === 0 && styles.firstItemContainer]}>
                 <Text style={[styles.catalogItem, getCategoryStyle(category)]}>{category}</Text>
               </View>
             </TouchableWithoutFeedback>
@@ -77,7 +93,8 @@ const styles = StyleSheet.create({
   catalogItem: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#6A6A6A"
+    color: "#6A6A6A",
+    height: 22,
   },
   catalogLine: {
     height: 2,

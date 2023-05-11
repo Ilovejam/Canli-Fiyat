@@ -1,7 +1,6 @@
-
-import React, {useState} from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
-import {Box, VStack, HStack, Button} from 'native-base';
+import React, { useState } from 'react';
+import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { Box } from 'native-base';
 
 import PortfolioCard from '../components/PortfolioCard';
 import ExchangeCardsSlider from '../components/ExchangeCardSlider';
@@ -10,7 +9,6 @@ import Header from '../components/Header';
 import BackgroundCircles from '../components/BackgroundCircles';
 import MarketCategories from '../components/MarketCategories';
 import WinLoseCategory from '../components/WinLoseCategory';
-
 
 export default function MarketsScreen() {
   const [activeCategory, setActiveCategory] = useState('Overview');
@@ -28,21 +26,22 @@ export default function MarketsScreen() {
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
       />
-
-      <View style={styles.portfolioContainer}>
-        <PortfolioCard />
-      </View>
-      <View style={styles.exchangeContainer}>
-        <ExchangeCardsSlider />
-      </View>
-      <WinLoseCategory
-        activeCategory={activeCategory}
-        setActiveCategory={setActiveCategory}
-        onCategoryPress={handleCategoryPress}
-      />
-      <View style={styles.currencyCardRenderer}>
-        <CurrencyCardRenderer activeCategory={activeCategory} />
-      </View>
+      <ScrollView>
+        <Box style={styles.portfolioContainer}>
+          <PortfolioCard />
+        </Box>
+        <Box style={styles.exchangeContainer}>
+          <ExchangeCardsSlider />
+        </Box>
+        <WinLoseCategory
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+          onCategoryPress={handleCategoryPress}
+        />
+        <Box style={styles.currencyCardRenderer}>
+          <CurrencyCardRenderer activeCategory={activeCategory} />
+        </Box>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -53,26 +52,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
     width: '100%',
   },
-
+  header: {
+    marginBottom: 10,
+  },
+  cardContainer: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
   portfolioContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -210,
-    marginBottom: 20,
+    marginTop: 10,
   },
   exchangeContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -80,
+    marginTop: 10,
     marginBottom: -40,
   },
   currencyCardRenderer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 0,
+    marginTop: -8,
     marginBottom: 10,
   },
 });

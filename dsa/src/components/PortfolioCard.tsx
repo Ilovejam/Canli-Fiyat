@@ -4,7 +4,7 @@ import { Box, VStack, Text } from 'native-base';
 const PortfolioCard = () => {
   return (
     <Box
-      style={{ backgroundColor: "linear-gradient(90deg, rgba(42,47,83,1) 0%, rgba(8,9,17,1) 100%)" }}
+      style={{ backgroundColor: "linear-gradient(90deg, rgba(42,47,83,1) 0%, rgba(8,9,17,1) 0%)" }}
       borderRadius={10}
       marginBottom={0}
       padding={4}
@@ -12,7 +12,7 @@ const PortfolioCard = () => {
       minHeight={2}
     >
       <Text color="#fff" fontSize={11} fontWeight="bold" >
-        ANA PORTFOLIO
+        ANA PORTFOLYO
       </Text>
       <VStack alignItems="flex-start">
       <Text style={{ color: "#67BBF9", fontSize: 32, fontWeight:900, marginBottom: 2, marginTop: 3, lineHeight:40 }}>
@@ -26,9 +26,9 @@ const PortfolioCard = () => {
           <Text color="#FCC7D4" fontSize={14} marginLeft={19}>
             -1.481,72
             </Text>
-          <Box flexDirection="row" alignItems="center" bg="#F1AFB0" paddingX={2} borderRadius={4}>
+          <Box flexDirection="row" alignItems="center" bg="rgba(252, 199, 212, 1)" paddingX={2} borderRadius={4}>
             
-            <Text color="#FCC7D4" fontSize={14}>
+            <Text color="rgba(174, 63, 90, 1)" fontSize={14}>
               -1.23%
             </Text>
           </Box>

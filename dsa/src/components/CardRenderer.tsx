@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import CurrencyCard from './CurrencyCard';
 import axios from 'axios';
 
@@ -54,8 +54,9 @@ const CurrencyCardRenderer = ({ activeCategory }: CurrencyCardRendererProps) => 
     .filter((coin) => activeCategory === 'Kazananlar' ? coin.change > 0 : activeCategory === 'Kaybedenler' ? coin.change < 0 : true)
     .slice(0, 10);
 
-  const renderItem = ({ item }: { item: CurrencyCardData }) => (
+  const currencyCards = filteredCoinData.map((item) => (
     <CurrencyCard
+      key={item.id}
       icon={item.icon}
       name={item.name}
       symbol={item.symbol}
@@ -64,7 +65,7 @@ const CurrencyCardRenderer = ({ activeCategory }: CurrencyCardRendererProps) => 
       marketCap={item.marketCap}
       volume={item.volume}
     />
-  );
+  ));
 
   if (isLoading) {
     return null;
@@ -72,11 +73,7 @@ const CurrencyCardRenderer = ({ activeCategory }: CurrencyCardRendererProps) => 
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={filteredCoinData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      {currencyCards}
     </View>
   );
 };

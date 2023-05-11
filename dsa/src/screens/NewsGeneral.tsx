@@ -71,13 +71,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+    marginLeft: -10,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     marginHorizontal: 20,
-    marginTop: 20,
-    marginBottom: -10,
+    marginTop: 10,
+    marginBottom: 0,
     fontFamily: 'Worksans-Black',
   },
   eventsContainer: {
@@ -98,6 +99,7 @@ const styles = StyleSheet.create({
   newsContainer: {
     borderRadius: 5,
     marginHorizontal: 1,
+    marginTop: -40,
     marginVertical: -50,
     padding: 10,
     shadowColor: '#000',

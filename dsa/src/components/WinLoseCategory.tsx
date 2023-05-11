@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 
 interface WinLoseCategoryProps {
   activeCategory: string;
@@ -8,19 +8,53 @@ interface WinLoseCategoryProps {
 }
 
 export default function WinLoseCategory({ activeCategory, setActiveCategory, onCategoryPress }: WinLoseCategoryProps) {
-  const getCategoryStyle = (category: string) => {
-    if (category === activeCategory) {
-      return { fontWeight: "bold", borderBottomColor: "#1A202C", color: "#000000", borderBottomWidth: 2, borderColor: "green" };
-    } else {
-      return { borderBottomColor: "#D1D5DB", color: "#6A6A6A",  borderBottomWidth: 0 };
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (isClicked) {
+      timeout = setTimeout(() => {
+        setIsClicked(false);
+      }, 10);
     }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isClicked]);
+
+  const getCategoryStyle = (category: string) => {
+    if (category === activeCategory && !isClicked) {
+      return {
+        fontWeight: "bold",
+        color: "#000000",
+      };
+    } else {
+      return {
+        fontWeight: "normal",
+        color: "#6A6A6A",
+      };
+    }
+  };
+
+  const handleCategoryPress = (category: string) => {
+    setIsClicked(true);
+    setActiveCategory(category);
+    onCategoryPress(category);
   };
 
   return (
     <View style={styles.catalogContainer}>
-      <Text style={[styles.catalogItem, getCategoryStyle("Kazananlar")]} onPress={() => { setActiveCategory("Kazananlar"); onCategoryPress("Kazanan"); }}>Kazananlar</Text>
-      <Text style={[styles.catalogItem, getCategoryStyle("Kaybedenler")]} onPress={() => { setActiveCategory("Kaybedenler"); onCategoryPress("Kaybeden"); }}>Kaybedenler</Text>
-      <Text style={[styles.catalogItem, getCategoryStyle("En Hacimliler")]} onPress={() => setActiveCategory("En Hacimliler")}>En Hacimliler</Text>
+      <TouchableWithoutFeedback onPress={() => handleCategoryPress("Kazananlar")}>
+        <Text style={[styles.catalogItem, getCategoryStyle("Kazananlar")]}>Kazananlar</Text>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={() => handleCategoryPress("Kaybedenler")}>
+        <Text style={[styles.catalogItem, getCategoryStyle("Kaybedenler")]}>Kaybedenler</Text>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={() => handleCategoryPress("En Hacimliler")}>
+        <Text style={[styles.catalogItem, getCategoryStyle("En Hacimliler")]}>En Hacimliler</Text>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
@@ -34,11 +68,10 @@ const styles = StyleSheet.create({
     width: "100%",
     marginLeft: 14,
     marginBottom: 10,
+    marginTop: 70,
   },
   catalogItem: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#6A6A6A",
     marginRight: 20,
     paddingBottom: 5,
   },
