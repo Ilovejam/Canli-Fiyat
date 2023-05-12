@@ -4,14 +4,26 @@ import { Box, VStack, Text } from 'native-base';
 const PortfolioCard = () => {
   return (
     <Box
-      style={{ backgroundColor: "linear-gradient(90deg, rgba(42,47,83,1) 0%, rgba(8,9,17,1) 0%)" }}
-      borderRadius={10}
-      marginBottom={0}
-      padding={4}
-      width="90%"
-      minHeight={2}
+      style={{ 
+        backgroundColor: '#2A2F53',
+        bgGradient: {
+          colors: ['#2A2F53', '#161A39'],
+          start: { x: 0, y: 0 },
+          end: { x: 0, y: 1 },
+        },
+        borderRadius:10,
+        marginBottom:0,
+        padding:14,
+        width:"95%",
+        minHeight:2,
+        shadowColor: 'rgba(23, 27, 58, 0.44)',
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.7,
+        shadowRadius: 7,
+      }}
+
     >
-      <Text color="#fff" fontSize={11} fontWeight="bold" >
+      <Text color="#fff" fontFamily={"Worksans-Black"} fontSize={11} fontWeight="700" >
         ANA PORTFOLYO
       </Text>
       <VStack alignItems="flex-start">
@@ -41,7 +53,7 @@ const PortfolioCard = () => {
           <Text color="#C7F6E5" fontSize={14} marginLeft={10}>
               41.481,72
             </Text>
-          <Box flexDirection="row" alignItems="center" bg="#B8DEC3" paddingX={2} borderRadius={4}>
+          <Box flexDirection="row" alignItems="center" bg="#C7F6E5" paddingX={2} borderRadius={4}>
             
             <Text color="#4EAD68" fontSize={14}>
               +1,19%

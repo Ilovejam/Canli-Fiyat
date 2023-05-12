@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
-import { View, Text, Image, FlatList, Box } from 'native-base';
+import { View, Text, Image, FlatList, Box, } from 'native-base';
+import { StyleSheet } from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NewsPrivate from '../screens/NewsPrivate';
+import { BlurView } from '@react-native-community/blur';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -31,39 +34,38 @@ const NewsSlider = () => {
   const handlePress = (article) => {
     navigation.navigate('NewsPrivate', { article });
   };
-  
-  
-      
+
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handlePress(item)}>
-      <Box p={0} borderRadius={8} mx={1} width={screenWidth - 50}>
-        <View style={{ width: '100%', height: screenWidth * 0.6 }}>
+      <Box p={0} mx={1} width={screenWidth - 40} style={styles.container}>
+        <View style={{ width: '100%', height: screenWidth * 0.5 }}>
           <Image
             source={{ uri: item.urlToImage }}
             alt={item.title}
             resizeMode="cover"
-            borderRadius={8}
             style={{ width: '100%', height: '100%' }}
           />
-          <Box
+          <BlurView
             position="absolute"
             bottom={0}
             left={0}
             right={0}
             px={3}
             py={2}
-            bg="rgba(0,0,0,0.9)"
-            backdrop-filter= "blur(63px)"
+            blurType="dark"
+            blurAmount={63}
+            borderTopLeftRadius={8}
+            borderTopRightRadius={8}
             borderBottomLeftRadius={8}
             borderBottomRightRadius={8}
           >
-            <Text color="white" fontSize="lg">
+            <Text color="white" fontSize="lg" marginLeft={2} marginBottom={-3} paddingLeft={2} paddingTop={2}> 
               {item.title.length > 68 ? item.title.slice(0, 65) + '...' : item.title}
             </Text>
-            <Text color="blue.400" fontSize="sm" mt={1}>
+            <Text color="blue.400" fontSize="sm" mt={1} marginLeft={2} marginBottom={1} paddingLeft={2} paddingTop={2}>
               {' ' + item.source.name + ' · ' + Math.floor(Math.random() * 6) + 0 + ' dk'}
             </Text>
-          </Box>
+          </BlurView>
         </View>
       </Box>
     </TouchableOpacity>
@@ -80,5 +82,13 @@ const NewsSlider = () => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop:  -0,
+    borderRadius: 15,
+    overflow: 'hidden',
+  },
+});
 
 export default NewsSlider;

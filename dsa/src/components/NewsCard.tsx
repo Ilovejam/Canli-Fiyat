@@ -55,6 +55,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 20,
     backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
+    
   },
   readTime: {
     color : "#67BBF9",

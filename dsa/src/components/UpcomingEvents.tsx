@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-import backgroundImage from '../images/upcomingbackground.png';
 import titlebackground from '../images/titlebackground.png';
+import backgroundImage from '../images/eventdatebg.png';
 import axios from 'axios';
+import { BlurView } from '@react-native-community/blur';
 import { Linking } from 'react-native';
 
 
@@ -11,7 +12,7 @@ const UpcomingEvents = () => {
     {
       id: 1,
       date: '11 Mar',
-      title: 'Çin - Tüketici Fiyat Endeksi (TÜFE)',
+      title: 'Çin - Tüketici Fiyat Endeksi (TÜFE)     ',
       url: 'https://tr.investing.com/economic-calendar/chinese-cpi-459',
     },
     {
@@ -35,24 +36,17 @@ const UpcomingEvents = () => {
       return (
         <TouchableOpacity style={styles.eventContainer} key={event.id} onPress={() => handleEventPress(event.url)}>
           <View style={styles.dateContainer}>
-            <ImageBackground
-              source={backgroundImage}
-              style={styles.dateBackgroundImage}
-              imageStyle={styles.dateBackgroundImageStyle}
-            >
-              <Text style={styles.dateDay}>{event.date.substring(0, 2)}</Text>
-              <Text style={styles.dateMonth}>{event.date.substring(3)}</Text>
-            </ImageBackground>
+          <BlurView style={styles.dateBlur} blurType="light" blurAmount={10}>
+                <Text style={styles.dateDay}>{event.date.substring(0, 2)}</Text>
+                <Text style={styles.dateMonth}>{event.date.substring(3)}</Text>
+              </BlurView>
           </View>
-          <View style={styles.titleContainer}>
-            <ImageBackground
-              source={titlebackground}
-              style={styles.titleBackgroundImage}
-              imageStyle={styles.titleBackgroundImageStyle}
-            >
+          <View style={[styles.titleContainer, { borderRadius: 10 }]}>
+            <BlurView style={styles.titleBlur} blurType="light" blurAmount={10}>
               <Text style={styles.titleText}>{event.title}</Text>
-            </ImageBackground>
+            </BlurView>
           </View>
+
         </TouchableOpacity>
       );
     });
@@ -64,15 +58,17 @@ const UpcomingEvents = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    marginBottom: 10,
+    marginBottom: 35,
+    marginTop:-15,
   },
   eventContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    borderRadius: 15,
+    borderRadius: 10,
     marginBottom: -15,
     borderTopRightRadius: 100,
+    marginTop: 10,
   },
   dateContainer: {
     flexDirection: 'column',
@@ -85,27 +81,50 @@ const styles = StyleSheet.create({
     marginRight: 12,
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'contain',
-    borderRadius: 15, // Add this line
+    borderRadius: 10,
   },
-  dateBackgroundImage: {
+  dateBlur: {
     flex: 1,
     width: '120%',
     height: '120%',
-    resizeMode: 'contain',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    overflow: 'hidden',
+    right: '-10%',
+    top: '10%',
+    borderRadius: 10,
+    backgroundColor: 'rgba(15, 255, 128, 0.4)',
+    borderWidth: 0.4,
+    borderColor: '#E5E5E5',
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
   },
-  dateBackgroundImageStyle: {
-    borderRadius: 5,
+  titleBlur: {
+    flex: 1,
+    width: '110%',
+    height: '100%',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 0.4,
+    borderColor: '#E5E5E5',
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    marginTop: 5,
   },
   dateMonth: {
     color: 'black',
     fontSize: 12,
     textAlign: 'center',
     marginBottom: 5,
-    marginLeft: 10,
+    marginLeft: 0,
     fontWeight: '400',
   },
   dateDay: {
@@ -114,35 +133,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 5,
-    marginLeft: 10,
+    marginLeft: 0,
   },
   titleContainer: {
     flex: 1,
-    borderRadius: 2,
     paddingHorizontal: 2,
     paddingVertical: 6,
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'left', // add this line
-
-  },
-  
-  titleBackgroundImage: {
-    width: 290,
-    height: 70,
-    resizeMode: 'contain',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  titleBackgroundImageStyle: {
-    borderRadius: 2,
+    textAlign: 'left',
+    overflow: 'hidden',
+    width: '100%',
+    borderRadius: 10,
   },
   titleText: {
     fontSize: 16,
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: '#222222',
     paddingVertical: 10,
+    marginTop: 2,
     paddingRight: 5,
+    borderRadius: 10,
   },
 });
 

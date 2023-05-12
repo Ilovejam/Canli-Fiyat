@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   title: {
     lineHeight: 30,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Worksans-Black',
 
     fontSize: 25,
     fontWeight: 'bold',

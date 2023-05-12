@@ -43,13 +43,13 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
         </View>
         <View>
           <Text style={styles.name}>{name}</Text>
-          <Text style={styles.symbol}>({symbol.toUpperCase()})</Text>
+          <Text style={styles.symbol}>({symbol.toUpperCase()} - USD)</Text>
         </View>
 
         <View style={styles.chartContainer}>
         <LineChart
           data={{ datasets: [{ data: chartData }] }}
-          width={150}
+          width={160}
           height={50}
           chartConfig={{
             backgroundGradientFromOpacity: 0,
@@ -57,7 +57,7 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
             decimalPlaces: 0,
             color : () => change < 0 ? '#AE3F5A' : '#6DF0C1',
             style: {
-              borderRadius: 16,
+              borderRadius: 10,
             },
             propsForDots: {
               r: '0',
@@ -75,7 +75,7 @@ const CurrencyCard = ({ icon, name, symbol, price, change }: CurrencyCardProps) 
 
         </View>
         <View style={styles.contentContainer}>
-          <Text style={styles.price}>${price.toFixed(2)}</Text>
+          <Text style={styles.price}>${price.toFixed(1)}</Text>
           <Text style={[styles.change, change < 0 ? styles.changeNegative : styles.changePositive]}>{change.toFixed(2)}%</Text>
         </View>
       </View>
@@ -93,14 +93,19 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginBottom: 3,
-    height: 60,
+    height: 70,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
   },
   iconContainer: {
     marginRight: 16,
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
   },
   chartContainer: {
     flex: 1,
@@ -112,24 +117,25 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 15,
     marginBottom: 2,
     color: 'rgba(21, 25, 53, 1)',
   },
   symbol: {
-    fontSize: 14,
+    fontSize: 11,
     marginBottom: 2,
+    marginRight:-10,
     color: 'rgba(137, 139, 153, 1)',
   },
   price: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 2,
     color: '#282828',
     
   },
   change: {
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: 'bold',
   },
   changePositive: {

@@ -1,29 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, ScrollView, TouchableWithoutFeedback } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native";
 
-interface MarketCategoriesProps {
+interface MarketPrivateCategoryProps {
   activeCategory: string;
   setActiveCategory: (category: string) => void;
 }
 
-export default function MarketCategories({ activeCategory, setActiveCategory }: MarketCategoriesProps) {
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [isClicked, setIsClicked] = useState(false);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
-    if (isClicked) {
-      timeout = setTimeout(() => {
-        setIsClicked(false);
-      }, 100);
-    }
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [isClicked]);
-
+export default function MarketPrivateCategory({ activeCategory, setActiveCategory }: MarketPrivateCategoryProps) {
   const getCategoryStyle = (category: string) => {
     if (category === activeCategory) {
       return {
@@ -31,7 +14,6 @@ export default function MarketCategories({ activeCategory, setActiveCategory }: 
         borderBottomColor: "#1A202C",
         color: "#000000",
         borderBottomWidth: 2,
-        borderColor: "green",
       };
     } else {
       return {
@@ -43,22 +25,21 @@ export default function MarketCategories({ activeCategory, setActiveCategory }: 
   };
 
   const handleCategoryPress = (category: string) => {
-    setIsClicked(true);
-    setSelectedCategory(category);
     setActiveCategory(category);
   };
 
-  
   return (
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <View style={styles.catalogContainer}>
         <View style={styles.categoryContainer}>
-          {["Döviz", "Emtialar", "Borsa Endeksleri", "Kripto", "Kıymetli Madenler"].map((category, index) => (
-            <TouchableWithoutFeedback key={category} onPress={() => handleCategoryPress(category)}>
-              <View style={[styles.catalogItemContainer, index === 0 && styles.firstItemContainer]}>
-                <Text style={[styles.catalogItem, getCategoryStyle(category)]}>{category}</Text>
-              </View>
-            </TouchableWithoutFeedback>
+          {["Genel Bakış", "Döviz Pariteleri", "Emtialar", "Borsa Endeksleri", "Kripto", "Kıymetli Madenler"].map((category) => (
+            <TouchableOpacity
+              key={category}
+              onPress={() => handleCategoryPress(category)}
+              style={[styles.catalogItemContainer, activeCategory === category && styles.selectedItemContainer]}
+            >
+              <Text style={[styles.catalogItem, getCategoryStyle(category)]}>{category}</Text>
+            </TouchableOpacity>
           ))}
         </View>
         <View style={styles.catalogLine} />
@@ -72,19 +53,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
-    height: 22
+    height: 22,
+    width: "100%",
+    backgroundColor: "transparent",
   },
   categoryContainer: {
     flexDirection: "row",
     alignItems: "center",
-    height: 22
+    justifyContent: "space-between",
+    flexGrow: 1,
+    height: 22,
+    width: "100%",
+    fontFamily:"WorkSans-Black"
   },
   catalogItemContainer: {
     marginRight: 20,
     paddingBottom: 5,
-  },
-  firstItemContainer: {
-    marginLeft: 20,
   },
   selectedItemContainer: {
     borderBottomColor: "#67BBF9",
@@ -94,7 +78,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#6A6A6A",
-    height: 22,
   },
   catalogLine: {
     height: 2,
