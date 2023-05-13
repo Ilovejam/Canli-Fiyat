@@ -51,7 +51,7 @@ const CurrencyCardRenderer = ({ activeCategory }: CurrencyCardRendererProps) => 
   }, []);
 
   const filteredCoinData = coinData
-    .filter((coin) => activeCategory === 'Kazananlar' ? coin.change > 0 : activeCategory === 'Kaybedenler' ? coin.change < 0 : true)
+    .filter((coin) => activeCategory === 'Kazananlar' ? coin.change > 0 : activeCategory === 'Kaybedenler' ? coin.change >= 0  : true)
     .slice(0, 10);
 
   const currencyCards = filteredCoinData.map((item) => (

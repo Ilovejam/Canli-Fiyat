@@ -13,7 +13,7 @@ export default function WinLoseCategory({ activeCategory, setActiveCategory }: W
         fontWeight: "bold",
         borderBottomColor: "#1A202C",
         color: "#000000",
-        borderBottomWidth: 2,
+        borderBottomWidth: 0,
       };
     } else {
       return {
