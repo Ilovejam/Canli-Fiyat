@@ -8,13 +8,14 @@ const PortfolioCard = () => {
       style={{
         borderRadius: 10,
         marginBottom: 10,
-        padding: 8,
         width: '95%',
-        minHeight: 60,
+        minHeight: 120,
         shadowColor: 'rgba(23, 27, 58, 0.44)',
         shadowOffset: { width: 0, height: 12 },
         shadowOpacity: 0.7,
         shadowRadius: 7,
+        marginTop: 0,
+        marginLeft: 10,
       }}
     >
       <LinearGradient

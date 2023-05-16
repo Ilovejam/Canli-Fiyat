@@ -14,13 +14,15 @@ const ProfileScreen = () => {
       <ProfilePicture
         imageUrl="https://img.freepik.com/free-photo/close-up-portrait-young-bearded-man-face_171337-2887.jpg"
         size={100}
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 35 }}
       />
       <View style={[styles.nameContainer, { flex: 1 }]}>
         <Text style={styles.name}>Mücahit Coşkun Eryılmaz</Text>
         <Text style={styles.jobTitle}>Ürün Yöneticisi</Text>
       </View>
-      <PortfolioCard style={styles.portfolioCard} />
+      <View style={{ flex: 1 , width:"90%", marginTop:-10}}>
+        <PortfolioCard /> 
+      </View>
       <View style={{ alignSelf: 'flex-start', marginLeft: 20 }}>
         <Text style={styles.profileMessage}>Profilinizi Tamamlayın</Text>
       </View>
@@ -36,7 +38,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   portfolioCard: {
-    marginTop: 10,
+    width: '90%',
+    height: 200,
+    marginTop: 20,
   },
   nameContainer: {
     marginTop: 20,

@@ -1,77 +1,127 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import io from 'socket.io-client';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import Header from '../components/Header';
+import BackgroundCircles from '../components/BackgroundCircles';
+import PortfolioCard from '../components/PortfolioCard';
+import SocketPriceCards from '../components/SocketPriceCards';
+import SocketSliders from '../components/SocketSliders';
+import ExchangeCardSlider from '../components/ExchangeCardSlider';
+import WinLoseCategory from '../components/WinLoseCategory';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const SYMBOL_LIST = ["albfx-EURUSD", "albfx-GBPUSD", "albfx-DXY", "albfx-XAUUSD", "albfx-GOOGLE", "albfx-AMAZON"];
-
-const PricesScreen = () => {
-  const [prices, setPrices] = useState({});
-
-  useEffect(() => {
-    const socket = io('wss://pusher.alb.com/market', {
-      reconnection: true,
-      reconnectionAttempts: 10,
-      reconnectionDelay: 3500,
-      auth: { token: 'Test' },
-    });
-
-    socket.on('connect', () => {
-      console.log('Connected to WebSocket');
-      socket.emit('subscribe', '424B0B1C');
-    });
-
-    socket.on('sendorder', (data) => {
-      const symbol = data._i.replace('albfx-', '');
-      if (SYMBOL_LIST.includes(data._i)) {
-        setPrices(prevPrices => {
-          const newPrices = { ...prevPrices };
-          newPrices[symbol] = data.b.toFixed(4);
-          return newPrices;
-        });
-      }
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Disconnected from WebSocket');
-    });
-
-    return () => {
-      socket.disconnect();
-    }
-  }, []);
-
-  return (
-    <View style={styles.container}>
-      {SYMBOL_LIST.map((symbol) => (
-        <View style={styles.priceRow} key={symbol}>
-          <Text style={styles.symbol}>{symbol}</Text>
-          <Text style={styles.price}>{prices[symbol.replace('albfx-', '')] || '-'}</Text>
-        </View>
-      ))}
-    </View>
-  );
+const CATEGORIES = {
+  'Döviz': ['EURTRY', 'USDTRY', 'GBPTRY', 'AUDTRY'],
+  'Kripto Para': ['BNBUSD', 'ETHTRY', 'XRPUTRY', 'LTCTRY'],
+  'Emtia': ['GAUTRY', 'GUMSTRY', 'GALTRY', 'WHEAT'],
+  'Borsa Endeksleri': ['GER30_Cash', 'DOW30_Cash', 'NAS100_Cash', 'NAS100#'],
+  "Kıymetli Madenler": ["XAUUSD", "SGATA", "SGYARIM", "SGLD"],
 };
 
+const PricesScreen = () => {
+  const [selectedCategory, setSelectedCategory] = useState('Döviz');
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const [activeCategory, setActiveCategory] = useState('Overview');
+  const handleCategoryPress = (category) => {
+    setActiveCategory(category);
+    // Perform any other necessary actions here
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.market}>
+        <BackgroundCircles />
+        <Header title="Piyasalar" style={styles.header} />
+        <View style={styles.categoryContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {Object.keys(CATEGORIES).map((category) => (
+              <TouchableOpacity
+                key={category}
+                style={styles.categoryButton}
+                onPress={() => handleCategoryChange(category)}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginTop: 10,
+                    color: selectedCategory === category ? '#000000' : '#898B99',
+                    fontWeight: selectedCategory === category ? 'bold' : 'normal',
+                  }}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+        <ScrollView>
+          <View style={styles.portfolioCard}>
+            <PortfolioCard />
+          </View>
+          <View style={styles.exchangeContainer}>
+            <ExchangeCardSlider />
+          </View>
+          <WinLoseCategory
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            onCategoryPress={handleCategoryPress}
+          />
+          <ScrollView style={styles.priceRowContainer}>
+            <SocketPriceCards selectedCategory={selectedCategory} categories={CATEGORIES} />
+          </ScrollView>
+       </ScrollView>
+      </View>
+    </SafeAreaView>
+  );
+  
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingHorizontal: 0,
+    marginTop: -50,
   },
-  priceRow: {
+  market: {
+    flex: 1,
+    backgroundColor: '#fff',
+    marginTop: 50,
+  },
+  header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    marginBottom: -40,
+    marginTop: 0,
+  },
+  categoryContainer: {
+    marginBottom: -50,
+    marginTop: -20,
+    zIndex: 1, // Ensure the category section stays on top
+    backgroundColor: '#fff',
+    height: 50,
+  },
+  categoryButton: {
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+  },
+  contentContainer: {
+    flex: 1,
+    paddingTop: 10,
+  },
+  portfolioCard: {
     marginBottom: 10,
+    marginTop: 60,
+    position: 'relative', // Add relative positioning
+    zIndex: 0,
   },
-  symbol: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  price: {
-    fontSize: 16,
+  exchangeContainer: {
+    marginBottom: -50,
+    height: 100,
+
   },
 });
+
 
 export default PricesScreen;
