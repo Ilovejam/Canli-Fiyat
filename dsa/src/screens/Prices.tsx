@@ -10,11 +10,11 @@ import WinLoseCategory from '../components/WinLoseCategory';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CATEGORIES = {
-  'Döviz': ['EURTRY', 'USDTRY', 'GBPTRY', 'AUDTRY'],
-  'Kripto Para': ['BNBUSD', 'ETHTRY', 'XRPUTRY', 'LTCTRY'],
-  'Emtia': ['GAUTRY', 'GUMSTRY', 'GALTRY', 'WHEAT'],
-  'Borsa Endeksleri': ['GER30_Cash', 'DOW30_Cash', 'NAS100_Cash', 'NAS100#'],
-  "Kıymetli Madenler": ["XAUUSD", "SGATA", "SGYARIM", "SGLD"],
+  'Döviz': ['EURTRY', 'USDTRY', 'GBPTRY', 'AUDTRY', 'AUDCAD','CHFTRY', 'BTCUSD','CADTRY','CNYTRY','RUBTRY','JPYTRY'],
+  'Kripto Para': ['BNBUSD', 'ETHTRY', 'XRPUTRY', 'LTCTRY','ADAUSD','AVAXUSD','BTCTRY','BTCUSD','BUSDUSD','CRODUSD','LUNAUSD', 'SHIBUSD','XMRUSD'],
+  'Emtia': ['GAUTRY', 'XAGTRY', 'XAGUSD', 'WHEAT','BRENTUSD', 'XPDEUR', 'XPDUSD', 'XPTEUR', 'WTIUSD'],
+  'Borsa Endeksleri': ['GER30_Cash', 'DOW30_Cash', 'NAS100_Cash', 'NAS100#','XGIDA','XILTM','XTRZM', 'XU^='],
+  "Kıymetli Madenler": ['EURGLD','SCUM','SG22BIL','SGATA','SGBESLI','SGCEYREK','SGLD', 'SGYARIM', 'SGZIYNET','XAUTRY'],
 };
 
 const PricesScreen = () => {
