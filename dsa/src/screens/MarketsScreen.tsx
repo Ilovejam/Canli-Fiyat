@@ -10,6 +10,7 @@ import BackgroundCircles from '../components/BackgroundCircles';
 import MarketCategories from '../components/MarketCategories';
 import WinLoseCategory from '../components/WinLoseCategory';
 
+
 export default function MarketsScreen() {
   const [activeCategory, setActiveCategory] = useState('Overview');
 
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   header: {
-    marginBottom: 10,
+    marginBottom: 12,
   },
   cardContainer: {
     marginVertical: 10,

@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
 
     fontSize: 25,
     fontWeight: 'bold',
-    color: '#000'  },
+    marginBottom: 3,
+    color: '#000'  }
 });
 
 export default Header;

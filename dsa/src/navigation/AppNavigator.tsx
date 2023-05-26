@@ -18,7 +18,7 @@ import ContactInformationSettings from '../screens/ContactInformationSettings';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import VerifyUserScreen from '../screens/VerifyUserScreen';
-import Prices from '../screens/Prices';
+import PricesScreen from '../screens/Prices';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -122,8 +122,9 @@ const MarketsStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
-      <Stack.Screen name="MarketsScreen" component={MarketsScreen} />
+      }}
+    >
+      <Stack.Screen name="PricesScreen" component={PricesScreen} />
       <Stack.Screen name="MarketPrivate" component={MarketPrivate} />
     </Stack.Navigator>
   );
@@ -169,7 +170,7 @@ const MainTabNavigator = () => {
       })}
       >
       {/* <Tab.Screen name="Piyasalar" component={MarketsStackNavigator} /> */}
-      <Tab.Screen name="Piyasalar" component={Prices} />
+      <Tab.Screen name="Piyasalar" component={MarketsStackNavigator} />
       <Tab.Screen name="Haberler" component={NewsStackNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>

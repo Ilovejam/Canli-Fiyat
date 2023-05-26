@@ -11,14 +11,14 @@ const UpcomingEvents = () => {
   const [events, setEvents] = useState([
     {
       id: 1,
-      date: '11 Mar',
-      title: 'Çin - Tüketici Fiyat Endeksi (TÜFE)     ',
+      date: '26 May',
+      title: 'GBP Retail Sales (MoM)',
       url: 'https://tr.investing.com/economic-calendar/chinese-cpi-459',
     },
     {
       id: 2,
-      date: '10 May',
-      title: 'Yeni Zelanda - Yiyecek Fiyat Endeksi',
+      date: '26 May',
+      title: 'GBP Core Retail Sales (YoY)))',
       url: 'https://tr.investing.com/economic-calendar/fpi-110',
     },
   ]);
