@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import io from 'socket.io-client';
 import { LineChart } from 'react-native-chart-kit';
+import { useNavigation } from '@react-navigation/native';
+import MarketPrivate from '../screens/MarketPrivate';
+
 
 const SocketPriceCards = ({ selectedCategory, categories }) => {
   const [prices, setPrices] = useState({});
   const [chartData, setChartData] = useState({});
+  const navigation = useNavigation();
+
+  const handleCardPress = (symbol) => {
+    navigation.navigate('MarketPrivate', { symbol });
+  };
+  
+
 
   useEffect(() => {
     const socket = io('wss://pusher.alb.com/market', {
       reconnection: true,
       reconnectionAttempts: 10,
-      reconnectionDelay: 10000,
+      reconnectionDelay: 3000,
       auth: { token: 'Test' },
     });
 
@@ -104,17 +114,22 @@ const SocketPriceCards = ({ selectedCategory, categories }) => {
   return (
     <View style={styles.container}>
       {categories[selectedCategory].map((symbol) => (
-        <View style={styles.card} key={symbol}>
+        <TouchableOpacity
+          key={symbol}
+          style={styles.card}
+          onPress={() => handleCardPress(symbol)}
+        >
           <View style={styles.cardLeft}>
             <Text style={styles.symbol}>{symbol}</Text>
             {renderGraph(symbol)}
           </View>
           <Text style={styles.price}>{prices[symbol] || '-'}</Text>
-        </View>
+        </TouchableOpacity>
       ))}
     </View>
   );
 };
+
 const styles = StyleSheet.create({
     container: {
       marginTop: 10,
