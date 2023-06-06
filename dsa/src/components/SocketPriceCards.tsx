@@ -4,11 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const SocketPriceCards = ({ initialCategory, categories, activeCategory }) => {
+const SocketPriceCards = ({ initialCategory, categories, activeCategory, selectedCategory }) => {
   const [prices, setPrices] = useState({});
   const [dailyChanges, setDailyChanges] = useState({});
   const [changeRateImages, setChangeRateImages] = useState({});
-  const [selectedSection, setSelectedSection] = useState(initialCategory);
   const navigation = useNavigation();
 
   const handleCardPress = (symbol) => {
@@ -50,7 +49,7 @@ const SocketPriceCards = ({ initialCategory, categories, activeCategory }) => {
 
     const handlePriceUpdate = (data) => {
       const symbol = data._i.replace('albfx-', '');
-      if (categories[selectedSection].includes(symbol)) {
+      if (categories[selectedCategory].includes(symbol)) {
         setPrices((prevPrices) => ({
           ...prevPrices,
           [symbol]: data.b.toFixed(4),
@@ -73,7 +72,7 @@ const SocketPriceCards = ({ initialCategory, categories, activeCategory }) => {
       socket.off('sendorder', handlePriceUpdate);
       socket.disconnect();
     };
-  }, [selectedSection]);
+  }, [selectedCategory]);
 
   const isWinning = (symbol) => {
     return dailyChanges[symbol] > 0;
@@ -83,45 +82,42 @@ const SocketPriceCards = ({ initialCategory, categories, activeCategory }) => {
     return dailyChanges[symbol] < 0;
   };
 
-  const handleSectionChange = (section) => {
-    setSelectedSection(section);
-  };
-
   useEffect(() => {
-    fetchDailyChanges(categories[selectedSection]);
-  }, [selectedSection]);
+    fetchDailyChanges(categories[selectedCategory]);
+  }, [selectedCategory]);
 
   return (
     <View style={styles.container}>
-      {categories[selectedSection].map((symbol) =>
+      {categories[selectedCategory].map((symbol) => (
         (isWinning(symbol) && activeCategory === 'Kazananlar') ||
-        (isLosing(symbol) && activeCategory === 'Kaybedenler') ? (
-          <TouchableOpacity
-            key={symbol}
-            style={styles.card}
-            onPress={() => handleCardPress(symbol)}
-          >
-            <Text style={styles.symbol}>{symbol}</Text>
-            {changeRateImages[symbol] && (
-              <Image
-                source={{ uri: changeRateImages[symbol] }}
-                style={styles.changeRateImage}
-              />
-            )}
-            <View style={styles.priceContainer}>
-              <Text
-                style={[
-                  styles.dailyChange,
-                  { color: activeCategory === 'Kazananlar' ? 'green' : 'red' },
-                ]}
-              >
-                {dailyChanges[symbol]}
-              </Text>
-              <Text style={styles.price}>{prices[symbol] ? prices[symbol] : '-'}</Text>
-            </View>
-          </TouchableOpacity>
-        ) : null
-      )}
+        (isLosing(symbol) && activeCategory === 'Kaybedenler') ||
+        (activeCategory === 'Hepsi')
+      ) ? (
+        <TouchableOpacity
+          key={symbol}
+          style={styles.card}
+          onPress={() => handleCardPress(symbol)}
+        >
+          <Text style={styles.symbol}>{symbol}</Text>
+          {changeRateImages[symbol] && (
+            <Image
+              source={{ uri: changeRateImages[symbol] }}
+              style={styles.changeRateImage}
+            />
+          )}
+          <View style={styles.priceContainer}>
+            <Text
+              style={[
+                styles.dailyChange,
+                { color: activeCategory === 'Kazananlar' ? 'green' : 'red' },
+              ]}
+            >
+              {dailyChanges[symbol]}
+            </Text>
+            <Text style={styles.price}>{prices[symbol] ? prices[symbol] : '-'}</Text>
+          </View>
+        </TouchableOpacity>
+      ) : null)}
     </View>
   );
 };

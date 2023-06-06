@@ -70,6 +70,7 @@ const PricesScreen = () => {
               initialCategory={selectedCategory}
               categories={CATEGORIES}
               activeCategory={activeCategory}
+              selectedCategory={selectedCategory}
             />
           </ScrollView>
         </ScrollView>
