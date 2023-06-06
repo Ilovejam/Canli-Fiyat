@@ -11,14 +11,14 @@ const UpcomingEvents = () => {
   const [events, setEvents] = useState([
     {
       id: 1,
-      date: '26 May',
-      title: 'GBP Retail Sales (MoM)',
-      url: 'https://tr.investing.com/economic-calendar/chinese-cpi-459',
+      date: '13 Haz',
+      title: '6-Month BTF Auction     ',
+      url: 'https://tr.investing.com/economic-calendar/fpi-110',
     },
     {
       id: 2,
-      date: '26 May',
-      title: 'GBP Core Retail Sales (YoY)))',
+      date: '12 HAZ',
+      title: 'NAB Business Confidence',
       url: 'https://tr.investing.com/economic-calendar/fpi-110',
     },
   ]);

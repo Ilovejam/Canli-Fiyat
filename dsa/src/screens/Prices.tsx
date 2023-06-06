@@ -4,36 +4,33 @@ import Header from '../components/Header';
 import BackgroundCircles from '../components/BackgroundCircles';
 import PortfolioCard from '../components/PortfolioCard';
 import SocketPriceCards from '../components/SocketPriceCards';
-import SocketSliders from '../components/SocketSliders';
 import ExchangeCardSlider from '../components/ExchangeCardSlider';
 import WinLoseCategory from '../components/WinLoseCategory';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CATEGORIES = {
-  'Döviz': ['EURTRY', 'USDTRY', 'GBPTRY', 'AUDTRY', 'AUDCAD','CHFTRY', 'BTCUSD','CADTRY','CNYTRY','RUBTRY','JPYTRY'],
-  'Kripto Para': ['BNBUSD', 'ETHTRY', 'XRPUTRY', 'LTCTRY','ADAUSD','AVAXUSD','BTCTRY','BTCUSD','BUSDUSD','CRODUSD','LUNAUSD', 'SHIBUSD','XMRUSD'],
-  'Emtia': ['GAUTRY', 'XAGTRY', 'XAGUSD', 'WHEAT','BRENTUSD', 'XPDEUR', 'XPDUSD', 'XPTEUR', 'WTIUSD'],
-  'Borsa Endeksleri': ['GER30_Cash', 'DOW30_Cash', 'NAS100_Cash', 'NAS100#','XGIDA','XILTM','XTRZM', 'XU^='],
-  "Kıymetli Madenler": ['EURGLD','SCUM','SG22BIL','SGATA','SGBESLI','SGCEYREK','SGLD', 'SGYARIM', 'SGZIYNET','XAUTRY'],
+  'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CHFJPY", "CADJPY", "CADCHF", "EURAUD", "EURCAD", "EURCHF", "EURGBP", "EURJPY"],
+  'Kripto Para': ["AVALANCHE", "BINANCE", "COINBASE", "POLKADOT", "STELLAR", "BITCOIN", "BITCOINCASH", "BTCAED", "CARDANO", "CHAINLINK", "EOS", "ETHEREUM", "LITECOIN", "NEO", "RIPPLE", "SOLANA", "IOTA"],
+  'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "SOYBEAN", "UKOIL", "XAGEUR", "XAGUSD", "XAUEUR", "XAUUSD", "XPDUSD", "XPTUSD", "USOIL#", "GOLDft", "GOLDft#", "NATGAS#"],
+  'Borsa Endeksleri': ["APPLE", "AT-T", "ATLANTIA", "AVIVA", "BAYER", "BERKSHIRE", "BEYOND", "INTESA", "JNJ", "JPMORGAN", "LMT", "LVMH", "MARRIOTT", "MARVELL", "MCDONALDS", "MICROSOFT", "MODERNA", "NVIDIA"],
+  "Kıymetli Madenler": ["EEM", "EXS1", "EXW1", "GDX", "QQQ", "SPY", "TLT", "GLD", "USO", "FTNG", "UWT", "VXX"],
 };
 
 const PricesScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('Döviz');
+  const [activeCategory, setActiveCategory] = useState('Kazananlar'); // Set initial activeCategory
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
 
-  const [activeCategory, setActiveCategory] = useState('Overview');
   const handleCategoryPress = (category) => {
-    setActiveCategory(category);
-    // Perform any other necessary actions here
+    setActiveCategory((prevCategory) => (prevCategory === category ? null : category));
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.market}>
-        <BackgroundCircles />
         <Header title="Piyasalar" style={styles.header} />
         <View style={styles.categoryContainer}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -67,17 +64,20 @@ const PricesScreen = () => {
           <WinLoseCategory
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
-            onCategoryPress={handleCategoryPress}
           />
           <ScrollView style={styles.priceRowContainer}>
-            <SocketPriceCards selectedCategory={selectedCategory} categories={CATEGORIES} />
+            <SocketPriceCards
+              initialCategory={selectedCategory}
+              categories={CATEGORIES}
+              activeCategory={activeCategory}
+            />
           </ScrollView>
-       </ScrollView>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
-  
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -119,9 +119,7 @@ const styles = StyleSheet.create({
   exchangeContainer: {
     marginBottom: -50,
     height: 100,
-
   },
 });
-
 
 export default PricesScreen;

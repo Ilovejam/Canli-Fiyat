@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, Image } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, Dimensions, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import Header from '../components/Header';
@@ -10,6 +10,8 @@ import UpcomingEvents from '../components/UpcomingEvents';
 const MarketPrivate = ({ route }) => {
   const [news, setNews] = useState([]);
   const [chartUrl, setChartUrl] = useState('');
+  const [showAllNews, setShowAllNews] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchNews();
@@ -18,23 +20,55 @@ const MarketPrivate = ({ route }) => {
     }
   }, [route.params?.symbol]);
 
-  const fetchNews = async () => {
+  const fetchNews = useCallback(async () => {
     try {
       const response = await axios.get('https://widget.canlifiyat.com/news.php?category=all');
       setNews(response.data.data);
     } catch (error) {
       console.log('Error fetching news:', error);
     }
-  };
+  }, []);
 
   const fetchChartUrl = async (symbol) => {
     try {
       const encodedSymbol = encodeURIComponent(symbol);
-      const apiUrl = `https://www.tradingview.com/chart/?symbol=${encodedSymbol}`;
+      const apiUrl = `https://www.tradingview.com/widgetembed/?symbol=${encodedSymbol}&interval=D&symboledit=1&saveimage=0&toolbarbg=f1f3f6&studies=BB%40tv-basicstudies&theme=light&style=1&timezone=exchange&withdateranges=1&hide_side_toolbar=1&hide_legend=1&hideideas=1&hideideasbutton=1&hidesettings=1&hide_volume=1&showpopupbutton=1&enable_publishing=0`;
       setChartUrl(apiUrl);
     } catch (error) {
       console.log(`Error fetching chart URL for ${symbol}:`, error);
     }
+  };
+
+  const renderNewsItems = useCallback(() => {
+    const newsToRender = showAllNews ? news : news.slice(0, 8);
+    return newsToRender.map((item, index) => {
+      const newsData = JSON.parse(item.news_json);
+      const truncatedDescription = newsData.description && newsData.description.length > 65
+        ? newsData.description.substring(0, 65) + '...' 
+        : newsData.description;
+      return (
+        <View key={`${item.news_unique_id}-${index}`} style={styles.newsItem}>
+          <View style={styles.textContainer}>
+            <Text style={styles.newsTitle}>{newsData.header}</Text>
+            {truncatedDescription && (
+              <Text style={styles.newsDescription}>{truncatedDescription}</Text>
+            )}
+            <Text style={styles.newsSource}>{newsData.source}</Text>
+          </View>
+          <View style={styles.imageContainer}>
+            <Image source={require('../images/alb-news.png')} style={styles.newsImage} />
+          </View>
+        </View>
+      );
+    });
+  }, [news, showAllNews]);
+
+  const handleShowMoreNews = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setShowAllNews(true);
+      setIsLoading(false);
+    }, 2000);
   };
 
   return (
@@ -54,26 +88,21 @@ const MarketPrivate = ({ route }) => {
         <Text style={styles.newsSecTitle}>Yaklaşan Etkinlikler</Text>
         <UpcomingEvents />
         <Text style={styles.newsSecTitle}>İlgili Haberler</Text>
-        {news.map((item, index) => {
-          const newsData = JSON.parse(item.news_json);
-          const truncatedDescription = newsData.description && newsData.description.length > 65
-            ? newsData.description.substring(0, 65) + '...' 
-            : newsData.description;
-          return (
-            <View key={`${item.news_unique_id}-${index}`} style={styles.newsItem}>
-              <View style={styles.textContainer}>
-                <Text style={styles.newsTitle}>{newsData.header}</Text>
-                {truncatedDescription && (
-                  <Text style={styles.newsDescription}>{truncatedDescription}</Text>
-                )}
-                <Text style={styles.newsSource}>{newsData.source}</Text>
-              </View>
-              <View style={styles.imageContainer}>
-                <Image source={require('../images/alb-news.png')} style={styles.newsImage} />
-              </View>
-            </View>
-          );
-        })}
+        <View>
+          {renderNewsItems()}
+        </View>
+        {!showAllNews && news.length > 8 && (
+          <TouchableOpacity
+            style={styles.showMoreButton}
+            onPress={handleShowMoreNews}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.showMoreButtonText}>Daha fazla haber göster</Text>
+            )}
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -144,6 +173,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     fontFamily: 'Worksans-Black',
+  },
+  showMoreButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    marginTop: 8,
+    backgroundColor: '#ddd',
+    borderRadius: 8,
+  },
+  showMoreButtonText: {
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 
