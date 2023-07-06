@@ -93,14 +93,16 @@ const SignUpScreen = () => {
         placeholderTextColor={"#603AF5"}
         autoCapitalize="words"
       />
-      <TextInput
-        style={styles.input}
-        value={telephone}
-        onChangeText={text => setPhoneNumber(text)}
-        placeholder="Telefon Numarası"
-        placeholderTextColor={"#603AF5"}
-        keyboardType="phone-pad"
-      />
+
+        <TextInput
+          style={styles.input}
+          value={telephone}
+          onChangeText={text => setPhoneNumber(text)}
+          placeholder="Phone Number without +90"
+          placeholderTextColor={"#603AF5"}
+          keyboardType="phone-pad"
+        />
+
       <TextInput
         style={styles.input}
         value={password}
@@ -129,6 +131,22 @@ const SignUpScreen = () => {
 };
 
 const styles = StyleSheet.create({
+      phoneContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+      },
+      codeText: {
+        fontSize: 18,
+        marginRight: -25,
+      },
+      phoneInput: {
+        flex: 1,
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+      },
+  
     container: {
         flex: 1,
         justifyContent: 'center',

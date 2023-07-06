@@ -11,10 +11,7 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
   
 
   const handleSignIn = () => {
-    console.log('Name:', name);
-    console.log('Telephone:', telephone);
-    console.log('Password:', password);
-    handleAuthentication(true);
+    Alert.alert('Bilgi', 'Kayıt olmalısınız!');
   };
   
 
