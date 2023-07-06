@@ -150,12 +150,16 @@ exports.login = catchAsync(async (req, res, next) => {
   const { telephone, password } = req.body;
 
   if (!telephone || !password) {
-    return next(new AppError("Please provide email and password!", 400));
+    return next(new AppError("Please provide telephone and password!", 400));
   }
 
   const user = await User.findOne({ telephone }).select("+password");
 
-  if (!user || !(await user.correctPassword(password, user.password))) {
+  if (!user) {
+    return next(new AppError("Incorrect telephone or password", 401));
+  }
+
+  if (!(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect telephone or password", 401));
   }
 
@@ -165,6 +169,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   createSendToken(user, 200, req, res);
 });
+
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token;

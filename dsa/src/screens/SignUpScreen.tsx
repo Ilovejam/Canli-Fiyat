@@ -4,57 +4,74 @@ import { useNavigation } from '@react-navigation/native';
 import SignInScreen from './SignInScreen';
 import NewsGeneral from './NewsGeneral';
 import LogoHeader from '../components/LogoHeader';
+import VerifyUser from './VerifyUser';
+
+
+import axios from 'axios';
 
 const SignUpScreen = () => {
   const [name, setName] = useState('');
   const [telephone, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const navigation = useNavigation();
+
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
   };
-    const navigation = useNavigation();
-    const navigateTo = (screen) => {
-        if (screen === 'SignInScreen') {
-            navigation.navigate('SignInScreen');
-        }
-        };
 
   const handleSignUp = async () => {
     try {
-      const response = await fetch('http://0.0.0.0:3000/api/v1/users/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post('https://gateway.albforex.com.tr/api/v1/gateway/createleadmobile', {
+        PhoneNumber: telephone,
+        firstname: name,
+        password: password,
+        lastname: 'test',
+        country: 'Turkey',
+        language: 'tr',
+        "email": "test@alb.com.tr",
+        "isSendVerificationCode": true,
+        "ipAddress": "string",
+        "partnerId": 0,
+        "deskId": 0,
+        "teamId": 0,
+        "agentId": 0,
+        "utm": {
+          "source": "string",
+          "medium": "string",
+          "campaign": "string",
+          "term": "string",
+          "content": "string"
         },
-        body: JSON.stringify({
-          name: name,
-          telephone: telephone,
-          password: password,
-          passwordConfirm: password,
-        }),
+        "device": {
+          "deviceType": "string",
+          "browser": "string",
+          "engine": "string",
+          "platform": "string",
+          "version": "string"
+        }
+
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.status === "success") {
-        // Registration successful, do something here, e.g. navigate to the login page
+      if (response.data.success) {
         console.log('Successfully registered!');
-        Alert.alert('Success', 'Successfully registered!');
-      } else if (response.status === 400) {
-        // Invalid input data
-        console.log('Invalid input data. Please check your input and try again.');
-      } else if (response.status === 409) {
-        // User already exists
-        console.log('This telephone is already in use. Please choose a different telephone number.');
-      } 
-    }
-    catch (error) {
-        console.log(error); // log the error to the console
-        console.log('An error occurred. Could not connect to the database. Please try again later.');
+        Alert.alert('Mesaj', 'Kodunuz hazır!');
+        console.log('You man registered'); // Add this line
+        //navigate to verify user screen
+        navigation.navigate('VerifyUser');
+
+
+        
+      } else {
+        console.log('An error occurred during registration.');
+        Alert.alert('Error', 'An error occurred during registration.');
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'An error occurred. Could not connect to the server. Please try again later.');
     }
   };
+
 
   return (
     <View style={styles.container}>
@@ -104,9 +121,9 @@ const SignUpScreen = () => {
         <Text style={styles.checkboxText}>Aydınlatma metnini okudum ve onaylıyorum</Text>
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
-        <Text style={{ textAlign: 'left', color: '#3498db' }}>Already have an account? Sign In</Text>
+        <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabın var mı? Giriş yap!</Text>
       </TouchableOpacity>
-      
+     
     </View>
   );
 };

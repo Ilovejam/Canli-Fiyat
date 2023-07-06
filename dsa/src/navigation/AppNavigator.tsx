@@ -1,8 +1,8 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChartLine, faGlobe, faUser} from '@fortawesome/free-solid-svg-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChartLine, faGlobe, faUser } from '@fortawesome/free-solid-svg-icons';
 import NewsGeneral from '../screens/NewsGeneral';
 import MarketsScreen from '../screens/MarketsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -17,14 +17,11 @@ import SupportSettingsScreen from '../screens/SupportSettingsScreen';
 import ContactInformationSettings from '../screens/ContactInformationSettings';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import VerifyUserScreen from '../screens/VerifyUserScreen';
 import PricesScreen from '../screens/Prices';
+import VerifyUser from '../screens/VerifyUser';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
-
-
 
 const LoginStackNavigator = () => {
   return (
@@ -34,13 +31,10 @@ const LoginStackNavigator = () => {
       }}>
       <Stack.Screen name="SignInScreen" component={SignInScreen} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen name="VerifyUser" component={VerifyUser} />
     </Stack.Navigator>
   );
 };
-
-
-
-
 
 
 const NewsStackNavigator = () => {
@@ -130,7 +124,19 @@ const MarketsStackNavigator = () => {
   );
 };
 
+const AuthStack = createStackNavigator();
 
+const AuthNavigator = () => {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="SignInScreen" component={SignInScreen} />
+      <AuthStack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <AuthStack.Screen name="VerifyUser" component={VerifyUser} />
+
+      
+    </AuthStack.Navigator>
+  );
+};
 
 
 const AppNavigator = () => {
@@ -143,38 +149,44 @@ const AppNavigator = () => {
       <Stack.Screen name="SecuritySettingsScreen" component={SecuritySettingsScreen} />
       <Stack.Screen name="SupportSettingsScreen" component={SupportSettingsScreen} />
       <Stack.Screen name="ContactInformationSettings" component={ContactInformationSettings} />
+      <Stack.Screen name="NewsStackNavigator" component={NewsStackNavigator} /> 
+      <Stack.Screen name="MarketsStackNavigator" component={MarketsStackNavigator} />
+
     </Stack.Navigator>
   );
 };
 
-
-
 const MainTabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({color, size}) => {
+        tabBarIcon: ({ color, size, focused }) => {
           let iconName;
+          let iconSize = focused ? 22 : 18; // 'focused' propuna bağlı olarak simge boyutunu değiştirin
 
-          if (route.name === 'Haberler') {
-            return <FontAwesomeIcon icon={faGlobe} />;
-          } else if (route.name === 'Piyasalar') {
-            return <FontAwesomeIcon icon={faChartLine} />;
+          if (route.name === 'Piyasalar') {
+            return <FontAwesomeIcon icon={faChartLine} color={color} size={iconSize} />;
+          } else if (route.name === 'Haberler') {
+            return <FontAwesomeIcon icon={faGlobe} color={color} size={iconSize} />;
           } else if (route.name === 'Profile') {
-            return <FontAwesomeIcon icon={faUser} />;
-          } else if (route.name === 'SettingsScreen') {
-            return <FontAwesomeIcon icon={faUser} />;
+            return <FontAwesomeIcon icon={faUser} color={color} size={iconSize} />;
+          } else if (route.name === 'NewsGeneral') {
+            return <FontAwesomeIcon icon={faGlobe} color={color} size={iconSize} />; 
+          } else if (route.name === 'PricesScreen') {
+            return <FontAwesomeIcon icon={faChartLine} color={color} size={iconSize} />; 
           }
         },
       })}
-      >
-      {/* <Tab.Screen name="Piyasalar" component={MarketsStackNavigator} /> */}
+    >
       <Tab.Screen name="Piyasalar" component={MarketsStackNavigator} />
       <Tab.Screen name="Haberler" component={NewsStackNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="NewsGeneral" component={NewsGeneral} /> 
+      <Tab.Screen name="PricesScreen" component={PricesScreen} /> 
     </Tab.Navigator>
   );
 };
+
 
 export default AppNavigator;

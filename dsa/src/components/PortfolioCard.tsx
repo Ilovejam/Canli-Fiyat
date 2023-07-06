@@ -32,21 +32,21 @@ const PortfolioCard = () => {
           <Text
             color="#fff"
             fontFamily="Worksans-Black"
-            fontSize={8}
+            fontSize={14}
             fontWeight="700"
           >
             ANA PORTFOLYO
           </Text>
           <Text
             color="#67BBF9"
-            fontSize={24}
+            fontSize={30}
             fontWeight="900"
-            lineHeight={28}
+            lineHeight={30}
           >
             $123.456
           </Text>
           <Box flexDirection="row" alignItems="center" justifyContent="space-between" width="100%">
-            <Text color="#fff" fontSize={10} marginRight={6}>
+            <Text color="#fff" fontSize={13} marginRight={6}>
               Güncel günlük kar
             </Text>
             <Text color="#FCC7D4" fontSize={10} marginRight={-108}>
@@ -65,7 +65,7 @@ const PortfolioCard = () => {
             </Box>
           </Box>
           <Box flexDirection="row" alignItems="center" justifyContent="space-between" width="100%">
-            <Text color="#fff" fontSize={10} marginRight={8}>
+            <Text color="#fff" fontSize={13} marginRight={8}>
               Genel kar
             </Text>
             <Text color="#C7F6E5" fontSize={10} marginRight={-140}>

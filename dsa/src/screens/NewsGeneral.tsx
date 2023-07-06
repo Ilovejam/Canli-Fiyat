@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text, ScrollView} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import NewsSlider from '../components/NewsSlider';
-import {Box, VStack, HStack, Button} from 'native-base';
+import { Box, VStack, HStack, Button } from 'native-base';
 import UpcomingEvents from '../components/UpcomingEvents';
 import NewsCard from '../components/NewsCard';
 import BackgroundCircles from '../components/BackgroundCircles';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import NewsSliderCategories from '../components/NewsSliderCategory';
 
 export default function NewsGeneral() {
@@ -15,7 +15,7 @@ export default function NewsGeneral() {
   const navigation = useNavigation();
   const [activeCategory, setActiveCategory] = useState('Overview');
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch(
       'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
     )
@@ -30,21 +30,26 @@ export default function NewsGeneral() {
 
   const filteredArticles = selectedCategory
     ? articles.filter(article => {
-        if (selectedCategory === 'KAP') {
-          return article.category === 'Sport';
-        } else if (selectedCategory === 'Kripto') {
-          return article.category === 'Crypto';
-        } else if (selectedCategory === 'Ekonomi') {
-          setArticles(articles.sort(() => Math.random() - 0.5));
-        }
-        return true;
-      })
+      if (selectedCategory === 'KAP') {
+        return article.category === 'Sport';
+      } else if (selectedCategory === 'Kripto') {
+        return article.category === 'Crypto';
+      } else if (selectedCategory === 'Ekonomi') {
+        setArticles(articles.sort(() => Math.random() - 0.5));
+      }
+      return true;
+    })
     : articles;
 
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundCircles />
-      <Header title="Haberler" />
+      <Header
+        title="Haberler"
+        showBackIcon={selectedCategory !== null}
+        style={styles.header}
+        onBackPress={() => setSelectedCategory(null)}
+      />
       <NewsSliderCategories
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
@@ -54,10 +59,10 @@ export default function NewsGeneral() {
         <Box>
           <NewsSlider category={selectedCategory || 'general'} />
         </Box>
-        <View style={styles.upcomingEventsContiner}>
-          <Text style={styles.sectionTitle}>Yaklaşan Etkinlikler</Text>
+        <View style={styles.upcomingEventsContainer}>
+          <Text style={styles.sectionTitle}>Ekonomik Takvim</Text>
           <UpcomingEvents style={styles.eventsContainer} />
-        </View>  
+        </View>
         <View style={styles.newsContainer}>
           <Text style={styles.sectionTitle}>Haberler</Text>
           <NewsCard articles={filteredArticles} />
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: '100%',
   },
-  upcomingEventsContiner: {
+  upcomingEventsContainer: {
     borderRadius: 5,
     marginHorizontal: 1,
     marginVertical: 2,
@@ -126,5 +131,10 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     elevation: 5,
     width: '100%',
+  },
+  header: {
+    flexDirection: 'row',
+    marginBottom: -40,
+    marginTop: 0,
   },
 });

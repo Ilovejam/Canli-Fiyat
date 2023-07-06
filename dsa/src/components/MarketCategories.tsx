@@ -32,7 +32,7 @@ export default function MarketPrivateCategory({ activeCategory, setActiveCategor
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <View style={styles.catalogContainer}>
         <View style={styles.categoryContainer}>
-          {["Genel Bakış", "Döviz Pariteleri", "Emtialar", "Borsa Endeksleri", "Kripto", "Kıymetli Madenler"].map((category) => (
+          {["Genel Bakış", "s Pariteleri", "Emtialar", "Borsa Endeksleri", "Kripto", "Kıymetli Madenler"].map((category) => (
             <TouchableOpacity
               key={category}
               onPress={() => handleCategoryPress(category)}

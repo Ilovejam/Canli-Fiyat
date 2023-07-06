@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const SocketPriceCards = ({ initialCategory, categories, activeCategory, selectedCategory }) => {
+const SocketPriceCards = ({ initialCategory, categories, selectedFilter, symbols }) => {
   const [prices, setPrices] = useState({});
   const [dailyChanges, setDailyChanges] = useState({});
-  const [changeRateImages, setChangeRateImages] = useState({});
-  const navigation = useNavigation();
-
-  const handleCardPress = (symbol) => {
-    navigation.navigate('MarketPrivate', { symbol });
-  };
+  const [instrumentNames, setInstrumentNames] = useState({});
+  const [filteredSymbols, setFilteredSymbols] = useState([]);
 
   const fetchDailyChanges = async (symbols) => {
     try {
@@ -20,7 +16,7 @@ const SocketPriceCards = ({ initialCategory, categories, activeCategory, selecte
       const data = response.data.payload;
 
       const dailyChangesData = {};
-      const changeRateImagesData = {};
+      const instrumentNamesData = {};
 
       data.forEach((item) => {
         const symbol = item.name;
@@ -28,16 +24,67 @@ const SocketPriceCards = ({ initialCategory, categories, activeCategory, selecte
           const dailyChange = item.dailyChange.toFixed(2);
           const description = item.description;
           dailyChangesData[symbol] = dailyChange;
-          changeRateImagesData[symbol] = item.changeRateImageUrl;
+          instrumentNamesData[symbol] = item.instrumentName;
         }
       });
 
       setDailyChanges(dailyChangesData);
-      setChangeRateImages(changeRateImagesData);
+      setInstrumentNames(instrumentNamesData);
     } catch (error) {
       console.log('Error fetching daily changes:', error);
     }
   };
+
+  useEffect(() => {
+    fetchDailyChanges(categories[initialCategory]);
+    setFilteredSymbols(categories[initialCategory]);
+  }, [initialCategory]);
+
+  useEffect(() => {
+    if (selectedFilter === 'Hepsi') {
+      setFilteredSymbols(categories[initialCategory]);
+    } else if (selectedFilter === 'Kazananlar') {
+      const symbols = categories[initialCategory].filter((symbol) => dailyChanges[symbol] > 0);
+      setFilteredSymbols(symbols);
+    } else if (selectedFilter === 'Kaybedenler') {
+      const symbols = categories[initialCategory].filter((symbol) => dailyChanges[symbol] < 0);
+      setFilteredSymbols(symbols);
+    }
+  }, [selectedFilter]);
+
+  const navigation = useNavigation();
+
+  const handleCardPress = (symbol) => {
+    navigation.navigate('MarketPrivate', { symbol });
+  };
+
+  const formatPrice = (symbol) => {
+    if (prices[symbol]) {
+      return `$${Number(prices[symbol]).toFixed(3)}`;
+    } else {
+      return '-';
+    }
+  };
+
+  const formatDailyChange = (change) => {
+    if (change && change >= 0) {
+      return `+${change}%`;
+    } else {
+      return `${change}%`;
+    }
+  };
+
+  const getDailyChangeColor = (change) => {
+    if (change && change < 0) {
+      return '#AE3F5A'; // Negative change color
+    } else if (change && change > 0) {
+      return '#40A882'; // Positive change color
+    } else {
+      return '#282828'; // Default color
+    }
+  };
+
+  const getPriceColor = () => '#282828';
 
   useEffect(() => {
     const socket = io('wss://pusher.alb.com/market', {
@@ -49,7 +96,7 @@ const SocketPriceCards = ({ initialCategory, categories, activeCategory, selecte
 
     const handlePriceUpdate = (data) => {
       const symbol = data._i.replace('albfx-', '');
-      if (categories[selectedCategory].includes(symbol)) {
+      if (filteredSymbols.includes(symbol)) {
         setPrices((prevPrices) => ({
           ...prevPrices,
           [symbol]: data.b.toFixed(4),
@@ -72,52 +119,41 @@ const SocketPriceCards = ({ initialCategory, categories, activeCategory, selecte
       socket.off('sendorder', handlePriceUpdate);
       socket.disconnect();
     };
-  }, [selectedCategory]);
-
-  const isWinning = (symbol) => {
-    return dailyChanges[symbol] > 0;
-  };
-
-  const isLosing = (symbol) => {
-    return dailyChanges[symbol] < 0;
-  };
-
-  useEffect(() => {
-    fetchDailyChanges(categories[selectedCategory]);
-  }, [selectedCategory]);
+  }, [filteredSymbols]);
 
   return (
     <View style={styles.container}>
-      {categories[selectedCategory].map((symbol) => (
-        (isWinning(symbol) && activeCategory === 'Kazananlar') ||
-        (isLosing(symbol) && activeCategory === 'Kaybedenler') ||
-        (activeCategory === 'Hepsi')
-      ) ? (
+      {filteredSymbols.map((symbol) => (
         <TouchableOpacity
           key={symbol}
           style={styles.card}
           onPress={() => handleCardPress(symbol)}
         >
-          <Text style={styles.symbol}>{symbol}</Text>
-          {changeRateImages[symbol] && (
-            <Image
-              source={{ uri: changeRateImages[symbol] }}
-              style={styles.changeRateImage}
-            />
-          )}
-          <View style={styles.priceContainer}>
-            <Text
-              style={[
-                styles.dailyChange,
-                { color: activeCategory === 'Kazananlar' ? 'green' : 'red' },
-              ]}
-            >
-              {dailyChanges[symbol]}
-            </Text>
-            <Text style={styles.price}>{prices[symbol] ? prices[symbol] : '-'}</Text>
+          <View style={styles.iconContainer} />
+          <View style={styles.contentContainer}>
+            <View style={styles.wrapper}>
+              <View style={styles.symbolContainer}>
+                <Text style={styles.symbol}>{symbol}</Text>
+                {instrumentNames[symbol] && (
+                  <Text style={styles.instrumentName}>{instrumentNames[symbol]}</Text>
+                )}
+              </View>
+            </View>
+            <View style={styles.priceContainer}>
+              {selectedFilter === 'Hepsi' && (
+                <Text style={[styles.price, { color: getPriceColor() }]}>
+                  {formatPrice(symbol)}
+                </Text>
+              )}
+              <Text
+                style={[styles.dailyChange, { color: getDailyChangeColor(dailyChanges[symbol]) }]}
+              >
+                {formatDailyChange(dailyChanges[symbol])}
+              </Text>
+            </View>
           </View>
         </TouchableOpacity>
-      ) : null)}
+      ))}
     </View>
   );
 };
@@ -126,8 +162,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: -18,
-    width: '110%',
+    marginLeft: 0,
+    width: '100%',
     position: 'relative',
   },
   card: {
@@ -146,58 +182,59 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 1,
   },
+  contentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+  },
+  wrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  orangeCircle: {
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    backgroundColor: 'orange',
+    marginRight: 10, // Adjust the gap size here
+  },
+  symbolContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 0,
+  },
   symbol: {
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 15,
-    marginRight: 8,
     color: 'rgba(21, 25, 53, 1)',
   },
-  changeRateImage: {
-    width: 40,
-    height: 30,
-    marginRight: 8,
+  instrumentName: {
+    fontSize: 12,
+    color: 'gray',
+    marginTop: 2,
   },
   priceContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   price: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginBottom: 2,
-    color: '#282828',
-  },
-  dailyChange: {
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 2,
-    marginRight: 4,
   },
-  sectionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 10,
-  },
-  sectionButton: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+  iconContainer: {
+    width: 30,
+    height: 30,
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
     marginRight: 10,
+    backgroundColor: 'orange',
   },
-  selectedSectionButton: {
-    backgroundColor: '#ddd',
-  },
-  sectionText: {
-    fontSize: 14,
+  dailyChange: {
+    fontSize: 17,
     fontWeight: 'bold',
-    color: '#555',
-  },
-  selectedSectionText: {
-    color: 'black',
+    marginBottom: 2,
+    marginRight: 4,
   },
 });
 

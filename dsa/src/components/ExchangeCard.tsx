@@ -12,7 +12,23 @@ type ExchangeCardProps = {
 const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, valueForOneTRY }) => {
   const [chartData, setChartData] = useState<number[]>([]);
   const [dataFetched, setDataFetched] = useState(false);
-
+  const chartConfig = {
+    backgroundGradientFrom: 'transparent',
+    backgroundGradientTo: 'transparent',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientToOpacity: 0,
+    decimalPlaces: 0,
+    color: () => 'rgba(109, 240, 193, 1)',
+    style: {
+      borderRadius: 16,
+    },
+    propsForDots: {
+      r: '2',
+    },
+    propsForBackgroundLines: {
+      stroke: 'transparent',
+    },
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -39,29 +55,11 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, percentageChange, val
             <Text style={styles.percentageChange}>+{percentageChange}%</Text>
           </View>
           <View style={styles.chartContainer}>
-          <LineChart
+            <LineChart
               data={{ datasets: [{ data: chartData }] }}
-              width={140} // Adjust the width as needed
-              height={40} // Adjust the height as needed
-              chartConfig={{
-                backgroundGradientFrom: 'transparent',
-                backgroundGradientTo: 'transparent',
-                backgroundGradientFromOpacity: 0,
-                backgroundGradientToOpacity: 0,
-                decimalPlaces: 0,
-                color: () => 'rgba(109, 240, 193, 1)',
-                style: {
-                  borderRadius: 16,
-                },
-                propsForDots: {
-                  r: '2',
-                },
-                propsForBackgroundLines: {
-                  stroke: 'transparent',
-                },
-                min: Math.min(...chartData) - 0, // Lower the minimum value by 1
-                max: Math.max(...chartData) + 1, // Increase the maximum value by 1
-              }}
+              width={140}
+              height={40}
+              chartConfig={chartConfig}
               bezier
               withHorizontalLabels={false}
               withVerticalLabels={false}
@@ -103,8 +101,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 10,
-    marginRight: 50
+    marginBottom: 10,
+    marginRight: 50,
+    width: 80,
+    height: 50, // Increase the height as needed
   },
+  
   name: {
     marginTop:4,
     marginLeft:-2,

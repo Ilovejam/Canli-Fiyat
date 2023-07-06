@@ -17,7 +17,7 @@ import SupportSettingsScreen from '../screens/SupportSettingsScreen';
 import ContactInformationSettings from '../screens/ContactInformationSettings';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import VerifyUserScreen from '../screens/VerifyUserScreen';
+import VerifyUser from '../screens/VerifyUser';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -33,6 +33,7 @@ const LoginStackNavigator = () => {
       }}>
       <Stack.Screen name="SignInScreen" component={SignInScreen} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen name="VerifyUser" component={VerifyUser} />
     </Stack.Navigator>
   );
 };
