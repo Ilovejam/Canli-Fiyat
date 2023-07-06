@@ -15,6 +15,7 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation();
+  const [verificationCode, setVerificationCode] = useState('');
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
@@ -50,18 +51,15 @@ const SignUpScreen = () => {
           "platform": "string",
           "version": "string"
         }
-
       });
-
-      if (response.data.success) {
+  
+      console.log('Response:', response.data); // Add this line to check the response data object
+  
+      if (response.data?.success) {
         console.log('Successfully registered!');
         Alert.alert('Mesaj', 'Kodunuz hazır!');
-        console.log('You man registered'); // Add this line
-        //navigate to verify user screen
-        navigation.navigate('VerifyUser');
-
-
-        
+        console.log('Verification Code:', response.data.payload?.code); // Add this line to check the verification code
+        navigation.navigate('VerifyUser', {verificationCode});
       } else {
         console.log('An error occurred during registration.');
         Alert.alert('Error', 'An error occurred during registration.');
@@ -71,6 +69,8 @@ const SignUpScreen = () => {
       Alert.alert('Error', 'An error occurred. Could not connect to the server. Please try again later.');
     }
   };
+  
+  
 
 
   return (

@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } fro
 import { useNavigation } from '@react-navigation/native';
 import LogoHeader from '../components/LogoHeader';
 
-const SignInScreen = ({ handleAuthentication }) => {
+const SignInScreen = ({ handleUserLoggedIn }) => {
   const [name, setName] = useState('');
   const [telephone, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
