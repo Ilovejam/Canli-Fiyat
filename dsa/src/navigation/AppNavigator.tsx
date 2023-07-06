@@ -182,8 +182,8 @@ const MainTabNavigator = () => {
       <Tab.Screen name="Piyasalar" component={MarketsStackNavigator} />
       <Tab.Screen name="Haberler" component={NewsStackNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="NewsGeneral" component={NewsGeneral} /> 
-      <Tab.Screen name="PricesScreen" component={PricesScreen} /> 
+      {/* <Tab.Screen name="NewsGeneral" component={NewsGeneral} /> 
+      <Tab.Screen name="PricesScreen" component={PricesScreen} />  */}
     </Tab.Navigator>
   );
 };

@@ -7,9 +7,8 @@ const SignInScreen = ({ handleAuthentication }) => {
   const [name, setName] = useState('');
   const [telephone, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  
   const navigation = useNavigation();
-
+  
 
   const handleSignIn = () => {
     console.log('Name:', name);

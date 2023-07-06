@@ -6,6 +6,14 @@ import logo from '../images/logo/logo-dark.png';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars, faBell, faSearch, faTimes, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+const CATEGORIES = {
+  'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY"],
+  'Kripto Para': ["AVALANCHE", "BINANCE", "COINBASE", "POLKADOT", "STELLAR", "BITCOIN"],
+  'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "SOYBEAN", "UKOIL"],
+  'Borsa Endeksleri': ["APPLE", "AT-T", "ATLANTIA", "AVIVA", "BAYER", "BERKSHIRE", "BEYOND", "INTESA"],
+  "Kıymetli Madenler": ["EEM", "EXS1", "EXW1", "GDX", "QQQ", "SPY", "TLT", "GLD", "USO", "FTNG", "UWT", "VXX"],
+};
+
 const Header = ({ title }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -26,6 +34,8 @@ const Header = ({ title }) => {
   const handleSearchPress = () => {
     setSearchVisible(!searchVisible);
     setShowSearchIcon(false);
+    setSearchQuery('');
+    setSearchResults([]);
   };
 
   const handleCrossPress = () => {
@@ -35,17 +45,11 @@ const Header = ({ title }) => {
 
   const handleSearchChange = (query) => {
     setSearchQuery(query);
-    const symbols = [];
-    for (const categorySymbols of Object.values(CATEGORIES)) {
-      for (const symbol of categorySymbols) {
-        if (symbol.toLowerCase().startsWith(query.toLowerCase())) {
-          symbols.push(symbol);
-        }
-      }
-    }
+    const symbols = Object.values(CATEGORIES).flat().filter(symbol =>
+      symbol.toLowerCase().startsWith(query.toLowerCase())
+    );
     setSearchResults(symbols);
   };
-  
 
   const handleSearchResultPress = (symbol) => {
     navigation.navigate('MarketPrivate', { symbol });
@@ -74,12 +78,11 @@ const Header = ({ title }) => {
           <Text style={styles.title}>{title}</Text>
         </View>
         <View style={styles.rightIconContainer}>
-          {showSearchIcon && (
+          {showSearchIcon ? (
             <TouchableOpacity onPress={handleSearchPress}>
               <FontAwesomeIcon icon={faSearch} size={25} style={styles.rightIconSearch} />
             </TouchableOpacity>
-          )}
-          {!showSearchIcon && (
+          ) : (
             <TouchableOpacity onPress={handleCrossPress}>
               <FontAwesomeIcon icon={faTimes} size={25} style={styles.rightIconSearch} />
             </TouchableOpacity>
