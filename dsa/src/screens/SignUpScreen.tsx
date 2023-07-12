@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SignInScreen from './SignInScreen';
@@ -16,6 +16,9 @@ const SignUpScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation();
   const [verificationCode, setVerificationCode] = useState('');
+
+  const telephoneRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
@@ -69,7 +72,23 @@ const SignUpScreen = () => {
       Alert.alert('Error', 'An error occurred. Could not connect to the server. Please try again later.');
     }
   };
-  
+  const handleKeyPress = ({ nativeEvent }) => {
+    if (nativeEvent.key === 'Enter') {
+      switch (nativeEvent.target) {
+        case 'name':
+          telephoneRef.current.focus();
+          break;
+        case 'telephone':
+          passwordRef.current.focus();
+          break;
+        case 'password':
+          handleSignUp();
+          break;
+        default:
+          break;
+      }
+    }
+  };
   
 
 
@@ -89,42 +108,52 @@ const SignUpScreen = () => {
         style={styles.input}
         value={name}
         onChangeText={text => setName(text)}
-        placeholder="İsim"
+        placeholder="Kullanıcı Adınız"
         placeholderTextColor={"#603AF5"}
         autoCapitalize="words"
+        returnKeyLabel='next'
+        onSubmitEditing={() => { this.secondTextInput.focus(); }}
+        onKeyPress={handleKeyPress}
+        nativeID='name'
       />
 
         <TextInput
+          ref={telephoneRef}
           style={styles.input}
           value={telephone}
           onChangeText={text => setPhoneNumber(text)}
-          placeholder="Phone Number without +90"
+          placeholder="Telefon numaranız +90 olmadan giriniz"
           placeholderTextColor={"#603AF5"}
           keyboardType="phone-pad"
-        />
+          returnKeyLabel='next'
+          onSubmitEditing={() => { this.secondTextInput.focus(); }}
+          onKeyPress={handleKeyPress}
+          nativeID='telephone'
+          />
 
       <TextInput
+        ref={telephoneRef}
+
         style={styles.input}
         value={password}
         onChangeText={text => setPassword(text)}
-        placeholder="Şifre"
+        placeholder="Parolanız"
         placeholderTextColor={"#603AF5"}
 
         secureTextEntry
+        returnKeyType="done"
+        onSubmitEditing={handleSignUp}
+        onKeyPress={handleKeyPress}
+        nativeID="password"
       />
-     
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text style={styles.buttonText}>Kayıt Ol</Text>
-      </TouchableOpacity>
-      <View style={styles.checkboxContainer}>
-        <TouchableOpacity style={styles.checkbox} onPress={handleCheckBox}>
-          {isChecked && <View style={styles.checkedBox} />}
-        </TouchableOpacity>
-        <Text style={styles.checkboxText}>Aydınlatma metnini okudum ve onaylıyorum</Text>
-      </View>
       <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
         <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabın var mı? Giriş yap!</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <Text style={styles.buttonText}>Kayıt Ol</Text>
+      </TouchableOpacity>
+     
+     
      
     </View>
   );

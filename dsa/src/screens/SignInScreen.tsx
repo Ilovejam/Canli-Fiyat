@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogoHeader from '../components/LogoHeader';
@@ -8,6 +8,9 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
   const [telephone, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+
+  const telephoneRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const handleSignIn = () => {
     // Perform your login logic here
@@ -38,40 +41,49 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         resizeMode="contain"
         style={styles.image}
       />
-      <Text style={styles.title}>Let's Get to Know You</Text>
+      <Text style={styles.title}>Sizi Tanıyalım</Text>
       <TextInput
         style={styles.input}
         value={name}
         onChangeText={(text) => setName(text)}
-        placeholder="Your Name"
+        placeholder="Kullanıcı adınız"
         placeholderTextColor="#603AF5"
         keyboardType="default"
+        returnKeyType="next"
+        onSubmitEditing={() => telephoneRef.current.focus()}
       />
       <TextInput
+        ref={telephoneRef}
         style={styles.input}
         value={telephone}
         onChangeText={(text) => setPhoneNumber(text)}
-        placeholder="Phone Number"
+        placeholder="Telefon Numaranız +90 olmadan gireniz"
         placeholderTextColor="#603AF5"
-        keyboardType="phone-pad"
+        keyboardType="numeric"
+        returnKeyType="next"
+        onSubmitEditing={() => passwordRef.current.focus()}
       />
       <TextInput
+        ref={passwordRef}
         style={styles.input}
         value={password}
         onChangeText={(text) => setPassword(text)}
-        placeholder="Password"
+        placeholder="Parolanız"
         placeholderTextColor="#603AF5"
         secureTextEntry
+        returnKeyType="done"
+        onSubmitEditing={handleSignIn}
       />
       <TouchableOpacity onPress={handleNavigateToSignUp}>
-        <Text style={{ textAlign: 'left', color: '#3498db' }}>Don't have an account? Sign up now!</Text>
+        <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabın yok mu? Hemen Kayıt ol!</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Sign In</Text>
+        <Text style={styles.buttonText}>Giriş Yap</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
