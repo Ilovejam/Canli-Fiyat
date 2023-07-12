@@ -34,9 +34,13 @@ const MarketPrivate = ({ route }) => {
   
     const handlePriceUpdate = (data) => {
       const symbol = data._i.replace('albfx-', '');
+      const {open, close, high, maxVolume} = data;
+      
       if (symbol === route.params?.symbol) {
         const updatedPrice = data.b.toFixed(4);
         setPrice(updatedPrice);
+        // console.log("Close", close);
+      
       }
     };
     

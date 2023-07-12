@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogoHeader from '../components/LogoHeader';
@@ -8,61 +8,21 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
   const [telephone, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-  
 
   const handleSignIn = () => {
-    Alert.alert('Bilgi', 'Kayıt olmalısınız!');
+    // Perform your login logic here
+    // Replace the following code with your actual login implementation
+    if (name === '' || telephone === '' || password === '') {
+      Alert.alert('Error', 'Please fill in all fields.');
+    } else {
+      // Simulating successful login
+      const user = {
+        name: name,
+        telephone: telephone,
+      };
+      handleUserLoggedIn(user);
+    }
   };
-  
-
-    // try {
-    //   const response = await fetch('http://localhost:3000/api/v1/users/login', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       telephone: telephone,
-    //       password: password,
-    //     }),
-    //   });
-  
-    //   console.log('Response:', response);
-    
-    //   if (response.ok) {
-    //     const data = await response.json();
-    //     console.log('Data:', data);
-  
-    //     if (data.status === 'success') {
-    //       // Authentication successful, navigate to the AppNavigator
-    //       console.log('Successfully logged in!');
-    //       handleAuthentication(true);
-    //     } else {
-    //       // Handle other cases here
-    //       console.log('Login failed:', data);
-    //       Alert.alert('Error', 'An error occurred during login. Please try again.');
-    //     }
-    //   } else if (response.status === 401) {
-    //     // Invalid username or password
-    //     console.log('Invalid username or password');
-    //     Alert.alert('Error', 'Invalid telephone or password. Please try again.');
-    //   } else if (response.status === 404) {
-    //     // User not found
-    //     console.log('User not found');
-    //     Alert.alert('Error', 'User not found. Please check your input and try again.');
-    //   } else {
-    //     // Some other error occurred
-    //     console.log('Unexpected error');
-    //     Alert.alert('Error', 'An error occurred. Could not connect to the server. Please try again later.');
-    //   }
-    // } catch (error) {
-    //   console.log('Request error:', error);
-    //   Alert.alert('Error', 'An error occurred. Could not connect to the server. Please try again later.');
-    // }
-  
-  
-  
-  
 
   const handleNavigateToSignUp = () => {
     navigation.navigate('SignUpScreen');
@@ -78,12 +38,12 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         resizeMode="contain"
         style={styles.image}
       />
-      <Text style={styles.title}>Sizi Tanıyalım</Text>
+      <Text style={styles.title}>Let's Get to Know You</Text>
       <TextInput
         style={styles.input}
         value={name}
         onChangeText={(text) => setName(text)}
-        placeholder="İsminiz"
+        placeholder="Your Name"
         placeholderTextColor="#603AF5"
         keyboardType="default"
       />
@@ -91,7 +51,7 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         style={styles.input}
         value={telephone}
         onChangeText={(text) => setPhoneNumber(text)}
-        placeholder="Telefon Numaranız"
+        placeholder="Phone Number"
         placeholderTextColor="#603AF5"
         keyboardType="phone-pad"
       />
@@ -99,20 +59,19 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         style={styles.input}
         value={password}
         onChangeText={(text) => setPassword(text)}
-        placeholder="Şifre"
+        placeholder="Password"
         placeholderTextColor="#603AF5"
         secureTextEntry
       />
       <TouchableOpacity onPress={handleNavigateToSignUp}>
-        <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabın yok mu? Hemen kayıt ol!</Text>
+        <Text style={{ textAlign: 'left', color: '#3498db' }}>Don't have an account? Sign up now!</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Giriş Yap</Text>
+        <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
