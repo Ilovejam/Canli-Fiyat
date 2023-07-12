@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogoHeader from '../components/LogoHeader';
 
@@ -32,7 +32,7 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <LogoHeader />
       </View>
@@ -57,7 +57,7 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         style={styles.input}
         value={telephone}
         onChangeText={(text) => setPhoneNumber(text)}
-        placeholder="Telefon Numaranız +90 olmadan gireniz"
+        placeholder="Telefon Numaranız (5XX XXX XX XX)"
         placeholderTextColor="#603AF5"
         keyboardType="numeric"
         returnKeyType="next"
@@ -75,18 +75,18 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         onSubmitEditing={handleSignIn}
       />
       <TouchableOpacity onPress={handleNavigateToSignUp}>
-        <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabın yok mu? Hemen Kayıt ol!</Text>
+        <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabınız yok mu? Kayıt olun!</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Giriş Yap</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',

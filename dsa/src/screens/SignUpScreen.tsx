@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SignInScreen from './SignInScreen';
 import NewsGeneral from './NewsGeneral';
@@ -89,77 +89,96 @@ const SignUpScreen = () => {
       }
     }
   };
+  const handleNavigateToSignIn = () => {
+    navigation.navigate('SignInScreen');
+  };
   
 
 
   return (
-    <View style={styles.container}>
-        <View style={styles.header}>
-           <LogoHeader />
-       </View>
-       <Image
-          source={require('../images/backgrounds/3d_background.png')}
-          resizeMode="contain"
-          style={styles.image}
-        />
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.header}>
+        <LogoHeader />
+      </View>
+
+      <Image
+        source={require('../images/backgrounds/3d_background.png')}
+        resizeMode="contain"
+        style={styles.image}
+      />
+
       <Text style={styles.title}>Sizi Tanıyalım</Text>
-      
+
       <TextInput
         style={styles.input}
         value={name}
-        onChangeText={text => setName(text)}
+        onChangeText={(text) => setName(text)}
         placeholder="Kullanıcı Adınız"
-        placeholderTextColor={"#603AF5"}
+        placeholderTextColor="#603AF5"
         autoCapitalize="words"
-        returnKeyLabel='next'
-        onSubmitEditing={() => { this.secondTextInput.focus(); }}
-        onKeyPress={handleKeyPress}
-        nativeID='name'
+        returnKeyType="next"
+        onSubmitEditing={() => telephoneRef.current?.focus()}
+        nativeID="name"
       />
-
-        <TextInput
-          ref={telephoneRef}
-          style={styles.input}
-          value={telephone}
-          onChangeText={text => setPhoneNumber(text)}
-          placeholder="Telefon numaranız +90 olmadan giriniz"
-          placeholderTextColor={"#603AF5"}
-          keyboardType="phone-pad"
-          returnKeyLabel='next'
-          onSubmitEditing={() => { this.secondTextInput.focus(); }}
-          onKeyPress={handleKeyPress}
-          nativeID='telephone'
-          />
 
       <TextInput
         ref={telephoneRef}
+        style={styles.input}
+        value={telephone}
+        onChangeText={(text) => setPhoneNumber(text)}
+        placeholder="Telefon Numaranız (5XX XXX XX XX)"
+        placeholderTextColor="#603AF5"
+        keyboardType="phone-pad"
+        returnKeyType="next"
+        onSubmitEditing={() => passwordRef.current?.focus()}
+        onKeyPress={({ nativeEvent }) => {
+          if (nativeEvent.key === 'Enter') {
+            telephoneRef.current?.blur();
+            passwordRef.current?.focus();
+          }
+        }}
+        nativeID="telephone"
+      />
 
+
+      <TextInput
+        ref={passwordRef}
         style={styles.input}
         value={password}
-        onChangeText={text => setPassword(text)}
-        placeholder="Parolanız"
-        placeholderTextColor={"#603AF5"}
-
+        onChangeText={(text) => setPassword(text)}
+        placeholder="Password"
+        placeholderTextColor="#603AF5"
         secureTextEntry
         returnKeyType="done"
         onSubmitEditing={handleSignUp}
-        onKeyPress={handleKeyPress}
+        onKeyPress={({ nativeEvent }) => {
+          if (nativeEvent.key === 'Enter') {
+            passwordRef.current?.blur();
+          }
+        }}
         nativeID="password"
       />
-      <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
-        <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabın var mı? Giriş yap!</Text>
+
+
+      <TouchableOpacity onPress={handleNavigateToSignIn}>
+      <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabınız var mı? Giriş Yap!</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Kayıt Ol</Text>
       </TouchableOpacity>
-     
-     
-     
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingVertical: 20,
+  },   
       phoneContainer: {
         flexDirection: 'row',
         alignItems: 'center',
