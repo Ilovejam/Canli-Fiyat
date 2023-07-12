@@ -7,7 +7,7 @@ const postData = async () => {
     "lastName": "Tolunay",
     "isSendVerificationCode": true,
     "email": "arda123123@yalova.com.tr",
-    "phoneNumber": "538 036 51 28",
+    "phoneNumber": "5071910915",
     "country": "Turkey",
     "language": "tr",
     "ipAddress": "string",
