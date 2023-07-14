@@ -7,6 +7,7 @@ import AppNavigator from './src/navigation/AppNavigator'; // Ana uygulama naviga
 import VerifyUser from './src/screens/VerifyUser';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
+import Temp from './src/screens/Temp';
 
 const theme = extendTheme({});
 

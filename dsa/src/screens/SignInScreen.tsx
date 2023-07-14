@@ -1,17 +1,52 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ScrollView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Image,
+  ScrollView,
+  Platform,
+  UIManager,
+  findNodeHandle,
+  Dimensions,
+  Keyboard
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogoHeader from '../components/LogoHeader';
+import { NativeSyntheticEvent } from 'react-native';
 
-const SignInScreen = ({ handleUserLoggedIn }) => {
+
+const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLoggedIn }) => {
   const [name, setName] = useState('');
   const [telephone, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
   const navigation = useNavigation();
 
-  const telephoneRef = useRef(null);
-  const passwordRef = useRef(null);
+  const telephoneRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
+  
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
+      setKeyboardOffset(event.endCoordinates.height);
+    });
+  
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardOffset(0);
+    });
+  
+    // Clean up the listeners
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+  
   const handleSignIn = () => {
     // Perform your login logic here
     // Replace the following code with your actual login implementation
@@ -31,8 +66,31 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
     navigation.navigate('SignUpScreen');
   };
 
+  const handleTextInputFocus = (
+    ref: React.RefObject<TextInput>,
+    event: NativeSyntheticEvent<TextInputFocusEventData>
+  ) => {
+    const inputHandle = findNodeHandle(ref.current);
+    if (inputHandle && scrollViewRef.current) {
+      UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
+        const screenY = y - height - 20; // Move the screen up
+        const windowHeight = Dimensions.get('window').height;
+        const maxVisibleHeight = windowHeight - keyboardOffset;
+        if (screenY > maxVisibleHeight) {
+          const scrollDistance = screenY - maxVisibleHeight;
+          scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
+          setKeyboardOffset(event.endCoordinates.height + scrollDistance);
+        }
+      });
+    }
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[styles.container, { paddingBottom: keyboardOffset }]}
+      ref={scrollViewRef}
+      keyboardShouldPersistTaps="handled"
+    >
       <View style={styles.header}>
         <LogoHeader />
       </View>
@@ -50,7 +108,8 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         placeholderTextColor="#603AF5"
         keyboardType="default"
         returnKeyType="next"
-        onSubmitEditing={() => telephoneRef.current.focus()}
+        onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
+        onSubmitEditing={() => telephoneRef.current?.focus()}
       />
       <TextInput
         ref={telephoneRef}
@@ -61,7 +120,8 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         placeholderTextColor="#603AF5"
         keyboardType="numeric"
         returnKeyType="next"
-        onSubmitEditing={() => passwordRef.current.focus()}
+        onFocus={(event) => handleTextInputFocus(passwordRef, event)}
+        onSubmitEditing={() => passwordRef.current?.focus()}
       />
       <TextInput
         ref={passwordRef}
@@ -72,6 +132,7 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
         placeholderTextColor="#603AF5"
         secureTextEntry
         returnKeyType="done"
+        onFocus={(event) => handleTextInputFocus(passwordRef, event)}
         onSubmitEditing={handleSignIn}
       />
       <TouchableOpacity onPress={handleNavigateToSignUp}>
@@ -86,7 +147,7 @@ const SignInScreen = ({ handleUserLoggedIn }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 10,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',

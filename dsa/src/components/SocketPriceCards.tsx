@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import SvgUri from 'react-native-svg-uri';
+
 import io from 'socket.io-client';
 
 const SocketPriceCards = ({ initialCategory, categories, selectedFilter, symbols }) => {
@@ -121,6 +123,31 @@ const SocketPriceCards = ({ initialCategory, categories, selectedFilter, symbols
     };
   }, [filteredSymbols]);
 
+  const [symbolIcons, setSymbolIcons] = useState({});
+
+
+  const fetchSymbolIcons = async (symbol) => {
+    try {
+      const response = await axios.get(`https://alb.com/assets/main/img/app-symbols/${symbol}.svg`, {
+        responseType: 'arraybuffer',
+      });
+  
+      const iconData = Buffer.from(response.data, 'binary').toString('base64');
+      setSymbolIcons((prevIcons) => ({
+        ...prevIcons,
+        [symbol]: `data:image/svg+xml;base64,${iconData}`,
+      }));
+    } catch (error) {
+      console.log('Error fetching symbol icon:', error);
+    }
+  };
+  
+  useEffect(() => {
+    filteredSymbols.forEach((symbol) => {
+      fetchSymbolIcons(symbol);
+    });
+  }, [filteredSymbols]);
+
   return (
     <View style={styles.container}>
       {filteredSymbols.map((symbol) => (
@@ -129,7 +156,14 @@ const SocketPriceCards = ({ initialCategory, categories, selectedFilter, symbols
           style={styles.card}
           onPress={() => handleCardPress(symbol)}
         >
-          <View style={styles.iconContainer} />
+<View style={styles.iconContainer}>
+          {symbolIcons[symbol] ? (
+            <Image source={{ uri: symbolIcons[symbol] }} style={styles.iconImage} />
+          ) : (
+            <Text></Text>
+          )}
+        </View>
+        
           <View style={styles.contentContainer}>
             <View style={styles.wrapper}>
               <View style={styles.symbolContainer}>
