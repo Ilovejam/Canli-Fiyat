@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import SvgUri from 'react-native-svg-uri';
+import { SvgUri } from 'react-native-svg';
+
 
 import io from 'socket.io-client';
 
@@ -156,12 +157,12 @@ const SocketPriceCards = ({ initialCategory, categories, selectedFilter, symbols
           style={styles.card}
           onPress={() => handleCardPress(symbol)}
         >
-<View style={styles.iconContainer}>
-          {symbolIcons[symbol] ? (
-            <Image source={{ uri: symbolIcons[symbol] }} style={styles.iconImage} />
-          ) : (
-            <Text></Text>
-          )}
+        <View style={styles.iconContainer}>
+          <SvgUri
+            uri={`https://alb.com/assets/main/img/app-symbols/${symbol.toLowerCase()}.svg`}
+            width={30}
+             height={30}
+            />
         </View>
         
           <View style={styles.contentContainer}>

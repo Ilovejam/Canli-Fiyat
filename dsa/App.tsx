@@ -53,6 +53,7 @@ const App = () => {
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
+    // <Temp />
   );
 };
 
