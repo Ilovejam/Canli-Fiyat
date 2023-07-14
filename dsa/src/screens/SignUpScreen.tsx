@@ -1,5 +1,21 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ScrollView,findNodeHandle, Dimensions, Keyboard  } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Image,
+  ScrollView,
+  Platform,
+  UIManager,
+  findNodeHandle,
+  Dimensions,
+  Keyboard,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SignInScreen from './SignInScreen';
 import NewsGeneral from './NewsGeneral';
@@ -20,29 +36,49 @@ const SignUpScreen = () => {
   const telephoneRef = useRef(null);
   const passwordRef = useRef(null);
   const scrollViewRef = useRef<ScrollView>(null); // Define scrollViewRef here
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+
 
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
   };
   const handleTextInputFocus = (
-    ref: React.RefObject<TextInput>,
+    ref,
     event: NativeSyntheticEvent<TextInputFocusEventData>
   ) => {
-    const inputRef = ref.current;
-    if (inputRef && scrollViewRef.current) {
-      inputRef.measure((x, y, width, height, pageX, pageY) => {
-        const screenY = pageY - height - 20; // Move the screen up
+    const inputHandle = findNodeHandle(ref.current);
+    if (inputHandle && scrollViewRef.current) {
+      UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
+        const screenY = y - height - 20; // Move the screen up
         const windowHeight = Dimensions.get('window').height;
-        const maxVisibleHeight = windowHeight - keyboardOffset;
+        const maxVisibleHeight = windowHeight - keyboardOffset - 40; // Account for padding and button height
         if (screenY > maxVisibleHeight) {
           const scrollDistance = screenY - maxVisibleHeight;
           scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
-          setKeyboardOffset(event.endCoordinates.height + scrollDistance);
+          setKeyboardOffset(scrollDistance);
         }
       });
     }
   };
+  
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
+      setKeyboardOffset(event.endCoordinates.height);
+    });
+  
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardOffset(0);
+    });
+  
+    // Clean up the listeners
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+  
   
   const handleSignUp = async () => {
     try {
@@ -116,7 +152,9 @@ const SignUpScreen = () => {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, { paddingBottom: keyboardOffset }]}
+    ref={scrollViewRef}
+    keyboardShouldPersistTaps="handled">
       <View style={styles.header}>
         <LogoHeader />
       </View>
