@@ -75,15 +75,16 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
       UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
         const screenY = y - height - 20; // Move the screen up
         const windowHeight = Dimensions.get('window').height;
-        const maxVisibleHeight = windowHeight - keyboardOffset;
+        const maxVisibleHeight = windowHeight - keyboardOffset - 40; // Account for padding and button height
         if (screenY > maxVisibleHeight) {
           const scrollDistance = screenY - maxVisibleHeight;
           scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
-          setKeyboardOffset(event.endCoordinates.height + scrollDistance);
+          setKeyboardOffset(scrollDistance);
         }
       });
     }
   };
+  
 
   return (
     <ScrollView

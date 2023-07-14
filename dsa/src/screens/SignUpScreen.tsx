@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ScrollView,findNodeHandle, Dimensions, Keyboard  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SignInScreen from './SignInScreen';
 import NewsGeneral from './NewsGeneral';
@@ -19,11 +19,31 @@ const SignUpScreen = () => {
 
   const telephoneRef = useRef(null);
   const passwordRef = useRef(null);
+  const scrollViewRef = useRef<ScrollView>(null); // Define scrollViewRef here
+
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
   };
-
+  const handleTextInputFocus = (
+    ref: React.RefObject<TextInput>,
+    event: NativeSyntheticEvent<TextInputFocusEventData>
+  ) => {
+    const inputRef = ref.current;
+    if (inputRef && scrollViewRef.current) {
+      inputRef.measure((x, y, width, height, pageX, pageY) => {
+        const screenY = pageY - height - 20; // Move the screen up
+        const windowHeight = Dimensions.get('window').height;
+        const maxVisibleHeight = windowHeight - keyboardOffset;
+        if (screenY > maxVisibleHeight) {
+          const scrollDistance = screenY - maxVisibleHeight;
+          scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
+          setKeyboardOffset(event.endCoordinates.height + scrollDistance);
+        }
+      });
+    }
+  };
+  
   const handleSignUp = async () => {
     try {
       const response = await axios.post('https://gateway.albforex.com.tr/api/v1/gateway/createleadmobile', {
@@ -118,6 +138,7 @@ const SignUpScreen = () => {
         autoCapitalize="words"
         returnKeyType="next"
         onSubmitEditing={() => telephoneRef.current?.focus()}
+        onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
         nativeID="name"
       />
 
@@ -131,6 +152,8 @@ const SignUpScreen = () => {
         keyboardType="phone-pad"
         returnKeyType="next"
         onSubmitEditing={() => passwordRef.current?.focus()}
+        onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
+
         onKeyPress={({ nativeEvent }) => {
           if (nativeEvent.key === 'Enter') {
             telephoneRef.current?.blur();
@@ -151,6 +174,8 @@ const SignUpScreen = () => {
         secureTextEntry
         returnKeyType="done"
         onSubmitEditing={handleSignUp}
+        onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
+
         onKeyPress={({ nativeEvent }) => {
           if (nativeEvent.key === 'Enter') {
             passwordRef.current?.blur();
