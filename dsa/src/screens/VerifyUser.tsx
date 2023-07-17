@@ -1,34 +1,28 @@
+import React, { useState, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import LogoHeader from '../components/LogoHeader';
 
-  
-  import React, { useState } from 'react';
-  import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-  import { useNavigation, useRoute } from '@react-navigation/native';
-  import LogoHeader from '../components/LogoHeader';
-  
-  const VerifyUser = ({ handleUserLoggedIn }) => {
-    const navigation = useNavigation();
-    const route = useRoute();
-    const [verificationCode, setVerificationCode] = useState(initialVerificationCode || '');
+const VerifyUser = ({ handleUserLoggedIn }) => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const [verificationCode, setVerificationCode] = useState(initialVerificationCode || '');
 
-    const { verificationCode: initialVerificationCode } = route.params;
-  
-    // Define states for each TextInput
-    const [digit1, setDigit1] = useState('');
-    const [digit2, setDigit2] = useState('');
-    const [digit3, setDigit3] = useState('');
-    const [digit4, setDigit4] = useState('');
-  
-    const handleVerify = () => {
-      const enteredCode = digit1 + digit2 + digit3 + digit4; // Concatenate all inputs
-      if (enteredCode === initialVerificationCode) {
-        Alert.alert('Success', 'User successfully verified!');
-        handleUserLoggedIn(true); // Set user as logged in
-      } else {
-        Alert.alert('Error', 'Invalid verification code!');
-      }
-    };
-  
-    console.log('Verification Code:', initialVerificationCode);
+  const { verificationCode: initialVerificationCode } = route.params;
+
+  const digit2Ref = useRef<TextInput>(null);
+  const digit3Ref = useRef<TextInput>(null);
+  const digit4Ref = useRef<TextInput>(null);
+
+  const handleVerify = () => {
+    const enteredCode = verificationCode;
+    if (enteredCode === initialVerificationCode) {
+      Alert.alert('Success', 'User successfully verified!');
+      handleUserLoggedIn(true); // Set user as logged in
+    } else {
+      Alert.alert('Error', 'Invalid verification code!');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -42,32 +36,44 @@
             value={verificationCode[0]}
             onChangeText={(text) => {
               setVerificationCode(text + verificationCode.slice(1));
+              if (text !== '') digit2Ref.current?.focus();
             }}
             placeholder="Code"
             keyboardType="numeric"
             maxLength={1}
+            returnKeyType="next"
+            onSubmitEditing={() => digit2Ref.current?.focus()}
           />
           <TextInput
+            ref={digit2Ref}
             style={styles.codeInput}
             value={verificationCode[1]}
             onChangeText={(text) => {
               setVerificationCode(verificationCode.slice(0, 1) + text + verificationCode.slice(2));
+              if (text !== '') digit3Ref.current?.focus();
             }}
             placeholder="Code"
             keyboardType="numeric"
             maxLength={1}
+            returnKeyType="next"
+            onSubmitEditing={() => digit3Ref.current?.focus()}
           />
           <TextInput
+            ref={digit3Ref}
             style={styles.codeInput}
             value={verificationCode[2]}
             onChangeText={(text) => {
               setVerificationCode(verificationCode.slice(0, 2) + text + verificationCode.slice(3));
+              if (text !== '') digit4Ref.current?.focus();
             }}
             placeholder="Code"
             keyboardType="numeric"
             maxLength={1}
+            returnKeyType="next"
+            onSubmitEditing={() => digit4Ref.current?.focus()}
           />
           <TextInput
+            ref={digit4Ref}
             style={styles.codeInput}
             value={verificationCode[3]}
             onChangeText={(text) => {
@@ -76,6 +82,8 @@
             placeholder="Code"
             keyboardType="numeric"
             maxLength={1}
+            returnKeyType="done"
+            onSubmitEditing={handleVerify}
           />
         </View>
       </View>
@@ -85,6 +93,7 @@
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

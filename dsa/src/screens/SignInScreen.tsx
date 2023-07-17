@@ -25,7 +25,7 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
   const [password, setPassword] = useState('');
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const navigation = useNavigation();
-
+  const nameRef = useRef<TextInput>(null);
   const telephoneRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -66,24 +66,18 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
     navigation.navigate('SignUpScreen');
   };
 
-  const handleTextInputFocus = (
-  ref: React.RefObject<TextInput>,
-  event: NativeSyntheticEvent<TextInputFocusEventData>
-) => {
-  const inputHandle = findNodeHandle(ref.current);
-  if (inputHandle && scrollViewRef.current) {
-    UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
-      const screenY = y - height - 20; // Move the screen up
-      const windowHeight = Dimensions.get('window').height;
-      const maxVisibleHeight = windowHeight - keyboardOffset - 40; // Account for padding and button height
-      if (screenY > maxVisibleHeight) {
-        const scrollDistance = screenY - maxVisibleHeight;
-        scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
-        setKeyboardOffset(scrollDistance);
-      }
-    });
-  }
-};
+  const handleTextInputFocus = (ref: React.RefObject<TextInput>) => {
+    if (scrollViewRef.current && ref.current) {
+      ref.current.measureLayout(
+        findNodeHandle(scrollViewRef.current),
+        (x, y, width, height) => {
+          const scrollY = y > keyboardOffset ? y - keyboardOffset : 0;
+          scrollViewRef.current.scrollTo({ y: scrollY, animated: true });
+        }
+      );
+    }
+  };
+  
   
 
   const handlePasswordInputFocus = () => {
@@ -108,40 +102,40 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
       />
       <Text style={styles.title}>Sizi Tanıyalım</Text>
       <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={(text) => setName(text)}
-        placeholder="Kullanıcı adınız"
-        placeholderTextColor="#603AF5"
-        keyboardType="default"
-        returnKeyType="next"
-        onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
-        onSubmitEditing={() => telephoneRef.current?.focus()}
-      />
-      <TextInput
-        ref={telephoneRef}
-        style={styles.input}
-        value={telephone}
-        onChangeText={(text) => setPhoneNumber(text)}
-        placeholder="Telefon Numaranız (5XX XXX XX XX)"
-        placeholderTextColor="#603AF5"
-        keyboardType="numeric"
-        returnKeyType="next"
-        onFocus={(event) => handleTextInputFocus(passwordRef, event)}
-        onSubmitEditing={() => passwordRef.current?.focus()}
-      />
-      <TextInput
-        ref={passwordRef}
-        style={styles.input}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        placeholder="Parolanız"
-        placeholderTextColor="#603AF5"
-        secureTextEntry
-        returnKeyType="done"
-        onFocus={handlePasswordInputFocus} // Update the onFocus handler for the password input
-        onSubmitEditing={handleSignIn}
-      />
+  style={styles.input}
+  value={name}
+  onChangeText={(text) => setName(text)}
+  placeholder="Kullanıcı adınız"
+  placeholderTextColor="#603AF5"
+  keyboardType="default"
+  returnKeyType="next"
+  onFocus={(event) => handleTextInputFocus(nameRef, event)} // Update the ref and handleTextInputFocus call for name input
+  onSubmitEditing={() => telephoneRef.current?.focus()}
+/>
+<TextInput
+  ref={telephoneRef}
+  style={styles.input}
+  value={telephone}
+  onChangeText={(text) => setPhoneNumber(text)}
+  placeholder="Telefon Numaranız (5XX XXX XX XX)"
+  placeholderTextColor="#603AF5"
+  keyboardType="numeric"
+  returnKeyType="next"
+  onFocus={(event) => handleTextInputFocus(telephoneRef, event)} // Update the ref and handleTextInputFocus call for telephone input
+  onSubmitEditing={() => passwordRef.current?.focus()}
+/>
+<TextInput
+  ref={passwordRef}
+  style={styles.input}
+  value={password}
+  onChangeText={(text) => setPassword(text)}
+  placeholder="Parolanız"
+  placeholderTextColor="#603AF5"
+  secureTextEntry
+  returnKeyType="done"
+  onFocus={(event) => handleTextInputFocus(passwordRef, event)} // Update the ref and handleTextInputFocus call for password input
+  onSubmitEditing={handleSignIn}
+/>
       <TouchableOpacity onPress={handleNavigateToSignUp}>
         <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabınız yok mu? Kayıt olun!</Text>
       </TouchableOpacity>
