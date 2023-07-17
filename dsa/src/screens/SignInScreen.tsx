@@ -67,7 +67,7 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
   };
 
   const handleTextInputFocus = (
-    ref,
+    ref: React.RefObject<TextInput>,
     event: NativeSyntheticEvent<TextInputFocusEventData>
   ) => {
     const inputHandle = findNodeHandle(ref.current);
@@ -84,6 +84,7 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
       });
     }
   };
+  
   
   
   
@@ -112,39 +113,42 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
       <TextInput
         style={styles.input}
         value={name}
-        onChangeText={(text) => setName(text)}
+        onChangeText={setName}
         placeholder="Kullanıcı adınız"
         placeholderTextColor="#603AF5"
         keyboardType="default"
         returnKeyType="next"
         onSubmitEditing={() => telephoneRef.current?.focus()}
-        onFocus={(event) => handleTextInputFocus(nameRef, event)} // Update the ref and handleTextInputFocus call for name input
-        
+        onFocus={(event) => handleTextInputFocus(nameRef, event)}
+        ref={nameRef}
       />
+
       <TextInput
         ref={telephoneRef}
         style={styles.input}
         value={telephone}
-        onChangeText={(text) => setPhoneNumber(text)}
+        onChangeText={setPhoneNumber}
         placeholder="Telefon Numaranız (5XX XXX XX XX)"
         placeholderTextColor="#603AF5"
         keyboardType="numeric"
         returnKeyType="next"
         onSubmitEditing={() => passwordRef.current?.focus()}
-        onFocus={(event) => handleTextInputFocus(telephoneRef, event)} // Update the ref and handleTextInputFocus call for telephone input
+        onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
       />
+
       <TextInput
         ref={passwordRef}
         style={styles.input}
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={setPassword}
         placeholder="Parolanız"
         placeholderTextColor="#603AF5"
         secureTextEntry
         returnKeyType="done"
         onSubmitEditing={handleSignIn}
-        onFocus={(event) => handleTextInputFocus(passwordRef, event)} // Update the ref and handleTextInputFocus call for password input
+        onFocus={(event) => handleTextInputFocus(passwordRef, event)}
       />
+
       <TouchableOpacity onPress={handleNavigateToSignUp}>
         <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabınız yok mu? Kayıt olun!</Text>
       </TouchableOpacity>
