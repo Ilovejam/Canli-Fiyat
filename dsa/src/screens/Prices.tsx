@@ -8,17 +8,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import BackgroundCircles from '../components/BackgroundCircles';
 
 const CATEGORIES = {
-  'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY"],
-  'Kripto Para': ["AVALANCHE", "BINANCE", "COINBASE", "POLKADOT", "STELLAR", "BITCOIN"],
-  'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "SOYBEAN", "UKOIL"],
-  'Borsa Endeksleri': ["APPLE", "AT-T", "ATLANTIA", "AVIVA", "BAYER", "BERKSHIRE", "BEYOND", "INTESA"],
+  'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CHFJPY", "CADJPY", "CADCHF", "EURAUD", "EURCAD", "EURCHF", "EURGBP", "EURJPY"],
+  'Kripto Para': ["AVALANCHE", "BINANCE", "COINBASE", "POLKADOT", "STELLAR", "BITCOIN", "BITCOINCASH", "CARDANO", "CHAINLINK", "EOS", "ETHEREUM", "LITECOIN", "NEO", "RIPPLE", "SOLANA", "IOTA"],
+  'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "XAGEUR", "XAGUSD", "XAUEUR", "XAUUSD", "XPDUSD", "XPTUSD", "GOLDft"],
+  'Borsa Endeksleri': ["APPLE", "AT-T", "ATLANTIA", "AVIVA", "BAYER", "BERKSHIRE", "BEYOND", "INTESA", "JNJ", "JPMORGAN", "LMT", "LVMH", "MARRIOTT", "MARVELL", "MCDONALDS", "MICROSOFT", "MODERNA", "NVIDIA"],
   "Kıymetli Madenler": ["EEM", "EXS1", "EXW1", "GDX", "QQQ", "SPY", "TLT", "GLD", "USO", "FTNG", "UWT", "VXX"],
 };
 
 // const CATEGORIES = {
 //   'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CHFJPY", "CADJPY", "CADCHF", "EURAUD", "EURCAD", "EURCHF", "EURGBP", "EURJPY"],
 //   'Kripto Para': ["AVALANCHE", "BINANCE", "COINBASE", "POLKADOT", "STELLAR", "BITCOIN", "BITCOINCASH", "BTCAED", "CARDANO", "CHAINLINK", "EOS", "ETHEREUM", "LITECOIN", "NEO", "RIPPLE", "SOLANA", "IOTA"],
-//   'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "SOYBEAN", "UKOIL", "XAGEUR", "XAGUSD", "XAUEUR", "XAUUSD", "XPDUSD", "XPTUSD", "USOIL#", "GOLDft", "GOLDft#", "NATGAS#"],
+//   'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "XAGEUR", "XAGUSD", "XAUEUR", "XAUUSD", "XPDUSD", "XPTUSD", "USOIL#", "GOLDft", "GOLDft#", "NATGAS#"],
 //   'Borsa Endeksleri': ["APPLE", "AT-T", "ATLANTIA", "AVIVA", "BAYER", "BERKSHIRE", "BEYOND", "INTESA", "JNJ", "JPMORGAN", "LMT", "LVMH", "MARRIOTT", "MARVELL", "MCDONALDS", "MICROSOFT", "MODERNA", "NVIDIA"],
 //   "Kıymetli Madenler": ["EEM", "EXS1", "EXW1", "GDX", "QQQ", "SPY", "TLT", "GLD", "USO", "FTNG", "UWT", "VXX"],
 // };

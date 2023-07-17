@@ -149,6 +149,15 @@ const SocketPriceCards = ({ initialCategory, categories, selectedFilter, symbols
     });
   }, [filteredSymbols]);
 
+  const type0symbols = ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CHFJPY", "CADJPY", "CADCHF", "EURAUD", "EURCAD", "EURCHF", "EURGBP", "EURJPY"];
+
+  // for (let i = 0; i < type0symbols.length; i++) {
+  //   const symbol = type0symbols[i];
+  //   const firstThree = symbol.substring(0, 3);
+  //   const lastThree = symbol.substring(symbol.length - 3);
+  //   console.log(`Symbol: ${symbol} | First 3: ${firstThree} | Last 3: ${lastThree}`);
+  // }
+
   return (
     <View style={styles.container}>
       {filteredSymbols.map((symbol) => (
@@ -157,14 +166,31 @@ const SocketPriceCards = ({ initialCategory, categories, selectedFilter, symbols
           style={styles.card}
           onPress={() => handleCardPress(symbol)}
         >
-        <View style={styles.iconContainer}>
-          <SvgUri
-            uri={`https://alb.com/assets/main/img/app-symbols/${symbol.toLowerCase()}.svg`}
-            width={30}
-             height={30}
-            />
-        </View>
-        
+    
+    {type0symbols.includes(symbol) ? (
+            <View style={styles.iconContainerRow}>
+              <SvgUri
+                uri={`https://alb.com/assets/main/img/app-symbols/${symbol.substring(0, 3).toLowerCase()}.svg`}
+                width={30}
+                height={30}
+              />
+              <SvgUri
+                uri={`https://alb.com/assets/main/img/app-symbols/${symbol.substring(symbol.length - 3).toLowerCase()}.svg`}
+                width={30}
+                height={30}
+                marginLeft={-20}
+              />
+            </View>
+          ) : (
+            <View style={styles.iconContainer}>
+              <SvgUri
+                uri={`https://alb.com/assets/main/img/app-symbols/${symbol.toLowerCase()}.svg`}
+                width={30}
+                height={30}
+              />
+            </View>
+          )}
+          
           <View style={styles.contentContainer}>
             <View style={styles.wrapper}>
               <View style={styles.symbolContainer}>
@@ -238,6 +264,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 0,
+    marginLeft: 10
   },
   symbol: {
     fontWeight: '500',
@@ -248,6 +275,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'gray',
     marginTop: 2,
+    marginLeft: -10,
   },
   priceContainer: {
     flexDirection: 'column',
@@ -259,6 +287,14 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   iconContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    marginRight: 10,
+    backgroundColor: 'orange',
+  },
+  iconContainerRow: {
+    flexDirection: 'row',
     width: 30,
     height: 30,
     borderRadius: 20,

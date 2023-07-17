@@ -20,7 +20,7 @@ const ProfileScreen = () => {
         <Text style={styles.name}>Mücahit Coşkun Eryılmaz</Text>
         <Text style={styles.jobTitle}>Ürün Yöneticisi</Text>
       </View>
-      <View style={{ flex: 1 , width:"90%", marginTop:-10}}>
+      <View style={{ flex: 1 , width:"95%", marginTop:-10}}>
         <PortfolioCard /> 
       </View>
       <View style={{ alignSelf: 'flex-start', marginLeft: 20 }}>

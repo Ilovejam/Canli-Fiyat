@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Text } from 'native-base';
-import logo from '../images/logo/logo-dark.png';
+import { SvgUri } from 'react-native-svg';
+import logo from '../images/logo/logo.svg';
 
 const LogoHeader = ( ) => {
 

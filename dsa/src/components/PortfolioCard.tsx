@@ -9,7 +9,7 @@ const PortfolioCard = () => {
         borderRadius: 10,
         marginBottom: 10,
         width: '95%',
-        minHeight: 120,
+        minHeight: 140,
         shadowColor: 'rgba(23, 27, 58, 0.44)',
         shadowOffset: { width: 0, height: 12 },
         shadowOpacity: 0.7,
@@ -49,7 +49,7 @@ const PortfolioCard = () => {
             <Text color="#fff" fontSize={13} marginRight={6}>
               Güncel günlük kar
             </Text>
-            <Text color="#FCC7D4" fontSize={10} marginRight={-108}>
+            <Text color="#FCC7D4" fontSize={10} marginRight={-98}>
               -1.481,72
             </Text>
             <Box

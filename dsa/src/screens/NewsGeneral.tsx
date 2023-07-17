@@ -17,7 +17,7 @@ export default function NewsGeneral() {
 
   useEffect(() => {
     fetch(
-      'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
+      'https://newsapi.org/v2/top-headlines?country=tr&category=business&apiKey=0eae1f96c9e34e29b613a83a18ffc7a6',
     )
       .then(response => response.json())
       .then(data => setArticles(data.articles))

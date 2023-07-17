@@ -67,24 +67,30 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
   };
 
   const handleTextInputFocus = (
-    ref: React.RefObject<TextInput>,
-    event: NativeSyntheticEvent<TextInputFocusEventData>
-  ) => {
-    const inputHandle = findNodeHandle(ref.current);
-    if (inputHandle && scrollViewRef.current) {
-      UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
-        const screenY = y - height - 20; // Move the screen up
-        const windowHeight = Dimensions.get('window').height;
-        const maxVisibleHeight = windowHeight - keyboardOffset - 40; // Account for padding and button height
-        if (screenY > maxVisibleHeight) {
-          const scrollDistance = screenY - maxVisibleHeight;
-          scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
-          setKeyboardOffset(scrollDistance);
-        }
-      });
+  ref: React.RefObject<TextInput>,
+  event: NativeSyntheticEvent<TextInputFocusEventData>
+) => {
+  const inputHandle = findNodeHandle(ref.current);
+  if (inputHandle && scrollViewRef.current) {
+    UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
+      const screenY = y - height - 20; // Move the screen up
+      const windowHeight = Dimensions.get('window').height;
+      const maxVisibleHeight = windowHeight - keyboardOffset - 40; // Account for padding and button height
+      if (screenY > maxVisibleHeight) {
+        const scrollDistance = screenY - maxVisibleHeight;
+        scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
+        setKeyboardOffset(scrollDistance);
+      }
+    });
+  }
+};
+  
+
+  const handlePasswordInputFocus = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
     }
   };
-  
 
   return (
     <ScrollView
@@ -133,7 +139,7 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
         placeholderTextColor="#603AF5"
         secureTextEntry
         returnKeyType="done"
-        onFocus={(event) => handleTextInputFocus(passwordRef, event)}
+        onFocus={handlePasswordInputFocus} // Update the onFocus handler for the password input
         onSubmitEditing={handleSignIn}
       />
       <TouchableOpacity onPress={handleNavigateToSignUp}>
