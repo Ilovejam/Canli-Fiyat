@@ -32,7 +32,7 @@ const SignUpScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation();
   const [verificationCode, setVerificationCode] = useState('');
-
+  const nameRef = useRef(null);
   const telephoneRef = useRef(null);
   const passwordRef = useRef(null);
   const scrollViewRef = useRef<ScrollView>(null); // Define scrollViewRef here
@@ -50,7 +50,7 @@ const SignUpScreen = () => {
     const inputHandle = findNodeHandle(ref.current);
     if (inputHandle && scrollViewRef.current) {
       UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
-        const screenY = y - height - 20; // Move the screen up
+        const screenY = y - height - 30; // Move the screen up
         const windowHeight = Dimensions.get('window').height;
         const maxVisibleHeight = windowHeight - keyboardOffset - 40; // Account for padding and button height
         if (screenY > maxVisibleHeight) {
@@ -212,7 +212,7 @@ const SignUpScreen = () => {
         secureTextEntry
         returnKeyType="done"
         onSubmitEditing={handleSignUp}
-        onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
+        onFocus={(event) => handleTextInputFocus(passwordRef, event)}
 
         onKeyPress={({ nativeEvent }) => {
           if (nativeEvent.key === 'Enter') {
