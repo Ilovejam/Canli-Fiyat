@@ -117,8 +117,9 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
         placeholderTextColor="#603AF5"
         keyboardType="default"
         returnKeyType="next"
-        onFocus={(event) => handleTextInputFocus(nameRef, event)} // Update the ref and handleTextInputFocus call for name input
         onSubmitEditing={() => telephoneRef.current?.focus()}
+        onFocus={(event) => handleTextInputFocus(nameRef, event)} // Update the ref and handleTextInputFocus call for name input
+        
       />
       <TextInput
         ref={telephoneRef}
@@ -129,8 +130,8 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
         placeholderTextColor="#603AF5"
         keyboardType="numeric"
         returnKeyType="next"
-        onFocus={(event) => handleTextInputFocus(telephoneRef, event)} // Update the ref and handleTextInputFocus call for telephone input
         onSubmitEditing={() => passwordRef.current?.focus()}
+        onFocus={(event) => handleTextInputFocus(telephoneRef, event)} // Update the ref and handleTextInputFocus call for telephone input
       />
       <TextInput
         ref={passwordRef}
@@ -141,8 +142,8 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
         placeholderTextColor="#603AF5"
         secureTextEntry
         returnKeyType="done"
-        onFocus={(event) => handleTextInputFocus(passwordRef, event)} // Update the ref and handleTextInputFocus call for password input
         onSubmitEditing={handleSignIn}
+        onFocus={(event) => handleTextInputFocus(passwordRef, event)} // Update the ref and handleTextInputFocus call for password input
       />
       <TouchableOpacity onPress={handleNavigateToSignUp}>
         <Text style={{ textAlign: 'left', color: '#3498db' }}>Hesabınız yok mu? Kayıt olun!</Text>
