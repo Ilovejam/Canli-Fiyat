@@ -2,6 +2,9 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LogoHeader from '../components/LogoHeader';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
 
 const VerifyUser = ({ handleUserLoggedIn }) => {
   const navigation = useNavigation();
@@ -29,6 +32,10 @@ const VerifyUser = ({ handleUserLoggedIn }) => {
       <View style={styles.header}>
         <LogoHeader />
       </View>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackIcon}>
+        <FontAwesomeIcon icon={faArrowLeft} size={25} color="#000" />
+      </TouchableOpacity>
+
       <View style={styles.codeContainer}>
         <View style={styles.codeRow}>
           <TextInput
@@ -133,6 +140,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  goBackIcon: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    zIndex: 999, // To ensure it's above other elements
   },
 });
 
