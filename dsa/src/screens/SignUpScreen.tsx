@@ -188,17 +188,10 @@ const SignUpScreen = () => {
         placeholder="Telefon Numaranız (5XX XXX XX XX)"
         placeholderTextColor="#603AF5"
         keyboardType="phone-pad"
-        returnKeyType="next"
         onSubmitEditing={() => passwordRef.current?.focus()}
         onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
+        returnKeyType="done" // Set returnKeyType to "done" to display "Done" on the phone input
 
-        onKeyPress={({ nativeEvent }) => {
-          if (nativeEvent.key === 'Enter') {
-            telephoneRef.current?.blur();
-            passwordRef.current?.focus();
-          }
-        }}
-        nativeID="telephone"
       />
 
 

@@ -29,6 +29,9 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
   const telephoneRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+  const nameInputRef = useRef<TextInput | null>(null);
+  const phoneInputRef = useRef<TextInput | null>(null);
+  const passwordInputRef = useRef<TextInput | null>(null);
 
   
   useEffect(() => {
@@ -75,7 +78,7 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
       UIManager.measureInWindow(inputHandle, (x, y, width, height) => {
         const screenY = y - height - 30; // Move the screen up
         const windowHeight = Dimensions.get('window').height;
-        const maxVisibleHeight = windowHeight - keyboardOffset - 40; // Account for padding and button height
+        const maxVisibleHeight = windowHeight - keyboardOffset - 90; // Account for padding and button height
         if (screenY > maxVisibleHeight) {
           const scrollDistance = screenY - maxVisibleHeight;
           scrollViewRef.current.scrollTo({ x: 0, y: scrollDistance, animated: true });
@@ -85,9 +88,12 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
     }
   };
   
+  const handlePhoneSubmit = () => {
+    passwordInputRef.current?.focus();
+  };
+
   
-  
-  
+
 
   const handlePasswordInputFocus = () => {
     if (scrollViewRef.current) {
@@ -130,10 +136,11 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
         onChangeText={setPhoneNumber}
         placeholder="Telefon Numaranız (5XX XXX XX XX)"
         placeholderTextColor="#603AF5"
-        keyboardType="numeric"
-        returnKeyType="next"
-        onSubmitEditing={() => passwordRef.current?.focus()}
+        keyboardType="phone-pad"
+        onSubmitEditing={handlePhoneSubmit}
+        returnKeyType="done"  // Set returnKeyType to "done" to display "Done" on the phone input
         onFocus={(event) => handleTextInputFocus(telephoneRef, event)}
+      
       />
 
       <TextInput
@@ -146,7 +153,6 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
         secureTextEntry
         returnKeyType="done"
         onSubmitEditing={handleSignIn}
-        onFocus={(event) => handleTextInputFocus(passwordRef, event)}
       />
 
       <TouchableOpacity onPress={handleNavigateToSignUp}>
@@ -162,6 +168,7 @@ const SignInScreen: React.FC<{ handleUserLoggedIn: Function }> = ({ handleUserLo
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    marginTop: -50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',

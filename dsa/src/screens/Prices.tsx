@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, FlatList } from 'react-native';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, FlatList, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import Header from '../components/Header';
 import PortfolioCard from '../components/PortfolioCard';
 import SocketPriceCards from '../components/SocketPriceCards';
@@ -7,21 +7,26 @@ import ExchangeCardSlider from '../components/ExchangeCardSlider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackgroundCircles from '../components/BackgroundCircles';
 
-const CATEGORIES = {
-  'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CHFJPY", "CADJPY", "CADCHF", "EURAUD", "EURCAD", "EURCHF", "EURGBP", "EURJPY"],
-  'Kripto Para': ["AVALANCHE", "BINANCE", "COINBASE", "POLKADOT", "STELLAR", "BITCOIN", "BITCOINCASH", "CARDANO", "CHAINLINK", "EOS", "ETHEREUM", "LITECOIN", "NEO", "RIPPLE", "SOLANA", "IOTA"],
-  'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "XAGEUR", "XAGUSD", "XAUEUR", "XAUUSD", "XPDUSD", "XPTUSD", "GOLDft"],
-  'Borsa Endeksleri': ["APPLE", "AT-T", "ATLANTIA", "AVIVA", "BAYER", "BERKSHIRE", "BEYOND", "INTESA", "JNJ", "JPMORGAN", "LMT", "LVMH", "MARRIOTT", "MARVELL", "MCDONALDS", "MICROSOFT", "MODERNA", "NVIDIA"],
-  "Kıymetli Madenler": ["EEM", "EXS1", "EXW1", "GDX", "QQQ", "SPY", "TLT", "GLD", "USO", "FTNG", "UWT", "VXX"],
-};
 
 // const CATEGORIES = {
-//   'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CHFJPY", "CADJPY", "CADCHF", "EURAUD", "EURCAD", "EURCHF", "EURGBP", "EURJPY"],
-//   'Kripto Para': ["AVALANCHE", "BINANCE", "COINBASE", "POLKADOT", "STELLAR", "BITCOIN", "BITCOINCASH", "BTCAED", "CARDANO", "CHAINLINK", "EOS", "ETHEREUM", "LITECOIN", "NEO", "RIPPLE", "SOLANA", "IOTA"],
-//   'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "XAGEUR", "XAGUSD", "XAUEUR", "XAUUSD", "XPDUSD", "XPTUSD", "USOIL#", "GOLDft", "GOLDft#", "NATGAS#"],
-//   'Borsa Endeksleri': ["APPLE", "AT-T", "ATLANTIA", "AVIVA", "BAYER", "BERKSHIRE", "BEYOND", "INTESA", "JNJ", "JPMORGAN", "LMT", "LVMH", "MARRIOTT", "MARVELL", "MCDONALDS", "MICROSOFT", "MODERNA", "NVIDIA"],
-//   "Kıymetli Madenler": ["EEM", "EXS1", "EXW1", "GDX", "QQQ", "SPY", "TLT", "GLD", "USO", "FTNG", "UWT", "VXX"],
+//   'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", ],
+//   'Kripto Para': ["AVALANCHE", "BINANCE", ],
+//   'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", ],
+//   'Borsa Endeksleri': ["APPLE", "AT-T", ],
+//   "Kıymetli Madenler": ["EEM", "EXS1", ],
 // };
+
+const CATEGORIES = {
+  'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CHFJPY", "CADJPY", "EURGBP", "EURJPY"],
+  'Kripto Para': ["AVALANCHE", "BINANCE", "POLKADOT", "STELLAR", "BITCOIN", "BITCOINCASH", "CARDANO", "ETHEREUM", "LITECOIN", "NEO", "RIPPLE", "SOLANA", "IOTA"],
+  'Emtia': ["GAGEUR", "GAGUSD", "GAUEUR", "GAUTRY", "GAUUSD", "NATGAS_Cash", "SOYBEAN", "UKOIL", "USOIL", "COCOA", "COPPER", "CORN", "COTTON", "SUGAR", "WHEAT"],
+  'Borsa Endeksleri': ["APPLE", "INTESA", "JNJ", "JPMORGAN", "LMT","NVIDIA"],
+  "Kıymetli Madenler": ["EEM", "EXS1", "EXW1", "GDX", "QQQ",  "UWT", "VXX"],
+};
+
+const FILTER_OPTIONS = ['Hepsi', 'Kazananlar', 'Kaybedenler'];
+const screenHeight = Dimensions.get('window').height;
+
 
 const PricesScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('Döviz');
@@ -64,12 +69,22 @@ const PricesScreen = () => {
   const toggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
   };
+  const handleBackdropPress = () => {
+    setIsMenuVisible(false);
+    
+  };
+
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.market}>
-        <Header title="Piyasalar" style={styles.header} />
         <BackgroundCircles />
+        <Header title="Piyasalar" 
+         showBackIcon={selectedCategory !== null}
+         style={styles.header}
+         onBackPress={() => setSelectedCategory(null)}
+         
+          />
         <View style={styles.categoryContainer}>
           <ScrollView
             horizontal
@@ -111,43 +126,36 @@ const PricesScreen = () => {
             <ExchangeCardSlider />
           </View>
           <View style={styles.filtersContainer}>
-            <View style={styles.filtersButtonContainer}>
-              <TouchableOpacity style={styles.filtersButton} onPress={toggleMenu}>
-                <Text style={styles.filtersButtonText}>Filtreler</Text>
-              </TouchableOpacity>
-              {isMenuVisible && (
-                <Modal
-                  animationType="fade"
-                  transparent={true}
-                  visible={isMenuVisible}
-                  onRequestClose={() => setIsMenuVisible(false)}
-                >
-                  <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                      <TouchableOpacity
-                        style={styles.modalOption}
-                        onPress={() => handleFilterSelection('Hepsi')}
-                      >
-                        <Text style={styles.modalOptionText}>Hepsi</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.modalOption}
-                        onPress={() => handleFilterSelection('Kazananlar')}
-                      >
-                        <Text style={styles.modalOptionText}>Kazananlar</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.modalOption}
-                        onPress={() => handleFilterSelection('Kaybedenler')}
-                      >
-                        <Text style={styles.modalOptionText}>Kaybedenler</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </Modal>
-              )}
+        <View style={styles.filtersButtonContainer}>
+          <TouchableOpacity style={styles.filtersButton} onPress={() => setIsMenuVisible(true)}>
+            <Text style={styles.filtersButtonText}>{selectedFilter}</Text>
+          </TouchableOpacity>
+        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isMenuVisible}
+          onRequestClose={() => setIsMenuVisible(false)}
+        >
+          <TouchableWithoutFeedback onPress={handleBackdropPress}>
+            <View style={styles.modalContainer}>
+              {/* Render the filter options as a FlatList */}
+              <FlatList
+                data={FILTER_OPTIONS}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.modalOption}
+                    onPress={() => handleFilterSelection(item)}
+                  >
+                    <Text style={styles.modalOptionText}>{item}</Text>
+                  </TouchableOpacity>
+                )}
+                keyExtractor={(item) => item}
+              />
             </View>
-            <Text style={styles.priceText}>{selectedFilter}</Text>
+          </TouchableWithoutFeedback>
+        </Modal>
+           <Text style={styles.priceText}>Filtreler</Text>
           </View>
           <ScrollView style={styles.priceRowContainer}>
             <SocketPriceCards
@@ -258,19 +266,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    position: 'absolute',
+    bottom: -200,
+    width: '100%',
+    height: screenHeight / 2, // Half of the screen height
+    backgroundColor: 'white',
   },
   modalContent: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
+    padding: 16,
+    borderRadius: 8,
   },
   modalOption: {
-    marginBottom: 10,
+    paddingVertical: 8,
+    alignItems: 'center',
   },
+
   modalOptionText: {
     fontSize: 16,
     fontWeight: 'bold',

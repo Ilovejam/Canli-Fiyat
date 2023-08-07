@@ -5,46 +5,21 @@ import { BlurView } from '@react-native-community/blur';
 
 const UpcomingEvents = () => {
   const [events, setEvents] = useState([
-    { id: 15, date: '19 Tem', title: 'Merkezi Hükümet Borç MAY' },
-    { id: 16, date: '20 Tem', title: 'Yeni Araç Kayıtları Yıllık Değişim Oranı HAZ' },
-    { id: 16, date: '20 Tem', title: 'İş Güveni HAZ' },
-    { id: 16, date: '20 Tem', title: 'Kapasite Kullanım Oranı HAZ' },
-    { id: 16, date: '20 Tem', title: '3 Aylık Bonoların İhalesi' },
-    { id: 16, date: '20 Tem', title: '6 Aylık Bonoların İhalesi' },
-    { id: 17, date: '21 Tem', title: 'TCMB Faiz Oranı Kararı' },
-    { id: 17, date: '21 Tem', title: 'Gece Likidite Penceresi Faiz Oranı TEM' },
-    { id: 17, date: '21 Tem', title: 'Gece Borç Verme Faiz Oranı TEM' },
-    { id: 17, date: '21 Tem', title: 'Döviz Rezervleri HAZ/16' },
-    { id: 18, date: '22 Tem', title: 'Mal Ticaret Dengesi Sonuçları MAY' },
-    { id: 18, date: '22 Tem', title: 'Ekonomik Güven Endeksi HAZ' },
-    { id: 18, date: '22 Tem', title: 'İhracat Sonuçları MAY' },
-    { id: 18, date: '22 Tem', title: 'İthalat Sonuçları MAY' },
-    { id: 18, date: '22 Tem', title: 'Turist Girişleri Yıllık Değişim Oranı MAY' },
-    { id: 19, date: '23 Tem', title: '2 Yıllık Tahvillerin İhalesi' },
-    { id: 19, date: '23 Tem', title: '10 Yıllık Tahvillerin İhalesi' },
-    { id: 20, date: '26 Tem', title: 'Merkezi Hükümet Borç MAY' },
-    { id: 21, date: '27 Tem', title: 'İş Güveni HAZ' },
-    { id: 21, date: '27 Tem', title: 'Kapasite Kullanım Oranı HAZ' },
-    { id: 21, date: '27 Tem', title: 'TCMB Faiz Oranı Kararı' },
-    { id: 21, date: '27 Tem', title: 'Gece Likidite Penceresi Faiz Oranı TEM' },
-    { id: 21, date: '27 Tem', title: 'Gece Borç Verme Faiz Oranı TEM' },
-    { id: 21, date: '27 Tem', title: 'Döviz Rezervleri HAZ/23' },
-    { id: 21, date: '27 Tem', title: 'Küresel Tedarik Zinciri Baskı Endeksi HAZ' },
-    { id: 22, date: '28 Tem', title: 'FAO Gıda Fiyat Endeksi HAZ' },
-    { id: 22, date: '28 Tem', title: 'Hazine Nakit Bakiyesi HAZ' },
-    { id: 23, date: '31 Tem', title: 'Mal Ticaret Dengesi Sonuçları HAZ' },
-    { id: 23, date: '31 Tem', title: 'Ekonomik Güven Endeksi TEM' },
-    { id: 23, date: '31 Tem', title: 'İhracat Sonuçları HAZ' },
-    { id: 23, date: '31 Tem', title: 'İthalat Sonuçları HAZ' },
-    { id: 23, date: '31 Tem', title: 'Turizm Gelirleri 2. Çeyrek' },
-    { id: 23, date: '31 Tem', title: 'Turist Girişleri Yıllık Değişim Oranı HAZ' },
-    { id: 24, date: '01 Ağu', title: 'İstanbul Sanayi Odası İmalat PMI TEM' },
+    { id: 15, date: '08 Aug', title: 'Balance of Trade' },
+    { id: 16, date: '08 Aug', title: 'Redbook YoY' },
+    { id: 17, date: '09 Aug', title: 'MBA Purchase index' },
+    { id: 18, date: '09 Aug', title: 'EIA Distillate Stocks Change' },
+    { id: 19, date: '10 Aug', title: 'Foregin Exchange Reserves' },
+    { id: 20, date: '10 Aug', title: 'Core Inflation Rate MoM' },
+    { id: 21, date: '11 Aug', title: 'Balance of Trade' },
+    { id: 22, date: '11 Aug', title: 'GPD YoY' },
+   
     ]);
 
   const handleEventPress = (eventName) => {
-    const baseUrl = 'https://tr.investing.com/economic-calendar/';
+    const baseUrl = 'https://www.tradingview.com/economic-calendar/';
     const eventSlug = eventName.toLowerCase().replace(/ /g, '-');
-    const url = `${baseUrl}${eventSlug}`;
+    const url = `${baseUrl}`;
     Linking.openURL(url);
   };
 

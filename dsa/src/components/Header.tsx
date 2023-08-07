@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Dimensions, TouchableOpacity } from 'react-native';
-import { useNavigation, DrawerActions, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Text, Input, Box, Modal, ScrollView } from 'native-base';
 import logo from '../images/logo/logo-dark.png';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars, faBell, faSearch, faTimes, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import HamburgerMenu from './HamburgerMenu';
 
 const CATEGORIES = {
   'Döviz': ["AUDCAD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPUSD", "AUDCHF", "AUDJPY"],
@@ -42,6 +45,11 @@ const Header = ({ title }) => {
     setSearchVisible(false);
     setShowSearchIcon(true);
   };
+  const handleBarsPress = () => {
+    // Open the HamburgerMenu
+    setShowHamburgerMenu(true);
+  };
+
 
   const handleSearchChange = (query) => {
     setSearchQuery(query);
@@ -59,6 +67,9 @@ const Header = ({ title }) => {
     setSearchResults([]);
   };
 
+  const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
+
+
   const isMarketPrivateScreen = route.name === 'MarketPrivate';
 
   return (
@@ -69,7 +80,7 @@ const Header = ({ title }) => {
             <FontAwesomeIcon icon={faArrowLeft} size={22} style={styles.leftIcon} />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <TouchableOpacity onPress={handleBarsPress}>
             <FontAwesomeIcon icon={faBars} size={22} style={styles.leftIcon} />
           </TouchableOpacity>
         )}
@@ -92,7 +103,7 @@ const Header = ({ title }) => {
           </TouchableOpacity>
         </View>
       </View>
-      {showMenu && <HamburgerMenu onClose={() => setShowMenu(false)} />}
+      {showHamburgerMenu && <HamburgerMenu onClose={() => setShowHamburgerMenu(false)} />}
       {searchVisible && (
         <Modal isOpen={searchVisible} onClose={() => setSearchVisible(false)} size="full">
           <Modal.Content>

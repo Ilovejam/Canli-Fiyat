@@ -1,1 +1,0 @@
-seçimi yaoan jşlker tau-nudu 

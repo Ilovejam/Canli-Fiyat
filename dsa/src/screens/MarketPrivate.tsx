@@ -149,6 +149,11 @@ const MarketPrivate = ({ route }) => {
       setIsLoading(false);
     }, 2000);
   };
+  const numericPrice = parseFloat(price);
+  const openPriceVal = (numericPrice + numericPrice*0.01).toFixed(4);
+  const closePriceVal = (numericPrice - numericPrice*0.01).toFixed(4);
+  const bidVal = (numericPrice - numericPrice*0.02).toFixed(4);
+  const askVal = (numericPrice + numericPrice*0.02).toFixed(4);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -189,7 +194,7 @@ const MarketPrivate = ({ route }) => {
           </Box>
         </Box>
 
-        <Text style={styles.lastUpdate}>Son veri tarihi 27 Haz 10:14</Text>
+        <Text style={styles.lastUpdate}>Son veri tarihi 7 Aug 10:14</Text>
 
         <View style={styles.chartContainer}>
           {chartUrl ? (
@@ -203,30 +208,27 @@ const MarketPrivate = ({ route }) => {
         <View style={styles.priceContainer}>
             <View style={styles.asd}>
               <Text style={styles.priceTitle}>Açılış</Text>
-              <Text style={styles.text123}>$123,456 B</Text>
+              <Text style={styles.text123}>${openPriceVal}</Text>
             </View>
           </View>
           <View style={styles.priceContainer}>
             
             <View style={styles.asd}>
-              <Text style={styles.priceTitle}>24-Sa Değişim</Text>
-              <Text style={styles.text123}>$123,456 B</Text>
+              <Text style={styles.priceTitle}>Bid</Text>
+              <Text style={styles.text123}>${bidVal}</Text>
             </View>
             <View style={styles.asd}>
               <Text style={styles.priceTitle}>Kapanış</Text>
-              <Text style={styles.text123}>$123,456 B</Text>
+              <Text style={styles.text123}>${closePriceVal}</Text>
             </View>
           </View>
           <View style={styles.priceContainer}>
             
             <View style={styles.asd}>
-              <Text style={styles.priceTitle}>Hacim (24Sa)</Text>
-              <Text style={styles.text123}>$123,456 B</Text>
+              <Text style={styles.priceTitle}>Ask</Text>
+              <Text style={styles.text123}>${askVal}</Text>
             </View>
-            <View style={styles.asd}>
-              <Text style={styles.priceTitle}>52-Ha Değişim</Text>
-              <Text style={styles.text123}>$123,456 B</Text>
-            </View>
+           
           </View>
           
 
